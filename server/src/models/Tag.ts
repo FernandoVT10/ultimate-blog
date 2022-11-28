@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 export interface ITag {
-  name: string
+  name: string;
 }
 
 const tagScheme = new Schema<ITag>({

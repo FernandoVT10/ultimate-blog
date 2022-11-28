@@ -1,14 +1,14 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, HydratedDocument } from "mongoose";
 import { ITag } from "./Tag";
 
 import modelsConf from "../config/models";
 
 export interface IBlogPost {
-  title: string,
-  content: string,
-  tags: Types.DocumentArray<ITag>,
-  createdAt: number,
-  updatedAt: number
+  title: string;
+  content: string;
+  tags: HydratedDocument<ITag>[];
+  createdAt: number;
+  updatedAt: number;
 }
 
 const { blogPost: blogPostConf } = modelsConf;
