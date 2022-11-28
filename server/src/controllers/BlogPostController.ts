@@ -1,4 +1,4 @@
-import TagService from "@app/services/TagService";
+import TagService from "../services/TagService";
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
 
 interface GetAllOptions {

@@ -3,3 +3,6 @@ node_modules/
 .eslintcache
 
 **/build/
+
+**/.env
+**/.env.test

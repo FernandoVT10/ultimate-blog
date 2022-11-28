@@ -1,4 +1,4 @@
-import BlogPost, { IBlogPost } from "@app/models/BlogPost";
+import BlogPost, { IBlogPost } from "../models/BlogPost";
 import { FilterQuery, HydratedDocument } from "mongoose";
 
 export type BlogPostServiceFilter = FilterQuery<IBlogPost>;
