@@ -1,6 +1,6 @@
 import TagService from "../services/TagService";
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
-import { RequestError } from "@app/utils/errors";
+import { RequestError } from "../utils/errors";
 
 interface GetAllOptions {
   tags: string[] | undefined;

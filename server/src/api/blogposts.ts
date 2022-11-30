@@ -1,6 +1,6 @@
 import BlogPostController from "../controllers/BlogPostController";
 import asyncHandler from "express-async-handler";
-import checkValidation from "@app/middlewares/checkValidation";
+import checkValidation from "../middlewares/checkValidation";
 
 import { query, param } from "express-validator";
 import { Router } from "express";
