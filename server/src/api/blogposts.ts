@@ -1,9 +1,11 @@
 import BlogPostController from "../controllers/BlogPostController";
 import asyncHandler from "express-async-handler";
+import checkValidation from "@app/middlewares/checkValidation";
 
-import { query } from "express-validator";
+import { query, param } from "express-validator";
 import { Router } from "express";
 import { transformIntoStringArray } from "../utils/sanitizers";
+import { isValidObjectId } from "mongoose";
 
 const router = Router();
 
@@ -18,6 +20,26 @@ router.get(
     });
 
     res.json(blogPosts);
+  })
+);
+
+router.get(
+  "/blogposts/:blogPostId",
+
+  param("blogPostId").custom(value => {
+    if(isValidObjectId(value)) return true;
+
+    throw new Error("Id is invalid");
+  }),
+
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const blogPostId = req.params?.blogPostId;
+
+    const blogPost = await BlogPostController.getById(blogPostId);
+
+    res.json(blogPost);
   })
 );
 

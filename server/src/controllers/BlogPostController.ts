@@ -1,5 +1,6 @@
 import TagService from "../services/TagService";
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
+import { RequestError } from "@app/utils/errors";
 
 interface GetAllOptions {
   tags: string[] | undefined;
@@ -23,6 +24,16 @@ const getAll = async (options: GetAllOptions) => {
   return BlogPostService.getAll(filter);
 };
 
+const getById = async (blogPostId: string) => {
+  const blogPost = await BlogPostService.getById(blogPostId);
+
+  if(!blogPost) {
+    throw new RequestError(404, "BlogPost not found");
+  }
+
+  return blogPost;
+};
+
 export default {
-  getAll
+  getAll, getById
 };

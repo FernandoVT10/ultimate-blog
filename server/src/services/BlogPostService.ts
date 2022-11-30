@@ -10,6 +10,10 @@ const getAll = async (filter: FilterQuery<IBlogPost>): Promise<HydratedDocument<
     .lean();
 };
 
+const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findById(blogPostId).populate("tags");
+};
+
 export default {
-  getAll
+  getAll, getById
 };

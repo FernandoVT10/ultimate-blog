@@ -7,5 +7,6 @@ module.exports = {
   rootDir: "./",
   moduleNameMapper: {
     "@app/(.*)": "<rootDir>/src/$1"
-  }
+  },
+  setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"]
 };
