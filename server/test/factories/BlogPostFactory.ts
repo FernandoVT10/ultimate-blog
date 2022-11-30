@@ -7,6 +7,7 @@ const createOne = (data: Partial<IBlogPost> = {}): Promise<HydratedDocument<IBlo
   return BlogPost.create({
     title: data.title || faker.lorem.words(3),
     content: data.content || faker.lorem.text(),
+    cover: data.cover || faker.internet.url(),
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
     tags: data.tags || []

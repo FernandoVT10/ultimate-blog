@@ -6,6 +6,7 @@ import modelsConf from "../config/models";
 export interface IBlogPost {
   title: string;
   content: string;
+  cover: string;
   tags: HydratedDocument<ITag>[];
   createdAt: number;
   updatedAt: number;
@@ -23,6 +24,10 @@ const blogPostSchema = new Schema<IBlogPost>(
     content: {
       type: String,
       maxlength: blogPostConf.content.maxLength,
+      required: true
+    },
+    cover: {
+      type: String,
       required: true
     },
     tags: [{
