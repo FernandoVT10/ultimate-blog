@@ -1,0 +1,54 @@
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+
+  &:before {
+    content: "";
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .4);
+  }
+
+  & .bg {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  & .title {
+    position: absolute;
+    z-index: 3;
+    font-size: 35px;
+  }
+}
+
+.blogPostsContainer {
+  margin: auto;
+  width: 100%;
+  max-width: 1000px;
+
+  @media only screen and (max-width: 1200px) {
+    margin: 0 20px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  width: 100%;
+  padding: 20px;
+  background: var(--color-bg-surface);
+
+  .brand {
+    transition: .3s;
+    &:hover { color: var(--color-fg-highlight); }
+  }
+}

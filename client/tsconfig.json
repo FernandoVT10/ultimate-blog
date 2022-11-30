@@ -17,7 +17,9 @@
     "paths": {
       "@services/*": ["./src/services/*"],
       "@components/*": ["./src/components/*"],
-      "@config/*": ["./src/config/*"]
+      "@config/*": ["./src/config/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@styles/*": ["./src/styles/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
