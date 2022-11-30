@@ -31,12 +31,14 @@ function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
     }
   };
 
+  // TODO: when create blogPost is implemented, change img to next/image instead
+
   return (
     <div className={styles.blogPost}>
       <div className={styles.coverContainer}>
         <img
           className={styles.cover}
-          src="https://images8.alphacoders.com/832/832184.jpg"
+          src={blogPost.cover}
           alt="Post cover"
         />
 
