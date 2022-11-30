@@ -1,0 +1,51 @@
+.home {
+  margin: auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1400px;
+  gap: 20px;
+
+  & .aboutMe {
+    background: var(--color-bg-surface);
+    padding: 20px;
+
+    & .text {
+      line-height: 2;
+      white-space: pre-wrap;
+    }
+  }
+
+  & .skills {
+    background: var(--color-bg-surface);
+    padding: 20px;
+
+    & .skillList {
+      margin-bottom: 0;
+      padding: 0 20px;
+
+      & .skillItem {
+        margin: 10px 0;
+
+        &:nth-last-child(1) {
+          margin-bottom: 0;
+        }
+
+        & .name {
+          color: var(--color-fg-highlight);
+          margin-right: 8px;
+          font-weight: bold;
+        }
+
+        & .subSkillList {
+          padding: 0 20px;
+        }
+      }
+    }
+  }
+  & .socialMedia {
+    padding: 20px;
+    background: var(--color-bg-surface);
+    margin-top: 20px;
+  }
+}
