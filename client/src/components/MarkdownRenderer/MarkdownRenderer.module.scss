@@ -1,0 +1,94 @@
+.markdownRenderer {
+  width: 100%;
+
+  & p {
+    line-height: 1.5;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  & p:first-child,
+  & h1:first-child {
+    margin-top: 0;
+  }
+
+  & p:nth-last-child(1) {
+    margin-bottom: 0;
+  }
+
+  & img {
+    max-width: 100%;
+  }
+
+  & li {
+    margin: 10px 0;
+  }
+
+  & h1, & h2 {
+    border-bottom: solid 1px #a6adc820;
+    padding-bottom: 10px;
+  }
+
+  & a {
+    color: var(--color-fg-highlight);
+    text-decoration: none;
+    transition: .3s;
+
+    &:hover {
+      text-decoration: underline dotted;
+      color: inherit;
+    }
+  }
+
+  & code {
+    color: var(--color-fg-highlight);
+    background: var(--color-bg);
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  // pre is only used when working with code blocks
+  & pre {
+    // this prevents to have weird breaklines and other things into our code block container
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+
+    & code {
+      color: inherit;
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+  }
+
+  // the global class will be a persistent class, that's why we need to usa :global
+  // to use the global scope
+  & :global(.hljs) {
+    margin-top: 20px;
+    padding: 20px 0;
+    background: var(--color-bg);
+    font-weight: bold;
+    white-space: normal;
+
+    & code {
+      // this allow us to have breaklines on the code block
+      white-space: pre;
+    }
+  }
+
+  // the same happens to .warning
+  & :global(.warning) {
+    --color-danger-rgb: 255, 0, 90;
+
+    width: 100%;
+    padding: 15px;
+    background: rgba(var(--color-danger-rgb), .3);
+    border-left: solid 2px rgb(var(--color-danger-rgb));
+    color: var(--color-fg-danger);
+
+    & p {
+      margin: 0;
+    }
+  }
+}

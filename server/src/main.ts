@@ -7,7 +7,7 @@ import { MONGO_URI, PORT } from "./config/constants";
   console.log("Connecting to the db...");
   await mongoose.connect(MONGO_URI);
 
-  const port = PORT || 3000;
+  const port = PORT || 3001;
 
   app.listen(port, () => console.log(`Server running on https://localhost:${port}`));
 })();
