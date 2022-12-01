@@ -38,7 +38,7 @@ export default function BlogHome({ blogPosts }: HomeProps) {
         <h1 className={styles.title}>FVT BLOG</h1>
       </header>
 
-      <main className={styles.blogPostsContainer}>
+      <main className={`wrapper ${styles.blogPostsContainer}`}>
         <BlogPosts blogPosts={blogPosts}/>
       </main>
 

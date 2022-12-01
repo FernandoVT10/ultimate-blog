@@ -1,0 +1,10 @@
+.blogDate {
+  margin-top: 10px;
+  color: var(--color-fg-highlight);
+  font-weight: bold;
+  font-size: 14px;
+
+  & .icon {
+    margin-right: 10px;
+  }
+}

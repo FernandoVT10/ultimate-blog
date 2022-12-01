@@ -1,0 +1,19 @@
+.blogPost {
+  background: var(--color-bg-surface);
+  margin: 40px auto;
+
+
+  & .cover {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+
+  & .contentContainer {
+    padding: 20px;
+
+    & .content {
+      margin-top: 20px;
+    }
+  }
+}

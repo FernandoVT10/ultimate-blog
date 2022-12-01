@@ -23,3 +23,17 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
   return [];
 }
+
+export async function getPostById(blogPostId: string): Promise<BlogPost | null> {
+  try {
+    const res = await axios.get(`/blogposts/${blogPostId}`);
+
+    if(res.status === 200) {
+      return res.data;
+    } 
+
+    return null;
+  } catch {
+    return null;
+  }
+}
