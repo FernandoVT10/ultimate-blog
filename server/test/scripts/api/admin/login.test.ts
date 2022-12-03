@@ -24,7 +24,7 @@ describe("POST /api/admin/login", () => {
       jwtHelper.verifyToken(authToken)
     ).resolves.not.toThrow();
 
-    expect(res.body.message).toBe("You've been logged in!")
+    expect(res.body.message).toBe("You've been logged in!");
   });
 
   describe("should return an error if the password", () => {

@@ -8,5 +8,8 @@ module.exports = {
   moduleNameMapper: {
     "@app/(.*)": "<rootDir>/src/$1"
   },
-  setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"]
+  setupFilesAfterEnv: [
+    "<rootDir>/test/setupTests.ts",
+    "<rootDir>/test/teardownTests.ts"
+  ],
 };

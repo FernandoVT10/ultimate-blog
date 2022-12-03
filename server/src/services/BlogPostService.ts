@@ -1,5 +1,6 @@
 import BlogPost, { IBlogPost } from "../models/BlogPost";
 import { FilterQuery, HydratedDocument } from "mongoose";
+import { ITag } from "@app/models/Tag";
 
 export type BlogPostServiceFilter = FilterQuery<IBlogPost>;
 
@@ -14,6 +15,17 @@ const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> 
   return BlogPost.findById(blogPostId).populate("tags");
 };
 
+interface CreateOneData {
+  title: string;
+  content: string;
+  cover: string;
+  tags: HydratedDocument<ITag>[];
+}
+
+const createOne = async (data: CreateOneData): Promise<HydratedDocument<IBlogPost>> => {
+  return BlogPost.create(data);
+};
+
 export default {
-  getAll, getById
+  getAll, getById, createOne
 };

@@ -7,7 +7,8 @@ const mockExpress = () => {
     json: jest.fn().mockReturnThis()
   } as unknown as Response;
 
-  const req = {};
+  // eslint-disable-next-line
+  const req = {} as any;
 
   const next = jest.fn();
 
