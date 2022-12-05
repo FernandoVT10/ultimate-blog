@@ -14,6 +14,16 @@ const transformPathToURL = (pathString: string): string => {
   return url.replace(":/", "://");
 };
 
+const transformURLToPath = (pathString: string): string => {
+  // remove the url path (e.g https://example.com/static)
+  const relativePath = pathString.replace(APP_STATIC_FILES_URL, "");
+
+  // and then append the static dir path to the relative path, and
+  // normalize it to remove any doble forward slash
+  return path.normalize(STATIC_DIR + "/" + relativePath);
+};
+
 export default {
-  transformPathToURL
+  transformPathToURL,
+  transformURLToPath
 };

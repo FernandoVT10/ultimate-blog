@@ -30,6 +30,7 @@ router.get(
 router.get(
   "/blogposts/:blogPostId",
 
+  // TODO: replace it for BlogPostValidation.checkIfIdExists
   param("blogPostId").custom(value => {
     if(isValidObjectId(value)) return true;
 
@@ -68,6 +69,39 @@ router.post(
     });
 
     res.json(createdPost);
+  })
+);
+
+router.put(
+  "/blogposts/:blogPostId",
+
+  authorize(),
+
+  upload.single("cover"),
+
+  param("blogPostId")
+    .custom(BlogPostValidation.checkIfIdExists),
+
+  checkSchema(BlogPostValidation.updateBlogPostSchema),
+
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { title, content, tags } = req.body;
+    const imageFile = req.file;
+
+    const updatedBlogPost = await BlogPostController.updateOne(
+      blogPostId,
+      {
+        title,
+        content,
+        tags,
+        imageFile
+      }
+    );
+
+    res.json(updatedBlogPost);
   })
 );
 

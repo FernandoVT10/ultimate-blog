@@ -20,4 +20,14 @@ describe("utils/pathTransformers", () => {
       );
     });
   });
+
+  describe("transformURLToPath", () => {
+    const { transformURLToPath } = pathTransformers;
+
+    it("should return the correct path", () => {
+      expect(
+        transformURLToPath("https://localhost:3000/static/test/path/test.webp")
+      ).toBe("/home/test/static/test/path/test.webp");
+    });
+  });
 });

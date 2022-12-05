@@ -17,6 +17,7 @@ connectDB();
 describe("POST /api/blogposts", () => {
   checkAuthorizeMiddleware("/api/blogposts", "post");
 
+  // TODO: replace it for the helper named with the same name
   const checkIfFileExists = async (filePath: string): Promise<boolean> => {
     return new Promise(resolve => {
       fs.stat(filePath, (err) => {

@@ -1,5 +1,6 @@
 import TagService from "../services/TagService";
 import pathTransformers from "../utils/pathTransformers";
+import fs from "fs";
 
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
 import { RequestError } from "../utils/errors";
@@ -36,14 +37,14 @@ const getById = async (blogPostId: string) => {
   return blogPost;
 };
 
-interface CreateOneData {
+interface BlogPostCommonData {
   title: string;
   content: string;
   imageFile: Express.Multer.File;
   tags: string[];
 }
 
-const createOne = async (data: CreateOneData) => {
+const createOne = async (data: BlogPostCommonData) => {
   const cover = pathTransformers.transformPathToURL(data.imageFile.path);
 
   const tags = await TagService.getTagsByName(data.tags);
@@ -56,6 +57,34 @@ const createOne = async (data: CreateOneData) => {
   });
 };
 
+const updateOne = async (blogPostId: string, data: Partial<BlogPostCommonData>) => {
+  const tags = data.tags
+    ? await TagService.getTagsByName(data.tags)
+    : undefined;
+
+  let cover: string | undefined;
+
+  if(data.imageFile) {
+    cover = pathTransformers.transformPathToURL(data.imageFile.path);
+  }
+
+  const oldBlogPost = await BlogPostService.getById(blogPostId);
+
+  const updatedBlogPost = await BlogPostService.updateOne(blogPostId, {
+    title: data.title,
+    content: data.content,
+    tags,
+    cover
+  });
+
+  if(data.imageFile) {
+    const path = pathTransformers.transformURLToPath(oldBlogPost?.cover || "");
+    await fs.promises.unlink(path);
+  }
+
+  return updatedBlogPost;
+};
+
 export default {
-  getAll, getById, createOne
+  getAll, getById, createOne, updateOne
 };
