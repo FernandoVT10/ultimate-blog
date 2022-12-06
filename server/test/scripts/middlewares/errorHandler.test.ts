@@ -1,5 +1,5 @@
 import errorHandler from "@app/middlewares/errorHandler";
-import { mockExpress } from "../../helpers";
+import httpMocks from "node-mocks-http";
 
 import { RequestError } from "@app/utils/errors";
 
@@ -9,27 +9,28 @@ describe("middlewares/errorHandler", () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
-    // we need to overwrite the original logger implementation
     loggerSpy.mockImplementation();
   });
 
   const callMiddleware = (error: any) => {
-    const mockedExpress = mockExpress();
-    const { req, res, next } = mockedExpress;
+    const req = httpMocks.createRequest();
+    const res = httpMocks.createResponse();
 
-    errorHandler(error, req as any, res as any, next);
+    const next = jest.fn();
+
+    errorHandler(error, req, res, next);
     
-    return mockedExpress;
+    return res;
   };
 
   describe("when the error is instance of RequestError", () => {
     const validationError = new RequestError(403, "error");
 
     it("should send a response to the user", () => {
-      const { res } = callMiddleware(validationError);
+      const res = callMiddleware(validationError);
 
-      expect(res.status).toHaveBeenCalledWith(validationError.statusCode);
-      expect(res.json).toHaveBeenCalledWith({
+      expect(res.statusCode).toBe(validationError.statusCode);
+      expect(res._getJSONData()).toEqual({
         message: validationError.message
       });
     });
@@ -43,9 +44,6 @@ describe("middlewares/errorHandler", () => {
   });
 
   it("should call the logger when the object is not an error", () => {
-    // if it's the case that the error is not instance of the Error,
-    // so we need to get as much information as possible,
-    // to do that we going to pass the object or whatever into of String and then call the logger
     const object = { holi: "17" };
 
     callMiddleware(object);
@@ -55,10 +53,10 @@ describe("middlewares/errorHandler", () => {
 
   it("should send an 500 error to the user as a custom error message", () => {
     const error = new Error;
-    const { res } = callMiddleware(error);
+    const res = callMiddleware(error);
 
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
+    expect(res.statusCode).toBe(500);
+    expect(res._getJSONData()).toEqual({
       message: "There was an internal server error trying to complete your request"
     });
   });

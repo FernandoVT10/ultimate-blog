@@ -1,20 +1,22 @@
 import { ADMIN_PASSWORD, AUTH_COOKIE_KEY } from "@app/config/constants";
-import { mockExpress } from "../../helpers";
 
 import authorize from "@app/middlewares/authorize";
 import jwtHelper from "@app/utils/jwtHelper";
+import httpMocks from "node-mocks-http";
 
 describe("middlewares/authorize", () => {
   const middleware = authorize();
 
   const callMiddleware = async (token?: string) => {
-    const { req, res, next } = mockExpress();
+    const req = httpMocks.createRequest({
+      cookies: {
+        [AUTH_COOKIE_KEY]: token || ""
+      }
+    });
 
-    req.cookies = {};
+    const res = httpMocks.createResponse();
 
-    if(token) {
-      req.cookies[AUTH_COOKIE_KEY] = token;
-    }
+    const next = jest.fn();
 
     await middleware(req, res, next);
 
@@ -35,8 +37,8 @@ describe("middlewares/authorize", () => {
     it("auth cookie doesn't exist", async () => {
       const { res } = await callMiddleware();
 
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
+      expect(res.statusCode).toBe(401);
+      expect(res._getJSONData()).toEqual({
         message: "You need to be authenticated"
       });
     });
@@ -44,8 +46,8 @@ describe("middlewares/authorize", () => {
     it("jsonwebtoken is invalid", async () => {
       const { res } = await callMiddleware("invalid token");
 
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
+      expect(res.statusCode).toBe(401);
+      expect(res._getJSONData()).toEqual({
         message: "That trick is not going to work :)"
       });
     });
@@ -57,8 +59,8 @@ describe("middlewares/authorize", () => {
 
       const { res } = await callMiddleware(token);
 
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
+      expect(res.statusCode).toBe(401);
+      expect(res._getJSONData()).toEqual({
         message: "Password is incorrect"
       });
     });
