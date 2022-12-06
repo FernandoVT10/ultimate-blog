@@ -27,7 +27,7 @@ describe("imageFilter", () => {
       imageFilter(req, file, callback);
 
       expect(callback).toHaveBeenCalledWith(
-        new RequestError(400, "Files must be .png, .jpeg, .png or .webp")
+        new RequestError(400, "Files must be .png, .jpeg, .jpg or .webp")
       );
     });
 
@@ -39,7 +39,7 @@ describe("imageFilter", () => {
       imageFilter(req, file, callback);
 
       expect(callback).toHaveBeenCalledWith(
-        new RequestError(400, "Files must be .png, .jpeg, .png or .webp")
+        new RequestError(400, "Files must be .png, .jpeg, .jpg or .webp")
       );
     });
   });

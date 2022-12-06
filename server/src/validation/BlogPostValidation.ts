@@ -4,7 +4,7 @@ import { isValidObjectId } from "mongoose";
 import { CustomValidator, Schema } from "express-validator";
 import { transformIntoStringArray } from "../utils/sanitizers";
 
-import BlogPostService from "@app/services/BlogPostService";
+import BlogPostService from "../services/BlogPostService";
 
 const TITLE_MAX_LENGTH = modelsConfig.blogPost.title.maxLength;
 const CONTENT_MAX_LENGTH = modelsConfig.blogPost.content.maxLength;
@@ -27,6 +27,9 @@ const createBlogPostSchema: Schema = {
         checkFalsy: true
       }
     },
+    isString: {
+      errorMessage: "Title must be a string"
+    },
     isLength: {
       errorMessage: `Title can't be larger than ${TITLE_MAX_LENGTH} characters`,
       options: { max: TITLE_MAX_LENGTH }
@@ -40,6 +43,9 @@ const createBlogPostSchema: Schema = {
         checkNull: true,
         checkFalsy: true
       }
+    },
+    isString: {
+      errorMessage: "Content must be a string"
     },
     isLength: {
       errorMessage: `Content can't be larger than ${CONTENT_MAX_LENGTH} characters`,
@@ -89,7 +95,7 @@ const updateBlogPostSchema: Schema = {
       options: transformIntoStringArray
     }
   },
-}
+};
 
 const checkIfIdExists: CustomValidator = async (id) => {
   if(!isValidObjectId(id)) throw new Error("Id is invalid");

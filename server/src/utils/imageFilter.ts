@@ -8,7 +8,7 @@ const imageFilter = (_: Request, file: Express.Multer.File, cb: FileFilterCallba
   if(ACCEPTED_IMAGE_TYPES.includes(file.mimetype)) {
     return cb(null, true);
   }
-  cb(new RequestError(400, "Files must be .png, .jpeg, .png or .webp"));
+  cb(new RequestError(400, "Files must be .png, .jpeg, .jpg or .webp"));
 };
 
 export default imageFilter;

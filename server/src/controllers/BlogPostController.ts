@@ -5,6 +5,8 @@ import fs from "fs";
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
 import { RequestError } from "../utils/errors";
 
+import BlogPostCover from "../lib/BlogPostCover";
+
 interface GetAllOptions {
   tags: string[] | undefined;
 }
@@ -45,16 +47,26 @@ interface BlogPostCommonData {
 }
 
 const createOne = async (data: BlogPostCommonData) => {
-  const cover = pathTransformers.transformPathToURL(data.imageFile.path);
+  const cover = new BlogPostCover();
 
-  const tags = await TagService.getTagsByName(data.tags);
+  try {
+    await cover.saveBuffer(data.imageFile.buffer);
 
-  return BlogPostService.createOne({
-    title: data.title,
-    content: data.content,
-    cover,
-    tags
-  });
+    const tags = await TagService.getTagsByName(data.tags);
+
+    const createdBlogPost = await BlogPostService.createOne({
+      title: data.title,
+      content: data.content,
+      cover: cover.getName(),
+      tags
+    }); 
+
+    return createdBlogPost;
+  } catch (error) {
+    await cover.delete();
+
+    throw error;
+  }
 };
 
 const updateOne = async (blogPostId: string, data: Partial<BlogPostCommonData>) => {

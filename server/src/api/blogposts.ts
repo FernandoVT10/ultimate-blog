@@ -9,7 +9,6 @@ import { query, param, checkSchema } from "express-validator";
 import { Router } from "express";
 import { transformIntoStringArray } from "../utils/sanitizers";
 import { isValidObjectId } from "mongoose";
-import { BLOG_POST_COVERS_DIR } from "../config/constants";
 
 const router = Router();
 
@@ -48,7 +47,7 @@ router.get(
   })
 );
 
-const upload = createMulterInstance(BLOG_POST_COVERS_DIR);
+const upload = createMulterInstance();
 
 router.post(
   "/blogposts",

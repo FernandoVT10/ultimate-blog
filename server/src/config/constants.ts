@@ -28,3 +28,7 @@ export const STATIC_DIR = TESTING
 export const BLOG_POST_COVERS_DIR = path.resolve(STATIC_DIR, "images/blog/covers/");
 
 export const APP_STATIC_FILES_URL = process.env.APP_STATIC_FILES_URL as string;
+
+export const STORAGE_PATHS = {
+  blogposts: "images/blog/covers/"
+};

@@ -1,15 +1,12 @@
-import multer from "multer";
-import ImageStorageEngine from "../lib/ImageStorageEngine";
+import multer, { memoryStorage } from "multer";
 import imageFilter from "../utils/imageFilter";
 
 // 20 megabytes represented in bytes
 const FILE_SIZE = 20000000;
 
-const createMulterInstance = (destination: string) => {
-  const storage = new ImageStorageEngine({ destination });
-
+const createMulterInstance = () => {
   return multer({
-    storage,
+    storage: memoryStorage(),
     limits: {
       fileSize: FILE_SIZE
     },
