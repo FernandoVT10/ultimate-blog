@@ -1,7 +1,9 @@
 import { Schema, model, Types, HydratedDocument } from "mongoose";
+import { mongooseLeanGetters } from "mongoose-lean-getters";
 import { ITag } from "./Tag";
 
 import modelsConf from "../config/models";
+import BlogPostCover from "../lib/BlogPostCover";
 
 export interface IBlogPost {
   title: string;
@@ -28,6 +30,7 @@ const blogPostSchema = new Schema<IBlogPost>(
     },
     cover: {
       type: String,
+      get: (cover: typeof String): string => BlogPostCover.getURL(cover.toString()),
       required: true
     },
     tags: [{
@@ -35,9 +38,14 @@ const blogPostSchema = new Schema<IBlogPost>(
       ref: "Tag"
     }]
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { getters: true },
+    id: false
+  }
 );
 
+blogPostSchema.plugin(mongooseLeanGetters);
 
 const BlogPost = model<IBlogPost>("BlogPost", blogPostSchema);
 

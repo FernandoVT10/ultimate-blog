@@ -9,11 +9,14 @@ const getAll = async (filter: FilterQuery<IBlogPost>): Promise<HydratedDocument<
   return BlogPost.find(filter)
     .sort({ createdAt: "desc" })
     .populate("tags")
-    .lean();
+    .lean({ getters: true });
 };
 
 const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
-  return BlogPost.findById(blogPostId).populate("tags");
+  return BlogPost
+    .findById(blogPostId)
+    .populate("tags")
+    .lean({ getters: true });
 };
 
 interface BlogPostData {

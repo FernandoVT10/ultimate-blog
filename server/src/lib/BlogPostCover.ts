@@ -4,7 +4,8 @@ import sharp from "sharp";
 
 import {
   STATIC_DIR,
-  STORAGE_PATHS
+  STORAGE_PATHS,
+  APP_STATIC_FILES_URL
 } from "../config/constants";
 
 export default class BlogPostCover {
@@ -12,6 +13,21 @@ export default class BlogPostCover {
   private name = "";
 
   public static BASE_PATH = path.resolve(STATIC_DIR, STORAGE_PATHS.blogposts);
+
+  static getURL(coverName: string): string {
+    const url = path.join(
+      APP_STATIC_FILES_URL,
+      STORAGE_PATHS.blogposts,
+      coverName
+    );
+    return url.replace(":/", "://");
+  }
+
+  constructor(name?: string) {
+    if(name) {
+      this.name = name;
+    }
+  }
 
   getName() {
     if(!this.name) {
@@ -26,16 +42,6 @@ export default class BlogPostCover {
     }
     return this.path;
   }
-
-  // TODO: I think this method is going to be useful in a future
-  // getURL(): string {
-  //   const url = path.join(
-  //     APP_STATIC_FILES_URL,
-  //     STORAGE_PATHS.blogposts,
-  //     this.getName()
-  //   );
-  //   return url.replace(":/", "://");
-  // }
 
   async saveBuffer(buffer: Buffer): Promise<void> {
     await sharp(buffer).webp().toFile(this.getPath());

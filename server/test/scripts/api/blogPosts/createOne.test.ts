@@ -40,7 +40,8 @@ describe("POST /api/blogposts", () => {
       .attach("cover", IMAGE_FIXTURE_PATH)
       .expect(200);
 
-    const { cover } = res.body;
+    // get the name of the cover
+    const cover = path.basename(res.body.cover);
 
     const coverPath = path.resolve(BlogPostCover.BASE_PATH, cover);
     expect(await checkIfFileExists(coverPath)).toBeTruthy();
