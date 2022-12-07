@@ -39,6 +39,15 @@ const updateCover = async (
   }, { new: false });
 };
 
+const updateTags = async (
+  blogPostId: string,
+  tags: HydratedDocument<ITag>[]
+): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findByIdAndUpdate(blogPostId, {
+    tags
+  });
+};
+
 const checkIfExists = async (blogPostId: string): Promise<boolean> => {
   if(await BlogPost.exists({ _id: blogPostId })) {
     return true;
@@ -52,5 +61,6 @@ export default {
   getById,
   createOne,
   updateCover,
+  updateTags,
   checkIfExists
 };

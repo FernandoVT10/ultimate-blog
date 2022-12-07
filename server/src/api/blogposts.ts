@@ -95,4 +95,27 @@ router.put(
   })
 );
 
+router.put(
+  "/blogposts/:blogPostId/updateTags",
+
+  authorize(),
+
+  param("blogPostId")
+    .custom(BlogPostValidation.checkId),
+
+  body("tags")
+    .customSanitizer(transformIntoStringArray),
+
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { tags } = req.body;
+
+    await BlogPostController.updateTags(blogPostId, tags);
+
+    res.sendStatus(204);
+  })
+);
+
 export default router;

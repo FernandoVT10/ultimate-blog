@@ -354,4 +354,51 @@ describe("integration api/blogposts", () => {
       });
     });
   });
+
+  describe("PUT /blogposts/:blogPostId/updateTags", () => {
+    checkAuthorizeMiddleware("/api/blogposts/abc/updateTags", "put");
+
+    it("should update the tags", async () => {
+      const tagA = await TagFactory.createOne();
+      const tagB = await TagFactory.createOne();
+      const tagC = await TagFactory.createOne();
+
+      const blogPost = await BlogPostFactory.createOne({
+        tags: [tagA]
+      });
+      const authToken = await AuthFactory.generateAuthToken();
+
+      await request
+        .put(`/api/blogposts/${blogPost._id}/updateTags`)
+        .set("Cookie", authToken)
+        .send({
+          tags: [tagB.name, tagC.name]
+        })
+        .expect(204);
+
+      const updatedBlogPost = await BlogPostFactory.getById(
+        blogPost._id.toString()
+      );
+
+      // we're not populating the tags, so we use id's instead
+      expect(updatedBlogPost?.tags).toEqual([
+        tagB._id, tagC._id
+      ]);
+    });
+
+    it("validation should fail when blogPostId doesn't exist", async () => {
+      const blogPostId = faker.database.mongodbObjectId();
+      const authToken = await AuthFactory.generateAuthToken();
+
+      const res = await request
+        .put(`/api/blogposts/${blogPostId}/updateTags`)
+        .set("Cookie", authToken)
+        .expect(400);
+
+      expect(res).toContainValidationError({
+        field: "blogPostId",
+        message: "Blog Post not found"
+      });
+    });
+  });
 });

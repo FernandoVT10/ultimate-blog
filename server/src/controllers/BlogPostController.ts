@@ -93,9 +93,16 @@ const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) =
   }
 };
 
+const updateTags = async (blogPostId: string, tags: string[]) => {
+  const tagDocs = await TagService.getTagsByName(tags);
+
+  await BlogPostService.updateTags(blogPostId, tagDocs);
+};
+
 export default {
   getAll,
   getById,
   createOne,
-  updateCover
+  updateCover,
+  updateTags
 };
