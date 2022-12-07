@@ -97,7 +97,7 @@ const updateBlogPostSchema: Schema = {
   },
 };
 
-const checkIfIdExists: CustomValidator = async (id) => {
+const checkId: CustomValidator = async (id) => {
   if(!isValidObjectId(id)) throw new Error("Id is invalid");
 
   try {
@@ -115,5 +115,6 @@ const checkIfIdExists: CustomValidator = async (id) => {
 export default {
   createBlogPostSchema,
   updateBlogPostSchema,
-  checkIfIdExists
+  checkId,
+  coverValidator
 };

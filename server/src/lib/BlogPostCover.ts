@@ -48,7 +48,7 @@ export default class BlogPostCover {
   }
 
   async delete(): Promise<boolean> {
-    if(this.path) {
+    if(this.name) {
       await fs.promises.unlink(this.getPath());
       return true;
     }

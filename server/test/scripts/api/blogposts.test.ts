@@ -284,4 +284,74 @@ describe("integration api/blogposts", () => {
       });
     });
   });
+
+  describe("PUT /api/blogposts/:blogpostId/updateCover", () => {
+    checkAuthorizeMiddleware("/api/blogposts/abc/updateCover", "put");
+
+    it("should update the cover", async () => {
+      const blogPost = await BlogPostFactory.createOne({
+        cover: "cover.webp"
+      });
+      const authToken = await AuthFactory.generateAuthToken();
+
+      // add the image that must be deleted at update the cover
+      const cover = new BlogPostCover("cover.webp");
+      await fs.promises.cp(IMAGE_FIXTURE_PATH, cover.getPath());
+
+      await request
+        .put(`/api/blogposts/${blogPost._id}/updateCover`)
+        .set("Cookie", authToken)
+        .attach("cover", IMAGE_FIXTURE_PATH)
+        .expect(204);
+
+
+      const updatedBlogPost = await BlogPostFactory.getById(
+        blogPost._id.toString()
+      );
+
+      const newCover = new BlogPostCover(
+        updatedBlogPost?.get("cover", null, { getters: false })
+      );
+
+      expect(
+        await checkIfFileExists(newCover.getPath())
+      ).toBeTruthy();
+
+      // we expect that the old cover was deleted
+      expect(
+        await checkIfFileExists(cover.getPath())
+      ).toBeFalsy();
+    });
+
+    describe("validation should fail when", () => {
+      const callApi = async () => {
+        const blogPostId = faker.database.mongodbObjectId();
+        const authToken = await AuthFactory.generateAuthToken();
+
+        return request
+          .put(`/api/blogposts/${blogPostId}/updateCover`)
+          .set("Cookie", authToken);
+      };
+
+      it("blogPostId doesn't exist", async () => {
+        const res = await callApi();
+
+        expect(res.statusCode).toBe(400);
+        expect(res).toContainValidationError({
+          field: "blogPostId",
+          message: "Blog Post not found"
+        });
+      });
+
+      it("cover is empty", async () => {
+        const res = await callApi();
+
+        expect(res.statusCode).toBe(400);
+        expect(res).toContainValidationError({
+          field: "cover",
+          message: "Cover is required"
+        });
+      });
+    });
+  });
 });

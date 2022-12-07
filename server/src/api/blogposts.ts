@@ -5,7 +5,7 @@ import checkValidation from "../middlewares/checkValidation";
 import authorize from "../middlewares/authorize";
 import createMulterInstance from "../config/multer";
 
-import { query, param, checkSchema } from "express-validator";
+import { query, body, param, checkSchema } from "express-validator";
 import { Router } from "express";
 import { transformIntoStringArray } from "../utils/sanitizers";
 import { isValidObjectId } from "mongoose";
@@ -72,35 +72,26 @@ router.post(
 );
 
 router.put(
-  "/blogposts/:blogPostId",
+  "/blogposts/:blogPostId/updateCover",
 
   authorize(),
 
   upload.single("cover"),
 
   param("blogPostId")
-    .custom(BlogPostValidation.checkIfIdExists),
-
-  checkSchema(BlogPostValidation.updateBlogPostSchema),
+    .custom(BlogPostValidation.checkId),
+  body("cover")
+    .custom(BlogPostValidation.coverValidator),
 
   checkValidation(),
 
   asyncHandler(async (req, res) => {
     const { blogPostId } = req.params;
-    const { title, content, tags } = req.body;
-    const imageFile = req.file;
+    const coverFile = req.file as Express.Multer.File;
 
-    const updatedBlogPost = await BlogPostController.updateOne(
-      blogPostId,
-      {
-        title,
-        content,
-        tags,
-        imageFile
-      }
-    );
+    await BlogPostController.updateCover(blogPostId, coverFile);
 
-    res.json(updatedBlogPost);
+    res.sendStatus(204);
   })
 );
 

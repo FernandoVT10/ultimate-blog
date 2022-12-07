@@ -1,6 +1,4 @@
 import TagService from "../services/TagService";
-import pathTransformers from "../utils/pathTransformers";
-import fs from "fs";
 
 import BlogPostService, { BlogPostServiceFilter } from "../services/BlogPostService";
 import { RequestError } from "../utils/errors";
@@ -69,34 +67,35 @@ const createOne = async (data: BlogPostCommonData) => {
   }
 };
 
-const updateOne = async (blogPostId: string, data: Partial<BlogPostCommonData>) => {
-  const tags = data.tags
-    ? await TagService.getTagsByName(data.tags)
-    : undefined;
+const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
+  const newCover = new BlogPostCover();
 
-  let cover: string | undefined;
+  try {
+    await newCover.saveBuffer(coverFile.buffer);
 
-  if(data.imageFile) {
-    cover = pathTransformers.transformPathToURL(data.imageFile.path);
+    const oldBlogPost = await BlogPostService.updateCover(
+      blogPostId, newCover.getName()
+    );
+
+    if(!oldBlogPost) {
+      throw new RequestError(500, "An error happen trying to update the Blog Post");
+    }
+
+    const oldCover = new BlogPostCover(
+      oldBlogPost.get("cover", null, { getters: false })
+    );
+
+    await oldCover.delete();
+  } catch(error) {
+    await newCover.delete();
+
+    throw error;
   }
-
-  const oldBlogPost = await BlogPostService.getById(blogPostId);
-
-  const updatedBlogPost = await BlogPostService.updateOne(blogPostId, {
-    title: data.title,
-    content: data.content,
-    tags,
-    cover
-  });
-
-  if(data.imageFile) {
-    const path = pathTransformers.transformURLToPath(oldBlogPost?.cover || "");
-    await fs.promises.unlink(path);
-  }
-
-  return updatedBlogPost;
 };
 
 export default {
-  getAll, getById, createOne, updateOne
+  getAll,
+  getById,
+  createOne,
+  updateCover
 };

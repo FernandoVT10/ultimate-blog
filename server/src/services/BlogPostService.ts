@@ -19,26 +19,24 @@ const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> 
     .lean({ getters: true });
 };
 
-interface BlogPostData {
+interface CreateBlogPostData {
   title: string;
   content: string;
   cover: string;
   tags: HydratedDocument<ITag>[];
 }
 
-const createOne = async (data: BlogPostData): Promise<HydratedDocument<IBlogPost>> => {
+const createOne = async (data: CreateBlogPostData): Promise<HydratedDocument<IBlogPost>> => {
   return BlogPost.create(data);
 };
 
-const updateOne = async (
+const updateCover = async (
   blogPostId: string,
-  data: Partial<BlogPostData>
+  cover: string
 ): Promise<HydratedDocument<IBlogPost> | null> => {
-  return BlogPost.findByIdAndUpdate(
-    blogPostId,
-    data,
-    { new: true }
-  ).populate("tags");
+  return BlogPost.findByIdAndUpdate(blogPostId, {
+    $set: { cover }
+  }, { new: false });
 };
 
 const checkIfExists = async (blogPostId: string): Promise<boolean> => {
@@ -50,5 +48,9 @@ const checkIfExists = async (blogPostId: string): Promise<boolean> => {
 };
 
 export default {
-  getAll, getById, createOne, updateOne, checkIfExists
+  getAll,
+  getById,
+  createOne,
+  updateCover,
+  checkIfExists
 };

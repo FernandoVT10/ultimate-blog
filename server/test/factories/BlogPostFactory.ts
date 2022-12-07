@@ -14,6 +14,10 @@ const createOne = (data: Partial<IBlogPost> = {}): Promise<HydratedDocument<IBlo
   });
 };
 
+const getById = async (id: string): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findById(id);
+};
+
 export default {
-  createOne
+  createOne, getById
 };
