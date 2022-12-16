@@ -1,6 +1,13 @@
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@components/Navbar";
+
+import { GetServerSideProps } from "next";
+import { BlogPost, getAllPosts } from "@services/BlogPostService";
 
 import styles from "@styles/Home.module.scss";
+import BlogPostCards from "@components/BlogPostCards";
 
 const aboutMe = `\
 Hi, I'm Fernando Vaca Tamayo a Javascript full stack developer.
@@ -20,100 +27,133 @@ In the end I feel incredibly happy when I read or write a super originized and c
 and I think that this happens to other developers that love code too.
 `;
 
-type Skill = {
-  name: string;
-  description?: string;
-  subskills?: Skill[];
-}
-
-const skills: Skill[] = [
-  {
-    name: "Javascript",
-    description: "It's my main language right now.",
-    subskills: [
-      { name: "Typescript" },
-      { name: "React JS" },
-      { name: "Next JS" },
-      { name: "Express JS" }
-    ]
-  },
-  {
-    name: "Linux",
-    description: "I have been using Ubuntu as my main OS since 2 years ago."
-  },
-  {
-    name: "Git",
-    description: "I know how to use it at a really good level."
-  },
-  {
-    name: "Docker",
-    description: "Learning how to use it for production."
-  },
-  { name: "HTML5" },
-  { name: "CSS3" },
-  {
-    name: "Python",
-    description: "I have used it for Artifical Intelligence."
-  },
-  {
-    name: "PHP",
-    description: "I know how to use it at an intermediate level",
-    subskills: [
-      { name: "Laravel" }
-    ]
-  },
-  {
-    name: "C#",
-    description: "This language is amazing, but I don't have that much experience in it."
-  }
+const icons: string[] = [
+  "/images/icons/typescript.png",
+  "/images/icons/linux.png",
+  "/images/icons/react.png",
+  "/images/icons/git.png",
+  "/images/icons/html5.png",
+  "/images/icons/css3.png",
+  "/images/icons/python.png",
+  "/images/icons/nodejs.png",
+  "/images/icons/graphql.png",
 ];
 
-export default function Home() {
-  const getSkills = (skills: Skill[]) => {
-    return skills.map((skill, index) => {
-      return (
-        <li className={styles.skillItem} key={index}>
-          <span className={styles.name}>{skill.name}</span>
-          { skill.description }
+export const getServerSideProps: GetServerSideProps = async () => {
+  const blogPosts = await getAllPosts();
 
-          { skill.subskills?.length &&
-            <ul className={styles.subSkillList}>
-              { getSkills(skill.subskills) }
-            </ul>
-          }
-        </li>
-      );
-    });
+  return {
+    props: { blogPosts }
   };
+};
 
+export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
   return (
     <>
       <Head>
         <title>Home - FVT</title>
       </Head>
 
-      <main className={styles.home}>
-        <div className={styles.aboutMe}>
-          <h2 className={styles.subtitle}>About Me</h2>
+      <header className={styles.header}>
+        <Navbar/>
 
-          <p className={styles.text}>
-            {aboutMe}
+        <Image
+          src="/images/header-bg.jpg"
+          alt="Header Image"
+          className={styles.bg}
+          fill
+        />
+
+        <div className={styles.githubDetails}>
+          <img
+            className={styles.avatar}
+            src="https://avatars.githubusercontent.com/u/31832473?v=4"
+            alt="Github Avatar"
+          />
+
+          <h1 className={styles.fullName}>Fernando Vaca Tamayo</h1>
+
+          <p className={styles.username}>
+            @FernandoVT10
           </p>
         </div>
+      </header>
 
-        <div>
-          <div className={styles.skills}>
-            <h2 className={styles.subtitle}>Skills</h2>
-
-            <ul className={styles.skillList}>
-              { getSkills(skills) }
-            </ul>
+      <main className={styles.home}>
+        <section className={`wrapper ${styles.section}`}>
+          <div className={styles.imageContainer}>
+            <Image
+              src="/images/section-1-bg.jpg"
+              alt="Header Image"
+              className={styles.image}
+              fill
+              />
           </div>
 
-          <div className={styles.socialMedia}>
-            <h2 className={styles.subtitle}>Some Social Media</h2>
+          <div className={styles.sectionContent}>
+            <h2 className={styles.subtitle}>About Me</h2>
+
+            <p className={styles.text}>
+              { aboutMe }
+            </p>
           </div>
-        </div>
+        </section>
+
+        <section className={`wrapper ${styles.section} ${styles.reversed}`}>
+          <div className={styles.imageContainer}>
+            <Image
+              src="/images/section-2-bg.jpg"
+              alt="Header Image"
+              className={styles.image}
+              fill
+              />
+          </div>
+
+          <div className={styles.sectionContent}>
+            <h2 className={styles.subtitle}>Technologies and Languages</h2>
+
+            <p className={styles.text}>
+              These are some of the technologies, languages, frameworks, etc, that I know how to use.
+            </p>
+
+            <div className={styles.icons} style={{textAlign: "center"}}>
+              {icons.map((icon, index) => {
+                return (
+                  <Image
+                    src={icon}
+                    className={styles.icon}
+                    width={40}
+                    height={40}
+                    alt="Language Icon"
+                    key={index}
+                  />
+                );
+              })}
+
+            </div>
+
+            <h2 className={styles.subtitle} id="contact-me">Contact Me</h2>
+
+            <p className={styles.text}>
+              You can contact me through {(
+                <Link
+                  className={styles.link}
+                  href="https://twitter.com/FernandoVT10"
+                >
+                  Twitter
+                </Link>
+              )}.
+            </p>
+          </div>
+        </section>
+
+        { blogPosts.length > 0 &&
+          <section className={`wrapper ${styles.section} ${styles.blogPostCards}`}>
+            <h2 className={styles.subtitle}>Recent Blog Posts</h2>
+
+            <BlogPostCards blogPosts={blogPosts}/>
+          </section>
+        }
       </main>
     </>
   );

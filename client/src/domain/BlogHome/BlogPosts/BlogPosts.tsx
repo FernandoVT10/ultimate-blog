@@ -5,6 +5,7 @@ import { ClockFillIcon } from "@primer/octicons-react";
 
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import Link from "next/link";
+import Image from "next/image";
 
 import styles from "./BlogPosts.module.scss";
 
@@ -36,10 +37,12 @@ function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
   return (
     <div className={styles.blogPost}>
       <div className={styles.coverContainer}>
-        <img
+        <Image
           className={styles.cover}
           src={blogPost.cover}
           alt="Post cover"
+          sizes="(max-width: 1000px) 100vw, 1000px"
+          fill
         />
 
         <div className={styles.details}>

@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build --workspaces",
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --worspace server",
+    "dev": "npm run dev:client & npm run dev:server",
     "test:server": "npm run test --workspace server",
     "test": "npm run test --workspaces",
     "lint": "eslint . --cache",

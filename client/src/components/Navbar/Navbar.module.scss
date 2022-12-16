@@ -1,0 +1,28 @@
+.navbar {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  & .menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    & .menuItem {
+      margin-right: 20px;
+
+      & .link {
+        transition: .3s;
+        font-weight: bold;
+
+        &:hover {
+          color: var(--color-fg-highlight);
+        }
+      }
+    }
+  }
+}

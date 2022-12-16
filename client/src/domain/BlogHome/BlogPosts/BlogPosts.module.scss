@@ -8,15 +8,9 @@
   background: var(--color-bg-surface);
   width: 100%;
 
-  &:hover {
-    & .continueReading {
-      bottom: 40px;
-      opacity: 1;
-    }
-  }
-
   & .coverContainer {
     position: relative;
+    height: 300px;
 
     &:after {
       content: "";
@@ -30,7 +24,6 @@
 
     & .cover {
       width: 100%;
-      height: 300px;
       object-fit: cover;
     }
 

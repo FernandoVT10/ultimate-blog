@@ -1,51 +1,125 @@
-.home {
-  margin: auto;
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 1400px;
-  gap: 20px;
+  height: 350px;
 
-  & .aboutMe {
-    background: var(--color-bg-surface);
-    padding: 20px;
-
-    & .text {
-      line-height: 2;
-      white-space: pre-wrap;
-    }
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
   }
 
-  & .skills {
-    background: var(--color-bg-surface);
-    padding: 20px;
+  & .bg {
+    object-fit: cover;
+  }
 
-    & .skillList {
-      margin-bottom: 0;
-      padding: 0 20px;
+  & .githubDetails {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 3;
 
-      & .skillItem {
-        margin: 10px 0;
+    & .avatar {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      border: solid 2px var(--color-fg-highlight);
+    }
 
-        &:nth-last-child(1) {
-          margin-bottom: 0;
-        }
+    & .fullName {
+      font-size: 25px;
+      margin-top: 20px;
+    }
 
-        & .name {
-          color: var(--color-fg-highlight);
-          margin-right: 8px;
+    & .username {
+      margin-top: 10px;
+      color: var(--color-fg-highlight);
+      font-weight: bold;
+    }
+  }
+}
+
+.home {
+  & .section {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+
+    &.blogPostCards {
+      margin-top: 40px;
+      margin-bottom: 40px;
+      display: block;
+    }
+
+    &.reversed {
+      flex-direction: row-reverse;
+    }
+
+    & .imageContainer {
+      width: 50%;
+      position: relative;
+
+      & .image {
+        object-fit: cover;
+      }
+    }
+
+    & .sectionContent {
+      width: 50%;
+      background: var(--color-bg-surface);
+      padding: 20px;
+
+      & .text {
+        line-height: 2;
+        white-space: pre-wrap;
+
+        & .link {
           font-weight: bold;
-        }
+          transition: .3s;
 
-        & .subSkillList {
-          padding: 0 20px;
+          &:hover {
+            color: var(--color-fg-highlight);
+          }
+        }
+      }
+
+      & .icons {
+        margin: 20px 0;
+
+        & .icon {
+          margin: 0 10px;
+          object-fit: cover;
         }
       }
     }
   }
-  & .socialMedia {
-    padding: 20px;
-    background: var(--color-bg-surface);
-    margin-top: 20px;
+
+  @media only screen and (max-width: 1200px) {
+    & .section {
+      padding: 0 20px;
+    }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    & .section {
+      position: relative;
+
+      & .imageContainer {
+        display: none;
+      }
+
+      & .sectionContent {
+        width: 100%;
+      }
+    }
   }
 }
