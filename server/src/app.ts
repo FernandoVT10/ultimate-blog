@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import apiRouter from "./api";
 import errorHandler from "./middlewares/errorHandler";
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use("/static/", express.static(STATIC_DIR));
 
