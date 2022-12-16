@@ -30,21 +30,9 @@
 }
 
 .blogPostsContainer {
+  padding: 0;
+
   @media only screen and (max-width: 1200px) {
-    margin: 0 20px;
-  }
-}
-
-.footer {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  width: 100%;
-  padding: 20px;
-  background: var(--color-bg-surface);
-
-  .brand {
-    transition: .3s;
-    &:hover { color: var(--color-fg-highlight); }
+    padding: 0 20px;
   }
 }
