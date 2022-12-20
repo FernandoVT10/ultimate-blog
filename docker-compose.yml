@@ -1,0 +1,26 @@
+
+services:
+  app:
+    image: ultimate-blog
+    command: npm run dev
+    volumes:
+      - ./client:/app/client
+      - ./server:/app/server
+      - static:/app/server/static
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+      MONGO_URI: mongodb://root:pass@db:27017/ultimate-blog?authSource=admin
+  db:
+    image: mongo:6.0.3
+    restart: always
+    volumes:
+      - database:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+
+volumes:
+  database:
+  static:
