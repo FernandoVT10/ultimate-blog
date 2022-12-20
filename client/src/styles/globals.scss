@@ -5,6 +5,10 @@
   --color-fg: #cdd6f4;
   --color-fg-danger: #ffb5cf;
   --color-fg-highlight: #89b4fa;
+
+  --toastify-color-dark: var(--color-bg-surface);
+  --toastify-text-color-dark: var(--color-fg);
+  --toastify-color-success: #89b4fa;
 }
 
 * {

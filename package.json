@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build --workspaces",
-    "dev:client": "npm run dev --workspace client",
-    "dev:server": "npm run dev --worspace server",
-    "dev": "npm run dev:client & npm run dev:server",
-    "test:server": "npm run test --workspace server",
+    "dev:client": "npm run dev -w client",
+    "dev:server": "npm run dev -w server",
+    "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
+    "test:server": "npm run test -w server",
     "test": "npm run test --workspaces",
     "lint": "eslint . --cache",
     "prepare": "husky install"
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
+    "concurrently": "^7.6.0",
     "eslint": "^8.28.0",
     "husky": "^8.0.2"
   }

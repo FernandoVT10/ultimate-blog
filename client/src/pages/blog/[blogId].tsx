@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import BlogDate from "@components/BlogDate";
 import MarkdownRenderer from "@components/MarkdownRenderer";
+import Cover from "@domain/BlogPost/Cover";
 
 import styles from "@styles/Blog.module.scss";
 
@@ -33,10 +34,10 @@ export default function BlogPage({ blogPost }: { blogPost: BlogPost }) {
       </Head>
 
       <main className={`wrapper ${styles.blogPost}`}>
-        <img
-          className={styles.cover}
-          src={blogPost.cover}
-          alt="Post cover"
+        <Cover
+          cover={blogPost.cover}
+          blogPostId={blogPost._id}
+          isAdmin
         />
 
         <div className={styles.contentContainer}>

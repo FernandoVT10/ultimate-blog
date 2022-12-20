@@ -37,3 +37,33 @@ export async function getPostById(blogPostId: string): Promise<BlogPost | null> 
     return null;
   }
 }
+
+export async function updateCover(blogPostId: string, cover: File): Promise<{ error: string | null }> {
+  const formData = new FormData();
+  formData.append("cover", cover);
+
+  try {
+    const res = await axios.put(
+      `/blogposts/${blogPostId}/updateCover`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        withCredentials: true
+      }
+    );
+
+    if(res.status !== 204 && res.data.message) {
+      return { error: res.data.message };
+    }
+
+    return {
+      error: null
+    };
+  } catch {
+    return {
+      error: "There was an error trying to upload the cover"
+    };
+  }
+}

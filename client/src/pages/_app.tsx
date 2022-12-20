@@ -1,6 +1,8 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.min.css";
 import "highlight.js/styles/base16/circus.css";
 import "../styles/globals.scss";
 
@@ -13,6 +15,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <Component {...pageProps} />
+      <ToastContainer
+        position="bottom-left"
+        theme="dark"
+      />
     </>
   );
 }
