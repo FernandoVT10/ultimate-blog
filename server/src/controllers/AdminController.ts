@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 import { ADMIN_PASSWORD } from "../config/constants";
 import { CustomValidator } from "express-validator";
 
@@ -15,6 +17,30 @@ const validatePassword: CustomValidator = (password) => {
   return true;
 };
 
+interface CheckStatusReturnData {
+  isLogged: boolean;
+}
+
+const checkStatus = async (authToken: string): Promise<CheckStatusReturnData> => {
+  let isLogged = true;
+
+  if(!authToken) {
+    isLogged = false;
+  }
+
+  try {
+    const data = await jwtHelper.verifyToken(authToken) as JwtPayload;
+
+    if(data.password !== ADMIN_PASSWORD) {
+      isLogged = false;
+    }
+  } catch {
+    isLogged = false;
+  }
+
+  return { isLogged };
+};
+
 export default {
-  login, validatePassword
+  login, validatePassword, checkStatus
 };

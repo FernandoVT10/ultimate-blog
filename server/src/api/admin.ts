@@ -33,4 +33,12 @@ router.post(
   })
 );
 
+router.get("/admin/status", asyncHandler(async (req, res) => {
+  const authToken = req.cookies[AUTH_COOKIE_KEY];
+
+  const status = await AdminController.checkStatus(authToken);
+
+  res.json(status);
+}));
+
 export default router;
