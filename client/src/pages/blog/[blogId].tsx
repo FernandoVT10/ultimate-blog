@@ -1,5 +1,8 @@
 import { getPostById, BlogPost } from "@services/BlogPostService";
+
 import { GetServerSideProps } from "next";
+import { checkAdminStatus } from "@services/AdminService";
+import { AUTH_COOKIE_KEY } from "@config/constants";
 
 import Head from "next/head";
 import BlogDate from "@components/BlogDate";
@@ -8,7 +11,7 @@ import Cover from "@domain/BlogPost/Cover";
 
 import styles from "@styles/Blog.module.scss";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const blogPostId = params?.blogId;
 
   if(!blogPostId) {
@@ -21,12 +24,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { notFound: true };
   }
 
+  const authToken = req.cookies[AUTH_COOKIE_KEY];
+
+  const isAdmin = await checkAdminStatus(authToken);
+
   return {
-    props: { blogPost }
+    props: { blogPost, isAdmin }
   };
 };
 
-export default function BlogPage({ blogPost }: { blogPost: BlogPost }) {
+interface BlogPageProps {
+  blogPost: BlogPost;
+  isAdmin: boolean;
+}
+
+export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
   return (
     <>
       <Head>
@@ -37,7 +49,7 @@ export default function BlogPage({ blogPost }: { blogPost: BlogPost }) {
         <Cover
           cover={blogPost.cover}
           blogPostId={blogPost._id}
-          isAdmin
+          isAdmin={isAdmin}
         />
 
         <div className={styles.contentContainer}>
