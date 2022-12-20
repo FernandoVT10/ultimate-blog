@@ -30,10 +30,30 @@ const createOne = async (data: CreateBlogPostData): Promise<HydratedDocument<IBl
   return BlogPost.create(data);
 };
 
-const updateCover = async (
+const updateById = async (
   blogPostId: string,
-  cover: string
+  data: object
 ): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findByIdAndUpdate(blogPostId, {
+    $set: data
+  });
+};
+
+const updateTitle = (blogPostId: string, title: string) => {
+  return updateById(
+    blogPostId,
+    { title }
+  );
+};
+
+const updateContent = (blogPostId: string, content: string) => {
+  return updateById(
+    blogPostId,
+    { content }
+  );
+};
+
+const updateCover = async (blogPostId: string, cover: string) => {
   return BlogPost.findByIdAndUpdate(blogPostId, {
     $set: { cover }
   }, { new: false });
@@ -60,6 +80,8 @@ export default {
   getAll,
   getById,
   createOne,
+  updateContent,
+  updateTitle,
   updateCover,
   updateTags,
   checkIfExists

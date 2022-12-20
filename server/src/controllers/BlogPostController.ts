@@ -67,6 +67,14 @@ const createOne = async (data: BlogPostCommonData) => {
   }
 };
 
+const updateTitle = async (blogPostId: string, title: string): Promise<void> => {
+  await BlogPostService.updateTitle(blogPostId, title);
+};
+
+const updateContent = async (blogPostId: string, content: string): Promise<void> => {
+  await BlogPostService.updateContent(blogPostId, content);
+};
+
 const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
   const newCover = new BlogPostCover();
 
@@ -103,6 +111,8 @@ export default {
   getAll,
   getById,
   createOne,
+  updateTitle,
+  updateContent,
   updateCover,
   updateTags
 };

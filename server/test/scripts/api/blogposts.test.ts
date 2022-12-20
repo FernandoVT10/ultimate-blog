@@ -285,6 +285,134 @@ describe("integration api/blogposts", () => {
     });
   });
 
+  describe("PUT /api/blogposts/:blogPostId/updateTitle", () => {
+    checkAuthorizeMiddleware("/api/blogposts/abc/updateTitle", "put");
+
+    it("should update the title", async () => {
+      const blogPost = await BlogPostFactory.createOne();
+      const authToken = await AuthFactory.generateAuthToken();
+      const newTitle = "updated title";
+
+      await request
+        .put(`/api/blogposts/${blogPost._id}/updateTitle`)
+        .send({ title: newTitle })
+        .set("Cookie", authToken)
+        .expect(204);
+
+      const updatedBlogPost = await BlogPostFactory.getById(blogPost._id.toString());
+      expect(updatedBlogPost?.title).toBe(newTitle);
+    });
+
+    describe("should fail when", () => {
+      const callApi = async (title: any = "") => {
+        const blogPostId = faker.database.mongodbObjectId();
+        const authToken = await AuthFactory.generateAuthToken();
+
+        return await request
+          .put(`/api/blogposts/${blogPostId}/updateTitle`)
+          .set("Cookie", authToken)
+          .send({ title })
+          .expect(400);
+      };
+
+      it("blogPostId doesn't exist", async () => {
+        const res = await callApi();
+        expect(res).toContainValidationError({
+          field: "blogPostId",
+          message: "Blog Post not found"
+        });
+      });
+
+      it("title is empty", async () => {
+        const res = await callApi("");
+        expect(res).toContainValidationError({
+          field: "title",
+          message: "Title is required"
+        });
+      });
+
+      it("title is not string", async () => {
+        const res = await callApi({ obj: "foo" });
+        expect(res).toContainValidationError({
+          field: "title",
+          message: "Title must be a string"
+        });
+      });
+
+      it("title is longer than expected", async () => {
+        const res = await callApi(faker.random.alpha(101));
+        expect(res).toContainValidationError({
+          field: "title",
+          message: "Title can't be larger than 100 characters"
+        });
+      });
+    });
+  });
+
+  describe("PUT /api/blogposts/:blogPostId/updateContent", () => {
+    checkAuthorizeMiddleware("/api/blogposts/abc/updateContent", "put");
+
+    it("should update the content", async () => {
+      const blogPost = await BlogPostFactory.createOne();
+      const authToken = await AuthFactory.generateAuthToken();
+      const newContent = "updated content";
+
+      await request
+        .put(`/api/blogposts/${blogPost._id}/updateContent`)
+        .send({ content: newContent })
+        .set("Cookie", authToken)
+        .expect(204);
+
+      const updatedBlogPost = await BlogPostFactory.getById(blogPost._id.toString());
+      expect(updatedBlogPost?.content).toBe(newContent);
+    });
+
+    describe("should fail when", () => {
+      const callApi = async (content: any = "") => {
+        const blogPostId = faker.database.mongodbObjectId();
+        const authToken = await AuthFactory.generateAuthToken();
+
+        return await request
+          .put(`/api/blogposts/${blogPostId}/updateContent`)
+          .set("Cookie", authToken)
+          .send({ content })
+          .expect(400);
+      };
+
+      it("blogPostId doesn't exist", async () => {
+        const res = await callApi();
+        expect(res).toContainValidationError({
+          field: "blogPostId",
+          message: "Blog Post not found"
+        });
+      });
+
+      it("content is empty", async () => {
+        const res = await callApi("");
+        expect(res).toContainValidationError({
+          field: "content",
+          message: "Content is required"
+        });
+      });
+
+      it("content is not string", async () => {
+        const res = await callApi({ obj: "foo" });
+        expect(res).toContainValidationError({
+          field: "content",
+          message: "Content must be a string"
+        });
+      });
+
+      it("content is longer than expected", async () => {
+        const res = await callApi(faker.random.alpha(5001));
+        expect(res).toContainValidationError({
+          field: "content",
+          message: "Content can't be larger than 5000 characters"
+        });
+      });
+    });
+  });
+
   describe("PUT /api/blogposts/:blogpostId/updateCover", () => {
     checkAuthorizeMiddleware("/api/blogposts/abc/updateCover", "put");
 

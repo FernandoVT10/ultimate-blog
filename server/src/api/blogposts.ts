@@ -72,6 +72,47 @@ router.post(
 );
 
 router.put(
+  "/blogposts/:blogPostId/updateTitle",
+
+  authorize(),
+
+  checkSchema(
+    BlogPostValidation.updateBlogPostTitleSchema
+  ),
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { title } = req.body;
+
+    await BlogPostController.updateTitle(blogPostId, title);
+
+    res.sendStatus(204);
+  })
+);
+
+
+router.put(
+  "/blogposts/:blogPostId/updateContent",
+
+  authorize(),
+
+  checkSchema(
+    BlogPostValidation.updateBlogPostContentSchema
+  ),
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { content } = req.body;
+
+    await BlogPostController.updateContent(blogPostId, content);
+
+    res.sendStatus(204);
+  })
+);
+
+router.put(
   "/blogposts/:blogPostId/updateCover",
 
   authorize(),
