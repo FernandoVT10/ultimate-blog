@@ -8,6 +8,7 @@ import Head from "next/head";
 import BlogDate from "@components/BlogDate";
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import Cover from "@domain/BlogPost/Cover";
+import Title from "@domain/BlogPost/Title";
 
 import styles from "@styles/Blog.module.scss";
 
@@ -53,7 +54,12 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
         />
 
         <div className={styles.contentContainer}>
-          <h1 className={styles.title}>{ blogPost.title }</h1>
+          <Title
+            title={blogPost.title}
+            isAdmin={isAdmin}
+            blogPostId={blogPost._id}
+          />
+
           <BlogDate createdAt={blogPost.createdAt}/>
 
           <div className={styles.content}>

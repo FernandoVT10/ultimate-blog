@@ -1,14 +1,22 @@
 :root {
+  --color-highlight: #89b4fa;
+
   --color-bg: #0b1017;
   --color-bg-surface: #080b0f;
 
+  --color-fg-dark: var(--color-bg);
   --color-fg: #cdd6f4;
   --color-fg-danger: #ffb5cf;
-  --color-fg-highlight: #89b4fa;
+  --color-fg-highlight: var(--color-highlight);
+
+  --color-input-border: #565a68;
+
+  --color-btn-bg: #1e2735;
+  --color-danger-bg: #FF715B;
 
   --toastify-color-dark: var(--color-bg-surface);
   --toastify-text-color-dark: var(--color-fg);
-  --toastify-color-success: #89b4fa;
+  --toastify-color-success: var(--color-highlight);
 }
 
 * {
@@ -35,6 +43,11 @@ h1, h2, p {
 
 button {
   cursor: pointer;
+  outline: 0;
+  color: inherit;
+}
+
+input {
   outline: 0;
 }
 

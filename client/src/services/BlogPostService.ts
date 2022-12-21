@@ -67,3 +67,22 @@ export async function updateCover(blogPostId: string, cover: File): Promise<{ er
     };
   }
 }
+
+export async function updateTitle(
+  blogPostId: string,
+  title: BlogPost["title"]
+): Promise<boolean> {
+  try {
+    const res = await axios.put(
+      `/blogposts/${blogPostId}/updateTitle`,
+      { title },
+      { withCredentials: true }
+    );
+
+    if(res.status === 204) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}
