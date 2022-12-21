@@ -1,0 +1,98 @@
+.contentContainer {
+  position: relative;
+
+  &:hover .editButton {
+    opacity: 1;
+  }
+
+  & .loaderContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: rgba(0, 0, 0, .6);
+
+
+    & .text {
+      color: var(--color-fg-highlight);
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  }
+
+  & .editButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-top: 20px;
+  }
+
+  & .button {
+    padding: 10px;
+    border: solid 1px var(--color-border);
+    background: transparent;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: .3s;
+
+    &:hover,
+    &.active {
+      color: var(--color-fg-highlight);
+      border-color: var(--color-fg-highlight);
+    }
+
+    & .icon {
+      margin-right: 5px;
+    }
+  }
+
+  & .optionsContainer {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    & .option:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+
+  & .formContainer {
+    & .textarea {
+      width: 100%;
+      padding: 20px;
+      resize: none;
+      background: transparent;
+      border: solid 1px var(--color-border);
+      border-radius: 5px;
+      overflow: hidden;
+      min-height: 400px;
+      transition: border-color .3s;
+
+      &:focus {
+        border-color: var(--color-highlight);
+      }
+    }
+  }
+
+  & .content {
+    margin-top: 20px;
+
+    &.isAdmin {
+      margin-top: 10px;
+    }
+
+    &.previewing {
+      margin: 0;
+      padding: 20px;
+      border: solid 1px var(--color-border);
+      border-radius: 5px;
+    }
+  }
+}

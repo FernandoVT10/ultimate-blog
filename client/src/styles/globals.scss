@@ -9,6 +9,9 @@
   --color-fg-danger: #ffb5cf;
   --color-fg-highlight: var(--color-highlight);
 
+
+  --color-border: #565a68;
+
   --color-input-border: #565a68;
 
   --color-btn-bg: #1e2735;
@@ -47,7 +50,8 @@ button {
   color: inherit;
 }
 
-input {
+input, textarea {
+  color: inherit;
   outline: 0;
 }
 

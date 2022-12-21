@@ -1,0 +1,12 @@
+.spinner {
+  display: block;
+  border: solid 5px var(--color-highlight);
+  border-top: solid 5px transparent;
+  border-radius: 50%;
+  animation: rotate 1s infinite linear;
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}

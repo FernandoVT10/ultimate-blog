@@ -86,3 +86,22 @@ export async function updateTitle(
     return false;
   }
 }
+
+export async function updateContent(
+  blogPostId: string,
+  content: BlogPost["content"]
+): Promise<boolean> {
+  try {
+    const res = await axios.put(
+      `/blogposts/${blogPostId}/updateContent`,
+      { content },
+      { withCredentials: true }
+    );
+
+    if(res.status === 204) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}

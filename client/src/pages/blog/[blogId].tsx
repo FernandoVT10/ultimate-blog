@@ -6,9 +6,9 @@ import { AUTH_COOKIE_KEY } from "@config/constants";
 
 import Head from "next/head";
 import BlogDate from "@components/BlogDate";
-import MarkdownRenderer from "@components/MarkdownRenderer";
 import Cover from "@domain/BlogPost/Cover";
 import Title from "@domain/BlogPost/Title";
+import Content from "@domain/BlogPost/Content";
 
 import styles from "@styles/Blog.module.scss";
 
@@ -62,9 +62,11 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
 
           <BlogDate createdAt={blogPost.createdAt}/>
 
-          <div className={styles.content}>
-            <MarkdownRenderer markdown={blogPost.content}/>
-          </div>
+          <Content
+            blogPostId={blogPost._id}
+            content={blogPost.content}
+            isAdmin={isAdmin}
+          />
         </div>
       </main>
     </>
