@@ -1,7 +1,9 @@
 import { toast } from "react-toastify";
-import { PencilIcon } from "@primer/octicons-react";
 import { BlogPost, updateTitle } from "@services/BlogPostService";
+import { FileCodeIcon, PencilIcon, ReplyIcon } from "@primer/octicons-react";
 import { ChangeEvent, FormEvent, useState } from "react";
+
+import Spinner from "@components/Spinner";
 
 import styles from "./Title.module.scss";
 
@@ -57,19 +59,29 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
 
           <div className={styles.formButtons}>
             <button
-              className={styles.formButton}
+              className={`custom-btn ${styles.formButton}`}
               type="submit"
               disabled={loading}
             >
-              {loading && <span className={styles.loader}></span>}
-              {loading ? "Updating" : "Update"}
+              {loading ?
+                <>
+                  <Spinner size={10} borderWidth={2} className={styles.loader}/>
+                  Updating
+                </>
+              :
+                <>
+                  <FileCodeIcon size={14} className="icon"/>
+                  Update
+                </>
+              }
             </button>
 
             <button
-              className={`${styles.formButton} ${styles.cancelButton}`}
+              className={`custom-btn ${styles.formButton} ${styles.cancelButton}`}
               onClick={() => setEditing(false)}
               disabled={loading}
             >
+              <ReplyIcon size={14} className="icon"/>
               Cancel
             </button>
           </div>

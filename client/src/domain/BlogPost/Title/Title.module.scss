@@ -20,51 +20,18 @@
   & .formButtons {
     margin-top: 10px;
 
-    // TODO: this buttons are ugly af
     & .formButton {
-      background: var(--color-btn-bg);
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      transition: .3s;
-
-      // TODO: Replace this loader with the loader of the cover
       & .loader {
         display: inline-block;
-        width: 10px;
-        height: 10px;
-        border: solid 2px var(--color-highlight);
-        border-top: solid 2px transparent;
-        border-radius: 50%;
-        animation: rotate 1s infinite linear;
         margin-right: 5px;
-
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      }
-
-      &.cancelButton {
-        margin-left: 10px;
-        background: var(--color-danger-bg);
-
-        &:hover:disabled {
-          background: var(--color-danger-bg);
-        }
       }
 
       &:disabled {
         cursor: wait;
       }
 
-      &:hover {
-        background: transparent;
-
-        &:disabled {
-          background: var(--color-btn-bg);
-        }
+      &.cancelButton {
+        margin-left: 10px;
       }
     }
   }
