@@ -41,6 +41,12 @@ export default function Content({ blogPostId, content: initialContent, isAdmin }
     fixTextareaHeight();
   }, [editing, previewing]);
 
+  const handleCancelButton = () => {
+    setPreviewing(false);
+    setEditing(false);
+    setContent(initialContent);
+  };
+
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     fixTextareaHeight();
@@ -91,7 +97,7 @@ export default function Content({ blogPostId, content: initialContent, isAdmin }
 
           <button
             className={`${styles.button} ${styles.option}`}
-            onClick={() => setEditing(false)}
+            onClick={handleCancelButton}
           >
             <ReplyIcon size={14} className={styles.icon}/>
             Cancel
