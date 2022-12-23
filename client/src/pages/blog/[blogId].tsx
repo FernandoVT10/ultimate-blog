@@ -9,6 +9,7 @@ import BlogDate from "@components/BlogDate";
 import Cover from "@domain/BlogPost/Cover";
 import Title from "@domain/BlogPost/Title";
 import Content from "@domain/BlogPost/Content";
+import Tags from "@domain/BlogPost/Tags";
 
 import styles from "@styles/Blog.module.scss";
 
@@ -67,6 +68,8 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
             content={blogPost.content}
             isAdmin={isAdmin}
           />
+
+          <Tags tags={blogPost.tags} isAdmin={isAdmin}/>
         </div>
       </main>
     </>

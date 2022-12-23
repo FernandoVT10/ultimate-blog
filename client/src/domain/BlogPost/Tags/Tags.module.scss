@@ -1,0 +1,40 @@
+.tagsContainer {
+  & .tagsListContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    & .tagIcon {
+      color: var(--color-fg-highlight);
+      margin-right: 10px;
+    }
+
+    & .tags {
+      padding-bottom: 0;
+
+      & .tag {
+        font-weight: bold;
+        background: transparent;
+        margin-right: 10px;
+        transition: .3s;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: var(--color-fg-highlight);
+
+        &:hover {
+          color: var(--color-fg);
+        }
+      }
+    }
+
+    & .editButton {
+      background: transparent;
+      border: none;
+      padding: 0;
+      transition: .3s;
+
+      &:hover {
+        color: var(--color-highlight);
+      }
+    }
+  }
+}

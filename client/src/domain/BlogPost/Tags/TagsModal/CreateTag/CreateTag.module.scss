@@ -1,0 +1,41 @@
+.createTag {
+  padding-top: 20px;
+
+  & .inputContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+
+    & .input {
+      width: 100%;
+      border: none;
+      padding: 5px 0;
+      font: inherit;
+      border-bottom: solid 2px var(--color-border);
+      background: transparent;
+      transition: .3s;
+
+      &:focus {
+        border-color: var(--color-highlight);
+      }
+    }
+
+    & .label {
+      color: var(--color-fg-secondary);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    & .input:focus + .label {
+      color: var(--color-highlight);
+    }
+  }
+
+  & .buttons {
+    margin-top: 10px;
+
+    & .cancelButton {
+      margin-right: 10px;
+    }
+  }
+}
