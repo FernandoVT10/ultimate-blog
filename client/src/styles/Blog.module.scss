@@ -19,14 +19,22 @@
 }
 
 .blogPost {
-  background: var(--color-bg-surface);
   margin: 40px auto;
 
   & .contentContainer {
     padding: 20px;
+    background: var(--color-bg-surface);
 
     & .content {
       margin-top: 20px;
+    }
+  }
+
+  & .recentBlogPosts {
+    margin-top: 40px;
+
+    & .subtitle {
+      font-size: 22px;
     }
   }
 }

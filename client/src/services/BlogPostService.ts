@@ -13,13 +13,17 @@ export type BlogPost = {
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
-  const res = await axios.get("/blogposts");
+  try {
+    const res = await axios.get("/blogposts");
 
-  if(res.status === 200) {
-    return res.data;
+    if(res.status === 200) {
+      return res.data;
+    }
+
+    return []; 
+  } catch {
+    return [];
   }
-
-  return [];
 }
 
 export async function getPostById(blogPostId: string): Promise<BlogPost | null> {

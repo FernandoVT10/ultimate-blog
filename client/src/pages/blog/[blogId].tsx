@@ -1,4 +1,4 @@
-import { getPostById, BlogPost } from "@services/BlogPostService";
+import { getPostById, BlogPost, getAllPosts } from "@services/BlogPostService";
 
 import { GetServerSideProps } from "next";
 import { checkAdminStatus } from "@services/AdminService";
@@ -12,6 +12,7 @@ import Title from "@domain/BlogPost/Title";
 import Content from "@domain/BlogPost/Content";
 import Tags from "@domain/BlogPost/Tags";
 import Navbar from "@components/Navbar";
+import BlogPostCards from "@components/BlogPostCards";
 
 import styles from "@styles/Blog.module.scss";
 
@@ -28,21 +29,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
     return { notFound: true };
   }
 
-  const authToken = req.cookies[AUTH_COOKIE_KEY];
+  // TODO: I think is better to show related posts
+  const recentBlogPosts = await getAllPosts();
 
+  const authToken = req.cookies[AUTH_COOKIE_KEY];
   const isAdmin = await checkAdminStatus(authToken);
 
   return {
-    props: { blogPost, isAdmin }
+    props: { blogPost, isAdmin, recentBlogPosts }
   };
 };
 
 interface BlogPageProps {
   blogPost: BlogPost;
+  recentBlogPosts: BlogPost[];
   isAdmin: boolean;
 }
 
-export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
+export default function BlogPage({ blogPost, recentBlogPosts, isAdmin }: BlogPageProps) {
   return (
     <>
       <Head>
@@ -67,7 +71,7 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
           isAdmin={isAdmin}
         />
 
-        <div className={styles.contentContainer}>
+        <section className={styles.contentContainer}>
           <Title
             title={blogPost.title}
             isAdmin={isAdmin}
@@ -87,7 +91,14 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
             isAdmin={isAdmin}
             blogPostId={blogPost._id}
           />
-        </div>
+        </section>
+
+        { recentBlogPosts.length &&
+          <section className={styles.recentBlogPosts}>
+            <h2 className={styles.subtitle}>Other Posts</h2>
+            <BlogPostCards blogPosts={recentBlogPosts}/>
+          </section>
+        }
       </main>
     </>
   );
