@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 
+import modelConfig from "../config/models";
+
 export interface ITag {
   name: string;
 }
@@ -7,6 +9,8 @@ export interface ITag {
 const tagScheme = new Schema<ITag>({
   name: {
     type: String,
+    maxlength: modelConfig.tag.name.maxLength,
+    unique: true,
     required: true
   }
 });
