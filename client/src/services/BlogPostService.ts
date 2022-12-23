@@ -66,6 +66,8 @@ export async function updateCover(blogPostId: string, cover: File): Promise<{ er
   }
 }
 
+// TODO: really repetitive code down here, need fix
+
 export async function updateTitle(
   blogPostId: string,
   title: BlogPost["title"]
