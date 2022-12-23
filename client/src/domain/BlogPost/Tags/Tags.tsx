@@ -3,16 +3,31 @@ import Link from "next/link";
 
 import { TagIcon, PencilIcon } from "@primer/octicons-react";
 import { useModal } from "@components/Modal";
+import { BlogPost } from "@services/BlogPostService";
+import { useState } from "react";
+import { Tag } from "@services/TagService";
 
 import styles from "./Tags.module.scss";
 
 interface TagsProps {
-  tags: { name: string }[];
+  tags: Tag[];
   isAdmin: boolean;
+  blogPostId: BlogPost["_id"];
 }
 
-export default function Tags({ tags, isAdmin }: TagsProps) {
+export default function Tags({ tags: initialTags, isAdmin, blogPostId }: TagsProps) {
+  const [tags, setTags] = useState(initialTags);
+
   const modal = useModal();
+
+  const setUpdatedTags = (tags: string[]) => {
+    setTags(tags.map(tagName => {
+      return {
+        _id: "",
+        name: tagName
+      };
+    }));
+  };
 
   const getTags = () => {
     if(tags.length) {
@@ -38,7 +53,12 @@ export default function Tags({ tags, isAdmin }: TagsProps) {
 
   return (
     <div className={styles.tagsContainer}>
-      <TagsModal modal={modal}/>
+      <TagsModal
+        blogPostId={blogPostId}
+        modal={modal}
+        initialTags={tags}
+        setUpdatedTags={setUpdatedTags}
+      />
 
       <div className={styles.tagsListContainer}>
         <TagIcon size={18} className={styles.tagIcon}/>

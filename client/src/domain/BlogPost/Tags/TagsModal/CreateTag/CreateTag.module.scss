@@ -31,11 +31,28 @@
     }
   }
 
+  & .error {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    color: var(--color-fg-danger);
+
+    & .icon {
+      margin-right: 5px;
+    }
+  }
+
   & .buttons {
     margin-top: 10px;
 
-    & .cancelButton {
+    & .createButton {
       margin-right: 10px;
+
+      & .spinner {
+        display: inline-block;
+        margin-right: 5px;
+      }
     }
   }
 }

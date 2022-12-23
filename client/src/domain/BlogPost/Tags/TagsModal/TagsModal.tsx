@@ -1,33 +1,41 @@
 import { useState } from "react";
 
 import CreateTag from "./CreateTag";
+import TagList from "./TagList";
+import Spinner from "@components/Spinner";
 
 import Modal, { UseModalReturn } from "@components/Modal";
+
 import { PlusIcon, SidebarCollapseIcon } from "@primer/octicons-react";
+import { Tag } from "@services/TagService";
+
+import { BlogPost, updateTags } from "@services/BlogPostService";
 
 import styles from "./TagsModal.module.scss";
 
 interface TagsModalProps {
+  blogPostId: BlogPost["_id"];
   modal: UseModalReturn;
+  initialTags: Tag[];
+  setUpdatedTags: (tags: string[]) => void;
 }
 
-const initialTags: string[] = [];
+const getNamesFromTags = (tags: Tag[]): string[] => tags.map(tag => tag.name);
 
-for(let i = 0; i <= 50; i++) {
-  initialTags.push(`Test #${i}`);
-}
-
-export default function TagsModal({ modal }: TagsModalProps) {
-  const [tags, setTags] = useState(initialTags);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+export default function TagsModal({ blogPostId, modal, initialTags, setUpdatedTags }: TagsModalProps) {
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    getNamesFromTags(initialTags)
+  );
   const [creating, setCreating] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const includeTag = (tag: string): boolean => {
+  const isSelectedTag = (tag: string): boolean => {
     return selectedTags.includes(tag);
   };
 
   const toggleTag = (tag: string): void => {
-    if(!includeTag(tag)) {
+    if(!isSelectedTag(tag)) {
       return setSelectedTags([...selectedTags, tag]);
     }
 
@@ -36,42 +44,44 @@ export default function TagsModal({ modal }: TagsModalProps) {
     );
   };
 
+  const handleUpdateTags = async () => {
+    setLoading(true);
+
+    if(await updateTags(blogPostId, selectedTags)) {
+      setUpdatedTags(selectedTags);
+      modal.hideModal();
+    }
+
+    setLoading(false);
+  };
+
   return (
     <Modal title="Tags" modal={modal}>
       <div className={styles.tagsModal}>
-        <div className={styles.tags}>
-          {tags.map((tag, index) => {
-            const isSelected = includeTag(tag);
+        {loading &&
+          <div className={styles.loader}>
+            <Spinner size={50} />
+          </div>
+        }
 
-            return (
-              <div
-                className={`${styles.tag} ${isSelected && styles.selected}`}
-                key={index}
-              >
-                <label
-                  htmlFor={`tagsModal-checkbox-${index}`}
-                  className={styles.label}
-                >
-                  <span className={styles.indicator}></span>
-                  <p className={styles.name}>{ tag }</p>
-                </label>
-
-                <input
-                  type="checkbox"
-                  id={`tagsModal-checkbox-${index}`}
-                  className={styles.checkbox}
-                  onChange={() => toggleTag(tag)}
-                  checked={isSelected}
-                />
-              </div>
-            );
-          })}
+        <div className={styles.tagsContainer}>
+          <div className={styles.tags}>
+            <TagList
+              isSelectedTag={isSelectedTag}
+              toggleTag={toggleTag}
+              tags={tags}
+              setTags={(tags: Tag[]) => setTags(getNamesFromTags(tags))}
+            />
+          </div>
         </div>
 
-        { creating
-          ?
-          <CreateTag cancelCreating={() => setCreating(false)}/>
-          :
+        <CreateTag
+          cancelCreating={() => setCreating(false)}
+          addTag={(newTag) => setTags([...tags, newTag])}
+          isActive={creating}
+        />
+
+        {!creating &&
           <div className={styles.options}>
             <button
               className="custom-btn"
@@ -81,7 +91,10 @@ export default function TagsModal({ modal }: TagsModalProps) {
               Create new tag
             </button>
 
-            <button className={`custom-btn ${styles.createTagButton}`}>
+            <button
+              className={`custom-btn ${styles.createTagButton}`}
+              onClick={handleUpdateTags}
+            >
               <SidebarCollapseIcon size={14} className="icon"/>
               Update tags
             </button>

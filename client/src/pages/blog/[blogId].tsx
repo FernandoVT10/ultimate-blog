@@ -69,7 +69,11 @@ export default function BlogPage({ blogPost, isAdmin }: BlogPageProps) {
             isAdmin={isAdmin}
           />
 
-          <Tags tags={blogPost.tags} isAdmin={isAdmin}/>
+          <Tags
+            tags={blogPost.tags}
+            isAdmin={isAdmin}
+            blogPostId={blogPost._id}
+          />
         </div>
       </main>
     </>

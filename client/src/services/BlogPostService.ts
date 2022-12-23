@@ -1,8 +1,6 @@
 import axios from "@config/axios";
 
-type Tag = {
-  name: string;
-}
+import { Tag } from "./TagService";
 
 export type BlogPost = {
   _id: string;
@@ -95,6 +93,26 @@ export async function updateContent(
     const res = await axios.put(
       `/blogposts/${blogPostId}/updateContent`,
       { content },
+      { withCredentials: true }
+    );
+
+    if(res.status === 204) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+
+export async function updateTags(
+  blogPostId: string,
+  tags: string[]
+): Promise<boolean> {
+  try {
+    const res = await axios.put(
+      `/blogposts/${blogPostId}/updateTags`,
+      { tags },
       { withCredentials: true }
     );
 

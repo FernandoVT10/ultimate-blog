@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 
-import TagService from "@app/services/TagService";
+import TagService from "../services/TagService";
 import asyncHandler from "express-async-handler";
 import authorize from "../middlewares/authorize";
 import checkValidation from "../middlewares/checkValidation";
