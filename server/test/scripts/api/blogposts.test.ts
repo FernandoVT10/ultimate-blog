@@ -143,6 +143,49 @@ describe("integration api/blogposts", () => {
         });
       });
     });
+
+    describe("limit query option", () => {
+      it("should get the number of posts specified", async () => {
+        const blogPostA = await BlogPostFactory.createOne();
+        await BlogPostFactory.createOne({
+          // this is necessary to always get blogPostA first
+          createdAt: Date.now() - 1000
+        });
+
+        const res = await request
+          .get("/api/blogposts")
+          .query({ limit: 1 })
+          .expect(200);
+
+        expect(res.body).toHaveLength(1);
+        expect(res.body).toEqual(
+          convertToResponseBody([
+            blogPostA
+          ])
+        );
+      });
+
+      it("should not apply the limit when usign a non number", async () => {
+        const blogPostA = await BlogPostFactory.createOne();
+        const blogPostB = await BlogPostFactory.createOne({
+          // this is necessary to always get blogPostA first
+          createdAt: Date.now() - 1000
+        });
+
+        const res = await request
+          .get("/api/blogposts")
+          .query({ limit: "non number" })
+          .expect(200);
+
+        expect(res.body).toHaveLength(2);
+        expect(res.body).toEqual(
+          convertToResponseBody([
+            blogPostA,
+            blogPostB
+          ])
+        );
+      });
+    });
   });
 
   describe("GET /api/blogposts/:blogPostId", () => {
@@ -211,7 +254,9 @@ describe("integration api/blogposts", () => {
       expect(res.body).toMatchObject({
         title,
         content,
-        tags: convertToResponseBody([tagA, tagB])
+        tags: expect.arrayContaining(
+          convertToResponseBody([tagA, tagB])
+        )
       });
     });
 

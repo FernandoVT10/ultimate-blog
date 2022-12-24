@@ -6,7 +6,8 @@ import { RequestError } from "../utils/errors";
 import BlogPostCover from "../lib/BlogPostCover";
 
 interface GetAllOptions {
-  tags: string[] | undefined;
+  tags?: string[];
+  limit?: number;
 }
 
 const getAll = async (options: GetAllOptions) => {
@@ -24,7 +25,7 @@ const getAll = async (options: GetAllOptions) => {
     }
   }
 
-  return BlogPostService.getAll(filter);
+  return BlogPostService.getAll(filter, options.limit);
 };
 
 const getById = async (blogPostId: string) => {

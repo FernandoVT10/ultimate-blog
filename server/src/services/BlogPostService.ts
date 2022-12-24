@@ -5,11 +5,19 @@ import { ITag } from "@app/models/Tag";
 
 export type BlogPostServiceFilter = FilterQuery<IBlogPost>;
 
-const getAll = async (filter: FilterQuery<IBlogPost>): Promise<HydratedDocument<IBlogPost>[]> => {
-  return BlogPost.find(filter)
+const getAll = async (
+  filter: FilterQuery<IBlogPost>,
+  limit?: number
+): Promise<HydratedDocument<IBlogPost>[]> => {
+  let query = BlogPost.find(filter)
     .sort({ createdAt: "desc" })
-    .populate("tags")
-    .lean({ getters: true });
+    .populate("tags");
+
+  if(limit) {
+    query = query.limit(limit);
+  }
+
+  return query.lean({ getters: true });
 };
 
 const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {

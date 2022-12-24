@@ -17,9 +17,12 @@ router.get(
 
   query("tags").customSanitizer(transformIntoStringArray),
 
+  query("limit").toInt(),
+
   asyncHandler(async (req, res) => {
     const blogPosts = await BlogPostController.getAll({
-      tags: req.query?.tags
+      tags: req.query?.tags,
+      limit: req.query?.limit
     });
 
     res.json(blogPosts);
