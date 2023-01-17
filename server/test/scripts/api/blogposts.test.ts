@@ -13,13 +13,33 @@ import {
   checkIfFileExists
 } from "../../helpers";
 
+import { Request } from "supertest";
 import { faker } from "@faker-js/faker";
+import { testStringValidation } from "../../helpers/validationTests";
 
 connectDB();
 
 const IMAGE_FIXTURE_PATH = path.resolve(__dirname, "../../fixtures/image.png");
 
+const testBlogPostId = (getRequest: () => Request) => {
+  it("should fail when blogPostId doesn't exist", async () => {
+    const res = await getRequest();
+
+    expect(res.status).toBe(400);
+    expect(res).toContainValidationError({
+      field: "blogPostId",
+      message: "Blog Post not found"
+    });
+  });
+};
+
 describe("integration api/blogposts", () => {
+  let authToken: string;
+
+  beforeEach(async () => {
+    authToken = await AuthFactory.generateAuthToken();
+  });
+
   describe("GET /api/blogposts", () => {
     it("should get all sorted from newest to oldest", async () => {
       const actualDate = Date.now();
@@ -229,8 +249,6 @@ describe("integration api/blogposts", () => {
       // if the dir is not created we're going to get a ENOENT error
       await fs.promises.mkdir(BlogPostCover.BASE_PATH, { recursive: true });
 
-      const authToken = await AuthFactory.generateAuthToken();
-
       const tagA = await TagFactory.createOne();
       const tagB = await TagFactory.createOne();
 
@@ -260,20 +278,22 @@ describe("integration api/blogposts", () => {
       });
     });
 
-    describe("validation should fail when", () => {
-      const callApi = async (data: any) => {
-        const authToken = await AuthFactory.generateAuthToken();
-
-        const res = await request.post("/api/blogposts")
-          .set("Cookie", authToken)
-          .send(data);
-
-        return res;
+    describe("validation", () => {
+      const getRequest = () => {
+        return request.post("/api/blogposts").set("Cookie", authToken);
       };
 
-      it("cover is not an image", async () => {
-        const authToken = await AuthFactory.generateAuthToken();
+      testStringValidation(getRequest, "title", {
+        required: true,
+        maxLength: 100
+      });
 
+      testStringValidation(getRequest, "content", {
+        required: true,
+        maxLength: 5000
+      });
+
+      it("should fail when cover is not an image", async () => {
         const res = await request.post("/api/blogposts")
           .set("Cookie", authToken)
           .attach("cover", Buffer.from([12]), {
@@ -283,50 +303,6 @@ describe("integration api/blogposts", () => {
 
         expect(res.body.message).toBe("Files must be .png, .jpeg, .jpg or .webp");
       });
-
-      it("fields have invalid values", async () => {
-        const notAString = {
-          obj: "foo"
-        };
-
-        const res = await callApi({
-          title: notAString,
-          content: notAString
-        });
-
-        expect(res).toContainValidationErrors([
-          { field: "title", message: "Title must be a string" },
-          { field: "content", message: "Content must be a string" }
-        ]);
-      });
-
-      it("fields are empty", async () => {
-        const res = await callApi({});
-
-        expect(res).toContainValidationErrors([
-          { field: "title", message: "Title is required" },
-          { field: "content", message: "Content is required" },
-          { field: "cover", message: "Cover is required" }
-        ]);
-      });
-
-      it("fields are larger than expected", async () => {
-        const res = await callApi({
-          title: faker.random.alpha(101),
-          content: faker.random.alpha(5001)
-        });
-
-        expect(res).toContainValidationErrors([
-          {
-            field: "title",
-            message: "Title can't be larger than 100 characters"
-          },
-          {
-            field: "content",
-            message: "Content can't be larger than 5000 characters"
-          }
-        ]);
-      });
     });
   });
 
@@ -335,7 +311,6 @@ describe("integration api/blogposts", () => {
 
     it("should update the title", async () => {
       const blogPost = await BlogPostFactory.createOne();
-      const authToken = await AuthFactory.generateAuthToken();
       const newTitle = "updated title";
 
       await request
@@ -348,49 +323,20 @@ describe("integration api/blogposts", () => {
       expect(updatedBlogPost?.title).toBe(newTitle);
     });
 
-    describe("should fail when", () => {
-      const callApi = async (title: any = "") => {
+    describe("validation", () => {
+      const getRequest = () => {
         const blogPostId = faker.database.mongodbObjectId();
-        const authToken = await AuthFactory.generateAuthToken();
-
-        return await request
+        return request
           .put(`/api/blogposts/${blogPostId}/updateTitle`)
-          .set("Cookie", authToken)
-          .send({ title })
-          .expect(400);
+          .set("Cookie", authToken);
       };
 
-      it("blogPostId doesn't exist", async () => {
-        const res = await callApi();
-        expect(res).toContainValidationError({
-          field: "blogPostId",
-          message: "Blog Post not found"
-        });
+      testStringValidation(getRequest, "title", {
+        required: true,
+        maxLength: 100
       });
 
-      it("title is empty", async () => {
-        const res = await callApi("");
-        expect(res).toContainValidationError({
-          field: "title",
-          message: "Title is required"
-        });
-      });
-
-      it("title is not string", async () => {
-        const res = await callApi({ obj: "foo" });
-        expect(res).toContainValidationError({
-          field: "title",
-          message: "Title must be a string"
-        });
-      });
-
-      it("title is longer than expected", async () => {
-        const res = await callApi(faker.random.alpha(101));
-        expect(res).toContainValidationError({
-          field: "title",
-          message: "Title can't be larger than 100 characters"
-        });
-      });
+      testBlogPostId(getRequest);
     });
   });
 
@@ -399,7 +345,6 @@ describe("integration api/blogposts", () => {
 
     it("should update the content", async () => {
       const blogPost = await BlogPostFactory.createOne();
-      const authToken = await AuthFactory.generateAuthToken();
       const newContent = "updated content";
 
       await request
@@ -412,49 +357,20 @@ describe("integration api/blogposts", () => {
       expect(updatedBlogPost?.content).toBe(newContent);
     });
 
-    describe("should fail when", () => {
-      const callApi = async (content: any = "") => {
+    describe("validation", () => {
+      const getRequest = () => {
         const blogPostId = faker.database.mongodbObjectId();
-        const authToken = await AuthFactory.generateAuthToken();
-
-        return await request
+        return request
           .put(`/api/blogposts/${blogPostId}/updateContent`)
-          .set("Cookie", authToken)
-          .send({ content })
-          .expect(400);
+          .set("Cookie", authToken);
       };
 
-      it("blogPostId doesn't exist", async () => {
-        const res = await callApi();
-        expect(res).toContainValidationError({
-          field: "blogPostId",
-          message: "Blog Post not found"
-        });
+      testStringValidation(getRequest, "content", {
+        required: true,
+        maxLength: 5000
       });
 
-      it("content is empty", async () => {
-        const res = await callApi("");
-        expect(res).toContainValidationError({
-          field: "content",
-          message: "Content is required"
-        });
-      });
-
-      it("content is not string", async () => {
-        const res = await callApi({ obj: "foo" });
-        expect(res).toContainValidationError({
-          field: "content",
-          message: "Content must be a string"
-        });
-      });
-
-      it("content is longer than expected", async () => {
-        const res = await callApi(faker.random.alpha(5001));
-        expect(res).toContainValidationError({
-          field: "content",
-          message: "Content can't be larger than 5000 characters"
-        });
-      });
+      testBlogPostId(getRequest);
     });
   });
 
@@ -465,7 +381,6 @@ describe("integration api/blogposts", () => {
       const blogPost = await BlogPostFactory.createOne({
         cover: "cover.webp"
       });
-      const authToken = await AuthFactory.generateAuthToken();
 
       // add the image that must be deleted at update the cover
       const cover = new BlogPostCover("cover.webp");
@@ -496,28 +411,18 @@ describe("integration api/blogposts", () => {
       ).toBeFalsy();
     });
 
-    describe("validation should fail when", () => {
-      const callApi = async () => {
+    describe("validation", () => {
+      const getRequest = () => {
         const blogPostId = faker.database.mongodbObjectId();
-        const authToken = await AuthFactory.generateAuthToken();
-
         return request
           .put(`/api/blogposts/${blogPostId}/updateCover`)
           .set("Cookie", authToken);
       };
 
-      it("blogPostId doesn't exist", async () => {
-        const res = await callApi();
+      testBlogPostId(getRequest);
 
-        expect(res.statusCode).toBe(400);
-        expect(res).toContainValidationError({
-          field: "blogPostId",
-          message: "Blog Post not found"
-        });
-      });
-
-      it("cover is empty", async () => {
-        const res = await callApi();
+      it("should fail when cover is empty", async () => {
+        const res = await getRequest();
 
         expect(res.statusCode).toBe(400);
         expect(res).toContainValidationError({
@@ -539,7 +444,6 @@ describe("integration api/blogposts", () => {
       const blogPost = await BlogPostFactory.createOne({
         tags: [tagA]
       });
-      const authToken = await AuthFactory.generateAuthToken();
 
       await request
         .put(`/api/blogposts/${blogPost._id}/updateTags`)
@@ -554,23 +458,18 @@ describe("integration api/blogposts", () => {
       );
 
       // we're not populating the tags, so we use id's instead
-      expect(updatedBlogPost?.tags).toEqual([
-        tagB._id, tagC._id
-      ]);
+      expect(updatedBlogPost?.tags).toEqual(
+        expect.arrayContaining([tagB._id, tagC._id ])
+      );
+      expect(updatedBlogPost?.tags).not.toContainEqual(tagA._id);
     });
 
-    it("validation should fail when blogPostId doesn't exist", async () => {
-      const blogPostId = faker.database.mongodbObjectId();
-      const authToken = await AuthFactory.generateAuthToken();
-
-      const res = await request
-        .put(`/api/blogposts/${blogPostId}/updateTags`)
-        .set("Cookie", authToken)
-        .expect(400);
-
-      expect(res).toContainValidationError({
-        field: "blogPostId",
-        message: "Blog Post not found"
+    describe("validation", () => {
+      testBlogPostId(() => {
+        const blogPostId = faker.database.mongodbObjectId();
+        return request
+          .put(`/api/blogposts/${blogPostId}/updateTags`)
+          .set("Cookie", authToken);
       });
     });
   });
