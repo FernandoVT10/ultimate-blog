@@ -8,6 +8,8 @@ import checkValidation from "../middlewares/checkValidation";
 
 const router = Router();
 
+const MONTH_IN_MILLISECONDS = 30 * 24 * 60 * 60 * 1000;
+
 router.post(
   "/admin/login",
 
@@ -26,7 +28,8 @@ router.post(
     res.cookie(AUTH_COOKIE_KEY, token, {
       secure: PRODUCTION,
       httpOnly: true,
-      sameSite: true
+      sameSite: true,
+      maxAge: MONTH_IN_MILLISECONDS
     }).json({
       message: "You've been logged in!"
     });
