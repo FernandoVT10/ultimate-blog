@@ -108,6 +108,10 @@ const updateTags = async (blogPostId: string, tags: string[]) => {
   await BlogPostService.updateTags(blogPostId, tagDocs);
 };
 
+const deletePost = (blogPostId: string) => {
+  return BlogPostService.deletePost(blogPostId);
+};
+
 export default {
   getAll,
   getById,
@@ -115,5 +119,6 @@ export default {
   updateTitle,
   updateContent,
   updateCover,
-  updateTags
+  updateTags,
+  deletePost
 };

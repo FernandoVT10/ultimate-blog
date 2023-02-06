@@ -473,4 +473,30 @@ describe("integration api/blogposts", () => {
       });
     });
   });
+
+  describe("DELETE /blogposts/:blogPostId", () => {
+    checkAuthorizeMiddleware("/api/blogposts/id", "delete");
+
+    it("should delete a post", async () => {
+      const blogPost = await BlogPostFactory.createOne();
+
+      const res = await request
+        .delete(`/api/blogposts/${blogPost._id}`)
+        .set("Cookie", authToken)
+        .expect(200);
+
+      expect(res.body).toEqual(
+        convertToResponseBody(blogPost)
+      );
+    });
+
+    describe("validation", () => {
+      testBlogPostId(() => {
+        const blogPostId = faker.database.mongodbObjectId();
+        return request
+          .delete(`/api/blogposts/${blogPostId}`)
+          .set("Cookie", authToken);
+      });
+    });
+  });
 });

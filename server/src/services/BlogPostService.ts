@@ -84,6 +84,10 @@ const checkIfExists = async (blogPostId: string): Promise<boolean> => {
   return false;
 };
 
+const deletePost = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findByIdAndDelete(blogPostId);
+};
+
 export default {
   getAll,
   getById,
@@ -92,5 +96,6 @@ export default {
   updateTitle,
   updateCover,
   updateTags,
-  checkIfExists
+  checkIfExists,
+  deletePost
 };
