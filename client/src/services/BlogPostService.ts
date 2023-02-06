@@ -40,6 +40,8 @@ export async function getPostById(blogPostId: string): Promise<BlogPost | null> 
   }
 }
 
+// TODO: I should be handling the errors way better
+
 export async function updateCover(blogPostId: string, cover: File): Promise<{ error: string | null }> {
   const formData = new FormData();
   formData.append("cover", cover);
@@ -125,6 +127,18 @@ export async function updateTags(
     if(res.status === 204) return true;
 
     return false;
+  } catch {
+    return false;
+  }
+}
+
+export async function deleteBlogPost(blogPostId: BlogPost["_id"]): Promise<boolean> {
+  try {
+    const res = await axios.delete(`/blogposts/${blogPostId}`, {
+      withCredentials: true
+    });
+
+    return res.status === 200;
   } catch {
     return false;
   }

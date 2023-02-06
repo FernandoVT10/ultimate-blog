@@ -13,8 +13,9 @@ import Content from "@domain/BlogPost/Content";
 import Tags from "@domain/BlogPost/Tags";
 import Navbar from "@components/Navbar";
 import BlogPostCards from "@components/BlogPostCards";
+import DeleteButton from "@domain/BlogPost/DeleteButton";
 
-import styles from "@styles/Blog.module.scss";
+import styles from "@styles/pages/Blog.module.scss";
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const blogPostId = params?.blogId;
@@ -89,6 +90,12 @@ export default function BlogPage({ blogPost, recentBlogPosts, isAdmin }: BlogPag
           <Tags
             tags={blogPost.tags}
             isAdmin={isAdmin}
+            blogPostId={blogPost._id}
+          />
+
+          <DeleteButton
+            isAdmin={isAdmin}
+            title={blogPost.title}
             blogPostId={blogPost._id}
           />
         </section>
