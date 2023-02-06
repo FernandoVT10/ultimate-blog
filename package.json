@@ -11,6 +11,7 @@
     "test:server": "npm run test -w server",
     "test": "npm run test --workspaces",
     "lint": "eslint . --cache",
+    "lint:fix": "eslint . --cache --fix",
     "prepare": "husky install"
   },
   "keywords": [],
