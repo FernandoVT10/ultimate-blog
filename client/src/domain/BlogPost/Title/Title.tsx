@@ -33,10 +33,14 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
 
     setLoading(true);
 
-    if(await updateTitle(blogPostId, title)) {
+    const success = await updateTitle(blogPostId, title);
+
+    if(success) {
       setStaticTitle(title);
       document.title = title;
       toast.success("Title updated successfully");
+    } else {
+      toast.error("There was an error trying to update the title");
     }
 
     setLoading(false);

@@ -8,6 +8,7 @@ import Modal, { UseModalReturn } from "@components/Modal";
 
 import { PlusIcon, SidebarCollapseIcon } from "@primer/octicons-react";
 import { Tag } from "@services/TagService";
+import { toast } from "react-toastify";
 
 import { BlogPost, updateTags } from "@services/BlogPostService";
 
@@ -50,6 +51,9 @@ export default function TagsModal({ blogPostId, modal, initialTags, setUpdatedTa
     if(await updateTags(blogPostId, selectedTags)) {
       setUpdatedTags(selectedTags);
       modal.hideModal();
+      toast.success("Tags updated successfully");
+    } else {
+      toast.error("There was an error trying to update the tags");
     }
 
     setLoading(false);

@@ -58,6 +58,8 @@ export default function Content({ blogPostId, content: initialContent, isAdmin }
     if(await updateContent(blogPostId, content)) {
       setEditing(false);
       toast.success("Content updated successfully");
+    } else {
+      toast.error("There was an error trying to update the content");
     }
 
     setLoading(false);

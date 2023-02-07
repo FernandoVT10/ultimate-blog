@@ -15,12 +15,7 @@ export type BlogPost = {
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
     const res = await axios.get("/blogposts");
-
-    if(res.status === 200) {
-      return res.data;
-    }
-
-    return []; 
+    return res.data;
   } catch {
     return [];
   }
@@ -29,25 +24,18 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 export async function getPostById(blogPostId: string): Promise<BlogPost | null> {
   try {
     const res = await axios.get(`/blogposts/${blogPostId}`);
-
-    if(res.status === 200) {
-      return res.data;
-    } 
-
-    return null;
+    return res.data;
   } catch {
     return null;
   }
 }
-
-// TODO: I should be handling the errors way better
 
 export async function updateCover(blogPostId: string, cover: File): Promise<{ error: string | null }> {
   const formData = new FormData();
   formData.append("cover", cover);
 
   try {
-    const res = await axios.put(
+    await axios.put(
       `/blogposts/${blogPostId}/updateCover`,
       formData,
       {
@@ -57,10 +45,6 @@ export async function updateCover(blogPostId: string, cover: File): Promise<{ er
         withCredentials: true
       }
     );
-
-    if(res.status !== 204 && res.data.message) {
-      return { error: res.data.message };
-    }
 
     return {
       error: null
@@ -72,22 +56,18 @@ export async function updateCover(blogPostId: string, cover: File): Promise<{ er
   }
 }
 
-// TODO: really repetitive code down here, need fix
-
 export async function updateTitle(
   blogPostId: string,
   title: BlogPost["title"]
 ): Promise<boolean> {
   try {
-    const res = await axios.put(
+    await axios.put(
       `/blogposts/${blogPostId}/updateTitle`,
       { title },
       { withCredentials: true }
     );
 
-    if(res.status === 204) return true;
-
-    return false;
+    return true;
   } catch {
     return false;
   }
@@ -98,15 +78,13 @@ export async function updateContent(
   content: BlogPost["content"]
 ): Promise<boolean> {
   try {
-    const res = await axios.put(
+    await axios.put(
       `/blogposts/${blogPostId}/updateContent`,
       { content },
       { withCredentials: true }
     );
 
-    if(res.status === 204) return true;
-
-    return false;
+    return true;
   } catch {
     return false;
   }
@@ -118,15 +96,13 @@ export async function updateTags(
   tags: string[]
 ): Promise<boolean> {
   try {
-    const res = await axios.put(
+    await axios.put(
       `/blogposts/${blogPostId}/updateTags`,
       { tags },
       { withCredentials: true }
     );
 
-    if(res.status === 204) return true;
-
-    return false;
+    return true;
   } catch {
     return false;
   }
@@ -134,11 +110,11 @@ export async function updateTags(
 
 export async function deleteBlogPost(blogPostId: BlogPost["_id"]): Promise<boolean> {
   try {
-    const res = await axios.delete(`/blogposts/${blogPostId}`, {
+    await axios.delete(`/blogposts/${blogPostId}`, {
       withCredentials: true
     });
 
-    return res.status === 200;
+    return true;
   } catch {
     return false;
   }
