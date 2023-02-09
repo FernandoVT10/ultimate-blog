@@ -81,18 +81,11 @@
     }
   }
 
-  & .content {
+  & .mainContentRenderer {
     margin-top: 20px;
 
     &.isAdmin {
       margin-top: 10px;
-    }
-
-    &.previewing {
-      margin: 0;
-      padding: 20px;
-      border: solid 1px var(--color-border);
-      border-radius: 5px;
     }
   }
 }

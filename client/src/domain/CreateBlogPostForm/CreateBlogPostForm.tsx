@@ -1,5 +1,7 @@
-import TitleInput from "@components/BlogPostForm/TitleInput";
 import { useReducer } from "react";
+
+import TitleInput from "@components/BlogPostForm/TitleInput";
+import ContentEditor from "@components/BlogPostForm/ContentEditor";
 
 import styles from "./CreateBlogPostForm.module.scss";
 
@@ -66,6 +68,12 @@ export default function CreateBlogPostForm() {
             value: title
           })}
         />
+
+        <ContentEditor content={state.content} setContent={(content) => dispatch({
+          type: "CHANGE_STRING",
+          field: "content",
+          value: content
+        })}/>
       </form>
     </div>
   );
