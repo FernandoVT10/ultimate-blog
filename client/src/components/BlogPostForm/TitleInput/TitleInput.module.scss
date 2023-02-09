@@ -1,0 +1,17 @@
+.titleInput {
+  & .input {
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: solid 1px var(--color-input-border);
+    border-radius: 5px;
+    color: inherit;
+    transition: .3s;
+
+    &:focus {
+      border-color: var(--color-highlight);
+    }
+  }
+}

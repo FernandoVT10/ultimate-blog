@@ -1,14 +1,12 @@
 import { toast } from "react-toastify";
 import { BlogPost, updateTitle } from "@services/BlogPostService";
 import { FileCodeIcon, PencilIcon, ReplyIcon } from "@primer/octicons-react";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 
+import TitleInput from "@components/BlogPostForm/TitleInput";
 import Spinner from "@components/Spinner";
 
 import styles from "./Title.module.scss";
-
-// TODO: it's better to get this number from the BlogPost model of the server
-const TITLE_MAX_LENGTH = 100;
 
 interface TitleProps {
   blogPostId: BlogPost["_id"];
@@ -23,10 +21,6 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
   const [staticTitle, setStaticTitle] = useState(initialTitle);
 
   const [loading, setLoading] = useState(false);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -51,15 +45,7 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
     return (
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={title}
-            onChange={handleInputChange}
-            className={styles.input}
-            maxLength={TITLE_MAX_LENGTH}
-            autoComplete="off"
-            required
-          />
+          <TitleInput title={title} setTitle={(title) => setTitle(title)}/>
 
           <div className={styles.formButtons}>
             <button
