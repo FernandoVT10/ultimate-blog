@@ -1,5 +1,16 @@
 .blogPosts {
   width: 100%;
+
+  & .messageContainer {
+    text-align: center;
+    margin-top: 40px;
+
+    & .message {
+      font-size: 25px;
+      color: var(--color-fg-highlight);
+      font-weight: bold;
+    }
+  }
 }
 
 .blogPost {

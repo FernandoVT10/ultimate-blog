@@ -79,6 +79,12 @@ export default function BlogPosts({ blogPosts }: BlogPostsProps) {
         return <BlogPost key={index} blogPost={blogPost}/>;
       });
     }
+
+    return (
+      <div className={styles.messageContainer}>
+        <p className={styles.message}>There are no blog posts.</p>
+      </div>
+    );
   };
 
   return (
