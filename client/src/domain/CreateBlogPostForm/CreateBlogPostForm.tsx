@@ -1,7 +1,10 @@
 import { useReducer } from "react";
+import { useModal } from "@components/Modal";
 
 import TitleInput from "@components/BlogPostForm/TitleInput";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
+import TagsModal from "@components/BlogPostForm/TagsModal";
+import TagsList from "@components/BlogPostForm/TagsList";
 
 import styles from "./CreateBlogPostForm.module.scss";
 
@@ -52,6 +55,7 @@ const initialState: State = {
 
 export default function CreateBlogPostForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const tagsModal = useModal();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +63,15 @@ export default function CreateBlogPostForm() {
 
   return (
     <div className={styles.createBlogPostForm}>
+      <TagsModal
+        modal={tagsModal}
+        selectedTags={state.tags}
+        setSelectedTags={(tags) => dispatch({
+          type: "CHANGE_TAGS",
+          value: tags
+        })}
+      />
+
       <form onSubmit={handleSubmit}>
         <TitleInput
           title={state.title}
@@ -74,6 +87,12 @@ export default function CreateBlogPostForm() {
           field: "content",
           value: content
         })}/>
+
+        <TagsList
+          tags={state.tags}
+          showTagsModal={() => tagsModal.showModal()}
+          showEditButton
+        />
       </form>
     </div>
   );

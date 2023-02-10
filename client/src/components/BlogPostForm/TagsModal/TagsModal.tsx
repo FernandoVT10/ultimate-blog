@@ -2,34 +2,34 @@ import { useState } from "react";
 
 import CreateTag from "./CreateTag";
 import TagList from "./TagList";
-import Spinner from "@components/Spinner";
+import Spinner from "../../Spinner";
 
-import Modal, { UseModalReturn } from "@components/Modal";
+import Modal, { UseModalReturn } from "../../Modal";
 
-import { PlusIcon, SidebarCollapseIcon } from "@primer/octicons-react";
+import { PlusIcon } from "@primer/octicons-react";
 import { Tag } from "@services/TagService";
-import { toast } from "react-toastify";
-
-import { BlogPost, updateTags } from "@services/BlogPostService";
 
 import styles from "./TagsModal.module.scss";
 
 interface TagsModalProps {
-  blogPostId: BlogPost["_id"];
   modal: UseModalReturn;
-  initialTags: Tag[];
-  setUpdatedTags: (tags: string[]) => void;
+  selectedTags: string[];
+  setSelectedTags: (tags: string[]) => void;
+  otherOption?: JSX.Element | JSX.Element[];
+  loading?: boolean;
 }
 
 const getNamesFromTags = (tags: Tag[]): string[] => tags.map(tag => tag.name);
 
-export default function TagsModal({ blogPostId, modal, initialTags, setUpdatedTags }: TagsModalProps) {
+export default function TagsModal({
+  modal,
+  selectedTags,
+  setSelectedTags,
+  otherOption,
+  loading
+}: TagsModalProps) {
   const [tags, setTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    getNamesFromTags(initialTags)
-  );
   const [creating, setCreating] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const isSelectedTag = (tag: string): boolean => {
     return selectedTags.includes(tag);
@@ -43,20 +43,6 @@ export default function TagsModal({ blogPostId, modal, initialTags, setUpdatedTa
     setSelectedTags(
       selectedTags.filter(selectedTag => selectedTag !== tag)
     );
-  };
-
-  const handleUpdateTags = async () => {
-    setLoading(true);
-
-    if(await updateTags(blogPostId, selectedTags)) {
-      setUpdatedTags(selectedTags);
-      modal.hideModal();
-      toast.success("Tags updated successfully");
-    } else {
-      toast.error("There was an error trying to update the tags");
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -95,13 +81,7 @@ export default function TagsModal({ blogPostId, modal, initialTags, setUpdatedTa
               Create new tag
             </button>
 
-            <button
-              className={`custom-btn ${styles.createTagButton}`}
-              onClick={handleUpdateTags}
-            >
-              <SidebarCollapseIcon size={14} className="icon"/>
-              Update tags
-            </button>
+            {otherOption}
           </div>
       }
       </div>

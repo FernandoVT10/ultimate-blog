@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTags as getTagsService, Tag } from "@services/TagService";
 
-import Spinner from "@components/Spinner";
+import Spinner from "../../../Spinner";
 
 import styles from "./TagList.module.scss";
 

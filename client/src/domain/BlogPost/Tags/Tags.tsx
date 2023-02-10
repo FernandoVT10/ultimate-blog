@@ -1,11 +1,14 @@
-import TagsModal from "./TagsModal";
-import Link from "next/link";
+import TagsModal from "@components/BlogPostForm/TagsModal";
+import TagsList from "@components/BlogPostForm/TagsList";
 
-import { TagIcon, PencilIcon } from "@primer/octicons-react";
 import { useModal } from "@components/Modal";
-import { BlogPost } from "@services/BlogPostService";
 import { useState } from "react";
 import { Tag } from "@services/TagService";
+import { toast } from "react-toastify";
+
+import { BlogPost, updateTags } from "@services/BlogPostService";
+import { SidebarCollapseIcon } from "@primer/octicons-react";
+
 
 import styles from "./Tags.module.scss";
 
@@ -15,65 +18,62 @@ interface TagsProps {
   blogPostId: BlogPost["_id"];
 }
 
+const getNamesFromTags = (tags: Tag[]): string[] => tags.map(tag => tag.name);
+
 export default function Tags({ tags: initialTags, isAdmin, blogPostId }: TagsProps) {
   const [tags, setTags] = useState(initialTags);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    getNamesFromTags(initialTags)
+  );
+  const [loading, setLoading] = useState(false);
 
   const modal = useModal();
 
-  const setUpdatedTags = (tags: string[]) => {
-    setTags(tags.map(tagName => {
-      return {
-        _id: "",
-        name: tagName
-      };
-    }));
+  const handleUpdateTags = async () => {
+    setLoading(true);
+
+    if(await updateTags(blogPostId, selectedTags)) {
+      setTags(selectedTags.map(tagName => {
+        return {
+          _id: "",
+          name: tagName
+        };
+      }));
+
+      modal.hideModal();
+      toast.success("Tags updated successfully");
+    } else {
+      toast.error("There was an error trying to update the tags");
+    }
+
+    setLoading(false);
   };
 
-  const getTags = () => {
-    if(tags.length) {
-      return (
-        <div className={styles.tags}>
-          {tags.map((tag, index) => {
-            return (
-              <Link
-                className={styles.tag}
-                href={`/blog?tags=${tag.name}`}
-                key={index}
-              >
-                <span key={index}>
-                  { tag.name }
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      );
-    }
-  };
+  const updateTagsOption = (
+    <button
+      className={`custom-btn ${styles.createTagButton}`}
+      onClick={handleUpdateTags}
+    >
+      <SidebarCollapseIcon size={14} className="icon"/>
+      Update tags
+    </button>
+  );
 
   return (
     <div className={styles.tagsContainer}>
       <TagsModal
-        blogPostId={blogPostId}
         modal={modal}
-        initialTags={tags}
-        setUpdatedTags={setUpdatedTags}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
+        otherOption={updateTagsOption}
+        loading={loading}
       />
 
-      <div className={styles.tagsListContainer}>
-        <TagIcon size={18} className={styles.tagIcon}/>
-
-        { getTags() }
-
-        { isAdmin &&
-          <button
-            className={styles.editButton}
-            onClick={() => modal.showModal()}
-          >
-            <PencilIcon size={18} className={styles.button}/>
-          </button>
-        }
-      </div>
+      <TagsList
+        tags={tags.map(tag => tag.name)}
+        showEditButton={isAdmin}
+        showTagsModal={() => modal.showModal()}
+      />
     </div>
   );
 }
