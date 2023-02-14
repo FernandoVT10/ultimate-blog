@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import { useModal } from "@components/Modal";
 
+import CoverSelection from "@components/BlogPostForm/CoverSelection";
 import TitleInput from "@components/BlogPostForm/TitleInput";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
 import TagsModal from "@components/BlogPostForm/TagsModal";
@@ -61,6 +62,14 @@ export default function CreateBlogPostForm() {
     e.preventDefault();
   };
 
+  const handleOnChangeCover = (cover: File): boolean => {
+    dispatch({
+      type: "CHANGE_COVER",
+      file: cover
+    });
+    return true;
+  };
+
   return (
     <div className={styles.createBlogPostForm}>
       <TagsModal
@@ -73,6 +82,11 @@ export default function CreateBlogPostForm() {
       />
 
       <form onSubmit={handleSubmit}>
+        <CoverSelection
+          onChangeCover={handleOnChangeCover}
+          displayChangeButton
+        />
+
         <TitleInput
           title={state.title}
           setTitle={(title) => dispatch({
