@@ -1,0 +1,14 @@
+.createPost {
+  padding: 20px;
+  background: var(--color-bg-surface);
+  margin: 40px auto;
+
+  & .titleInputContainer,
+  & .tagsListContainer {
+    margin-top: 20px;
+  }
+
+  & .submitButton {
+    margin-top: 20px;
+  }
+}

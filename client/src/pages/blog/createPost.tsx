@@ -1,4 +1,4 @@
-import CreateBlogPostForm from "@domain/CreateBlogPostForm";
+import CreateBlogPostForm from "@domain/CreatePost";
 import Head from "next/head";
 
 export default function CreateBlogPostPage() {

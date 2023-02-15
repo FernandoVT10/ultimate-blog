@@ -7,7 +7,8 @@ import ContentEditor from "@components/BlogPostForm/ContentEditor";
 import TagsModal from "@components/BlogPostForm/TagsModal";
 import TagsList from "@components/BlogPostForm/TagsList";
 
-import styles from "./CreateBlogPostForm.module.scss";
+import styles from "./CreatePost.module.scss";
+import { SidebarCollapseIcon } from "@primer/octicons-react";
 
 type State = {
   cover: File | null;
@@ -54,7 +55,7 @@ const initialState: State = {
   tags: []
 };
 
-export default function CreateBlogPostForm() {
+export default function CreatePost() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const tagsModal = useModal();
 
@@ -71,7 +72,7 @@ export default function CreateBlogPostForm() {
   };
 
   return (
-    <div className={styles.createBlogPostForm}>
+    <div className={`wrapper ${styles.createPost}`}>
       <TagsModal
         modal={tagsModal}
         selectedTags={state.tags}
@@ -87,14 +88,16 @@ export default function CreateBlogPostForm() {
           displayChangeButton
         />
 
-        <TitleInput
-          title={state.title}
-          setTitle={(title) => dispatch({
-            type: "CHANGE_STRING",
-            field: "title",
-            value: title
-          })}
-        />
+        <div className={styles.titleInputContainer}>
+          <TitleInput
+            title={state.title}
+            setTitle={(title) => dispatch({
+              type: "CHANGE_STRING",
+              field: "title",
+              value: title
+            })}
+          />
+        </div>
 
         <ContentEditor content={state.content} setContent={(content) => dispatch({
           type: "CHANGE_STRING",
@@ -102,11 +105,18 @@ export default function CreateBlogPostForm() {
           value: content
         })}/>
 
-        <TagsList
-          tags={state.tags}
-          showTagsModal={() => tagsModal.showModal()}
-          showEditButton
-        />
+        <div className={styles.tagsListContainer}>
+          <TagsList
+            tags={state.tags}
+            showTagsModal={() => tagsModal.showModal()}
+            showEditButton
+          />
+        </div>
+
+        <button className={`custom-btn ${styles.submitButton}`}>
+          <SidebarCollapseIcon size={16} className="icon" />
+          Create Post
+        </button>
       </form>
     </div>
   );

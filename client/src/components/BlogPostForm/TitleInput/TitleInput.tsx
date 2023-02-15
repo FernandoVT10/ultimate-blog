@@ -17,6 +17,7 @@ export default function TitleInput({
       <input
         type="text"
         value={title}
+        placeholder="Write an amazing title"
         onChange={({ target: { value } }) => setTitle(value)}
         className={styles.input}
         maxLength={TITLE_MAX_LENGTH}
