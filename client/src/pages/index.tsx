@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@components/Navbar";
+import Header from "@components/Header";
+import BlogPostCards from "@components/BlogPostCards";
 
 import { GetServerSideProps } from "next";
 import { BlogPost, getAllPosts } from "@services/BlogPostService";
 
-import styles from "@styles/Home.module.scss";
-import BlogPostCards from "@components/BlogPostCards";
+import styles from "@styles/pages/Home.module.scss";
 
 const aboutMe = `\
 Hi, I'm Fernando Vaca Tamayo a Javascript full stack developer.
@@ -54,16 +54,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         <title>Home - FVT</title>
       </Head>
 
-      <header className={styles.header}>
-        <Navbar/>
-
-        <Image
-          src="/images/header-bg.jpg"
-          alt="Header Image"
-          className={styles.bg}
-          fill
-        />
-
+      <Header height={350}>
         <div className={styles.githubDetails}>
           <img
             className={styles.avatar}
@@ -77,7 +68,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
             @FernandoVT10
           </p>
         </div>
-      </header>
+      </Header>
 
       <main className={styles.home}>
         <section className={`wrapper ${styles.section}`}>

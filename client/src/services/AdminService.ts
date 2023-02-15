@@ -2,7 +2,7 @@ import axios from "@config/axios";
 
 import { AUTH_COOKIE_KEY } from "@config/constants";
 
-export async function checkAdminStatus(authToken: string | undefined): Promise<boolean> {
+export async function checkAdminStatusFromServer(authToken: string | undefined): Promise<boolean> {
   if(!authToken) return false;
 
   try {
@@ -17,6 +17,18 @@ export async function checkAdminStatus(authToken: string | undefined): Promise<b
     }
 
     return false;
+  } catch {
+    return false;
+  }
+}
+
+export async function checkAdminStatusFromClient(): Promise<boolean> {
+  try {
+    const res = await axios.get("admin/status", {
+      withCredentials: true
+    });
+
+    return res.data.isLogged;
   } catch {
     return false;
   }

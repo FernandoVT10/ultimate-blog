@@ -1,6 +1,8 @@
 import { useReducer } from "react";
 import { useModal } from "@components/Modal";
 
+import { SidebarCollapseIcon } from "@primer/octicons-react";
+
 import CoverSelection from "@components/BlogPostForm/CoverSelection";
 import TitleInput from "@components/BlogPostForm/TitleInput";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
@@ -8,7 +10,6 @@ import TagsModal from "@components/BlogPostForm/TagsModal";
 import TagsList from "@components/BlogPostForm/TagsList";
 
 import styles from "./CreatePost.module.scss";
-import { SidebarCollapseIcon } from "@primer/octicons-react";
 
 type State = {
   cover: File | null;

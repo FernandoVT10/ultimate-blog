@@ -1,50 +1,27 @@
-.header {
+.githubDetails {
   display: flex;
-  align-items: center;
-  position: relative;
   width: 100%;
-  height: 350px;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 3;
 
-  &:before {
-    content: "";
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
+  & .avatar {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    border: solid 2px var(--color-fg-highlight);
   }
 
-  & .bg {
-    object-fit: cover;
+  & .fullName {
+    font-size: 25px;
+    margin-top: 20px;
   }
 
-  & .githubDetails {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    z-index: 3;
-
-    & .avatar {
-      border-radius: 50%;
-      width: 150px;
-      height: 150px;
-      border: solid 2px var(--color-fg-highlight);
-    }
-
-    & .fullName {
-      font-size: 25px;
-      margin-top: 20px;
-    }
-
-    & .username {
-      margin-top: 10px;
-      color: var(--color-fg-highlight);
-      font-weight: bold;
-    }
+  & .username {
+    margin-top: 10px;
+    color: var(--color-fg-highlight);
+    font-weight: bold;
   }
 }
 

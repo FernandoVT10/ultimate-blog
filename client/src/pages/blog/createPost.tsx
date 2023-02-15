@@ -1,4 +1,5 @@
 import CreateBlogPostForm from "@domain/CreatePost";
+import Header from "@components/Header";
 import Head from "next/head";
 
 export default function CreateBlogPostPage() {
@@ -7,6 +8,8 @@ export default function CreateBlogPostPage() {
       <Head>
         <title>Create BlogPost - FVT</title>
       </Head>
+
+      <Header/>
 
       <main>
         <CreateBlogPostForm/>

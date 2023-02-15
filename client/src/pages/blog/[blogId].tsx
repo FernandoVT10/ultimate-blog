@@ -1,21 +1,20 @@
 import { getPostById, BlogPost, getAllPosts } from "@services/BlogPostService";
 
 import { GetServerSideProps } from "next";
-import { checkAdminStatus } from "@services/AdminService";
+import { checkAdminStatusFromServer } from "@services/AdminService";
 import { AUTH_COOKIE_KEY } from "@config/constants";
 
 import Head from "next/head";
-import Image from "next/image";
 import BlogDate from "@components/BlogDate";
 import Cover from "@domain/BlogPost/Cover";
 import Title from "@domain/BlogPost/Title";
 import Content from "@domain/BlogPost/Content";
 import Tags from "@domain/BlogPost/Tags";
-import Navbar from "@components/Navbar";
 import BlogPostCards from "@components/BlogPostCards";
 import DeleteButton from "@domain/BlogPost/DeleteButton";
+import Header from "@components/Header";
 
-import styles from "@styles/pages/Blog.module.scss";
+import styles from "@styles/pages/BlogPost.module.scss";
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const blogPostId = params?.blogId;
@@ -34,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
   const recentBlogPosts = await getAllPosts();
 
   const authToken = req.cookies[AUTH_COOKIE_KEY];
-  const isAdmin = await checkAdminStatus(authToken);
+  const isAdmin = await checkAdminStatusFromServer(authToken);
 
   return {
     props: { blogPost, isAdmin, recentBlogPosts }
@@ -54,16 +53,7 @@ export default function BlogPage({ blogPost, recentBlogPosts, isAdmin }: BlogPag
         <title>{ blogPost.title }</title>
       </Head>
 
-      <header className={styles.header}>
-        <Navbar/>
-
-        <Image
-          src="/images/header-bg.jpg"
-          alt="Header Image"
-          className={styles.bg}
-          fill
-        />
-      </header>
+      <Header/>
 
       <main className={`wrapper ${styles.blogPost}`}>
         <Cover
