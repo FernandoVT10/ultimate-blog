@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { checkAdminStatusFromServer } from "@services/AdminService";
 import { AUTH_COOKIE_KEY } from "@config/constants";
 
-import CreateBlogPostForm from "@domain/CreatePost";
+import CreatePost from "@domain/CreatePost";
 import Header from "@components/Header";
 import Head from "next/head";
 
@@ -36,7 +36,7 @@ export default function CreateBlogPostPage() {
       <Header/>
 
       <main>
-        <CreateBlogPostForm/>
+        <CreatePost/>
       </main>
     </>
   );

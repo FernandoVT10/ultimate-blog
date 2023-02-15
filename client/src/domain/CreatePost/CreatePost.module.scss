@@ -10,5 +10,10 @@
 
   & .submitButton {
     margin-top: 20px;
+
+    & .loader {
+      display: inline-block;
+      margin-right: 5px;
+    }
   }
 }

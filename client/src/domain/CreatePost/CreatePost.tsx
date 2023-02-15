@@ -1,5 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { useModal } from "@components/Modal";
+import { createPost } from "@services/BlogPostService";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 import { SidebarCollapseIcon } from "@primer/octicons-react";
 
@@ -8,6 +11,7 @@ import TitleInput from "@components/BlogPostForm/TitleInput";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
 import TagsModal from "@components/BlogPostForm/TagsModal";
 import TagsList from "@components/BlogPostForm/TagsList";
+import Spinner from "@components/Spinner";
 
 import styles from "./CreatePost.module.scss";
 
@@ -58,10 +62,35 @@ const initialState: State = {
 
 export default function CreatePost() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const tagsModal = useModal();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const tagsModal = useModal();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if(!state.cover) {
+      return toast.error("Cover is required");
+    }
+
+    setLoading(true);
+
+    try {
+      const createdPost = await createPost({
+        title: state.title,
+        content: state.content,
+        cover: state.cover,
+        tags: state.tags
+      });
+
+      router.push(`/blog/${createdPost._id}`);
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error trying to create the post");
+    }
+
+    setLoading(false);
   };
 
   const handleOnChangeCover = (cover: File): boolean => {
@@ -114,9 +143,21 @@ export default function CreatePost() {
           />
         </div>
 
-        <button className={`custom-btn ${styles.submitButton}`}>
-          <SidebarCollapseIcon size={16} className="icon" />
-          Create Post
+        <button
+          className={`custom-btn ${styles.submitButton}`}
+          disabled={loading}
+        >
+          { loading ?
+            <>
+              <Spinner size={10} borderWidth={2} className={styles.loader}/>
+              Creating Post
+            </>
+          :
+            <>
+              <SidebarCollapseIcon size={16} className="icon" />
+              Create Post
+            </>
+          }
         </button>
       </form>
     </div>

@@ -30,6 +30,31 @@ export async function getPostById(blogPostId: string): Promise<BlogPost | null> 
   }
 }
 
+interface CreatePostData {
+  title: string;
+  content: string;
+  cover: File;
+  tags: string[];
+}
+
+export async function createPost({ title, content, cover, tags }: CreatePostData): Promise<BlogPost> {
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("content", content);
+  formData.append("cover", cover);
+
+  tags.forEach(tag => formData.append("tags", tag));
+
+  const res = await axios.post("/blogposts/", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    withCredentials: true
+  });
+
+  return res.data;
+}
+
 export async function updateCover(blogPostId: string, cover: File): Promise<{ error: string | null }> {
   const formData = new FormData();
   formData.append("cover", cover);
