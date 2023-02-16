@@ -16,6 +16,8 @@ import Header from "@components/Header";
 
 import styles from "@styles/pages/BlogPost.module.scss";
 
+const BLOG_POSTS_FETCH_LIMIT = 3;
+
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const blogPostId = params?.blogId;
 
@@ -29,8 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
     return { notFound: true };
   }
 
-  // TODO: I think is better to show related posts
-  const recentBlogPosts = await getAllPosts();
+  const recentBlogPosts = await getAllPosts(BLOG_POSTS_FETCH_LIMIT, blogPost._id);
 
   const authToken = req.cookies[AUTH_COOKIE_KEY];
   const isAdmin = await checkAdminStatusFromServer(authToken);

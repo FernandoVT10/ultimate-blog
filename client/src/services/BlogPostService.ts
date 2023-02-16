@@ -12,9 +12,13 @@ export type BlogPost = {
   updatedAt: string;
 }
 
-export async function getAllPosts(): Promise<BlogPost[]> {
+export async function getAllPosts(limit?: number, excludePost?: string): Promise<BlogPost[]> {
   try {
-    const res = await axios.get("/blogposts");
+    const res = await axios.get("/blogposts", {
+      params: {
+        limit, excludePost
+      }
+    });
     return res.data;
   } catch {
     return [];
