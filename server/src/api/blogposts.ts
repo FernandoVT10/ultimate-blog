@@ -6,23 +6,38 @@ import authorize from "../middlewares/authorize";
 import createMulterInstance from "../config/multer";
 
 import { query, body, param, checkSchema } from "express-validator";
-import { Router } from "express";
+import { Router, Request } from "express";
 import { transformIntoStringArray } from "../utils/sanitizers";
 import { isValidObjectId } from "mongoose";
 
+const BLOG_POST_FETCH_LIMIT = 20;
+
 const router = Router();
+
+interface GetBlogPostsQuery {
+  tags?: string[];
+  limit?: number;
+  excludePost?: string;
+}
 
 router.get(
   "/blogposts/",
 
   query("tags").customSanitizer(transformIntoStringArray),
-
   query("limit").toInt(),
+  query("excludePost").custom(value => {
+    if(!value || isValidObjectId(value)) return true;
+    throw new Error("Must be a valid Blog Post id");
+  }),
 
-  asyncHandler(async (req, res) => {
+  checkValidation(),
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  asyncHandler(async (req: Request<{}, {}, {}, GetBlogPostsQuery>, res) => {
     const blogPosts = await BlogPostController.getAll({
       tags: req.query?.tags,
-      limit: req.query?.limit
+      limit: req.query?.limit || BLOG_POST_FETCH_LIMIT,
+      excludePost: req.query?.excludePost
     });
 
     res.json(blogPosts);

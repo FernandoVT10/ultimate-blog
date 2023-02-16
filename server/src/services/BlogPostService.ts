@@ -3,7 +3,7 @@ import BlogPost, { IBlogPost } from "../models/BlogPost";
 import { FilterQuery, HydratedDocument } from "mongoose";
 import { ITag } from "@app/models/Tag";
 
-export type BlogPostServiceFilter = FilterQuery<IBlogPost>;
+export type BlogPostServiceFilter = FilterQuery<IBlogPost & { _id: string }>;
 
 const getAll = async (
   filter: FilterQuery<IBlogPost>,

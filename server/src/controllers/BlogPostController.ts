@@ -8,6 +8,7 @@ import BlogPostCover from "../lib/BlogPostCover";
 interface GetAllOptions {
   tags?: string[];
   limit?: number;
+  excludePost?: string;
 }
 
 const getAll = async (options: GetAllOptions) => {
@@ -23,6 +24,12 @@ const getAll = async (options: GetAllOptions) => {
     } else {
       return [];
     }
+  }
+
+  if(options.excludePost) {
+    filter._id = {
+      $ne: options.excludePost
+    };
   }
 
   return BlogPostService.getAll(filter, options.limit);

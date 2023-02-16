@@ -206,6 +206,31 @@ describe("integration api/blogposts", () => {
         );
       });
     });
+
+    describe("exludePost query option", () => {
+      it("should exclude a specified blogPost", async () => {
+        const blogPostA = await BlogPostFactory.createOne();
+        const blogPostB = await BlogPostFactory.createOne();
+
+        const res = await request.get("/api/blogposts")
+          .query({ excludePost: blogPostB._id.toString() })
+          .expect(200);
+
+        expect(res.body).toHaveLength(1);
+        expect(res.body[0]).toEqual(convertToResponseBody(blogPostA));
+      });
+
+      it("should fail when we pass an invalid id", async () => {
+        const res = await request.get("/api/blogposts")
+          .query({ excludePost: "abc" })
+          .expect(400);
+
+        expect(res).toContainValidationError({
+          field: "excludePost",
+          message: "Must be a valid Blog Post id"
+        });
+      });
+    });
   });
 
   describe("GET /api/blogposts/:blogPostId", () => {
