@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { PencilIcon } from "@primer/octicons-react";
 import { toast } from "react-toastify";
 import { useState } from "react";
