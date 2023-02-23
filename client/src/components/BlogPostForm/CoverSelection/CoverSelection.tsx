@@ -91,6 +91,8 @@ export default function CoverSelection({
         src={coverURL}
         alt="Post cover"
         fill
+        sizes="(max-width: 1200px) 100vw, 1200px"
+        priority
       />
     );
   };

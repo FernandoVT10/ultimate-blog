@@ -20,6 +20,7 @@ function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
           src={blogPost.cover}
           className={styles.coverImage}
           alt={blogPost.title}
+          sizes="(max-width: 1000px): 50vw, (max-width: 600): 100vw, 400px"
           fill
         />
 
