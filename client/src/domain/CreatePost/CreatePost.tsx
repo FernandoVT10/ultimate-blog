@@ -102,7 +102,7 @@ export default function CreatePost() {
   };
 
   return (
-    <div className={`wrapper ${styles.createPost}`}>
+    <div className={styles.createPost}>
       <TagsModal
         modal={tagsModal}
         selectedTags={state.tags}

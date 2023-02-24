@@ -35,7 +35,7 @@ export default function CreateBlogPostPage() {
 
       <Header/>
 
-      <main>
+      <main className="wrapper">
         <CreatePost/>
       </main>
     </>
