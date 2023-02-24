@@ -41,8 +41,10 @@ const icons: string[] = [
   "/images/icons/graphql.png",
 ];
 
+const POSTS_FETCH_LIMIT = 6;
+
 export const getServerSideProps: GetServerSideProps = async () => {
-  const blogPosts = await getAllPosts();
+  const blogPosts = await getAllPosts(POSTS_FETCH_LIMIT);
 
   return {
     props: { blogPosts }
