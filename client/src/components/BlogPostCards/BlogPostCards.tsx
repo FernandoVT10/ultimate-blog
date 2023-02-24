@@ -42,8 +42,10 @@ function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
 }
 
 export default function BlogPostCards({ blogPosts }: BlogPostCardsProps) {
+  const threePostsClassName = blogPosts.length === 3 && styles.threePosts;
+
   return (
-    <div className={styles.blogPostCards}>
+    <div className={`${styles.blogPostCards} ${threePostsClassName}`}>
       {blogPosts.map((blogPost, index) => {
         return <BlogPostCard blogPost={blogPost} key={index}/>;
       })}

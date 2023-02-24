@@ -50,7 +50,7 @@
   }
 
   @media only screen and (max-width: 1000px) {
-    & .blogPostCard:nth-child(3) {
+    &.threePosts .blogPostCard:nth-child(3) {
       display: none;
     }
 
@@ -58,6 +58,11 @@
   }
 
   @media only screen and (max-width: 600px) {
+
+    &.threePosts .blogPostCard:nth-child(3) {
+      display: block;
+    }
+
     row-gap: 20px;
     grid-template-columns: repeat(1, 1fr);
   }
