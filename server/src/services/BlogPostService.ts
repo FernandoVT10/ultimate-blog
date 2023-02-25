@@ -3,21 +3,21 @@ import BlogPost, { IBlogPost } from "../models/BlogPost";
 import { FilterQuery, HydratedDocument } from "mongoose";
 import { ITag } from "@app/models/Tag";
 
+import TagService from "./TagService";
+
+const BLOG_POST_FETCH_LIMIT = 20;
+
 export type BlogPostServiceFilter = FilterQuery<IBlogPost & { _id: string }>;
 
 const getAll = async (
   filter: FilterQuery<IBlogPost>,
   limit?: number
 ): Promise<HydratedDocument<IBlogPost>[]> => {
-  let query = BlogPost.find(filter)
+  return BlogPost.find(filter)
     .sort({ createdAt: "desc" })
-    .populate("tags");
-
-  if(limit) {
-    query = query.limit(limit);
-  }
-
-  return query.lean({ getters: true });
+    .populate("tags")
+    .limit(limit || BLOG_POST_FETCH_LIMIT)
+    .lean({ getters: true });
 };
 
 const getById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
@@ -69,10 +69,12 @@ const updateCover = async (blogPostId: string, cover: string) => {
 
 const updateTags = async (
   blogPostId: string,
-  tags: HydratedDocument<ITag>[]
+  tags: ITag["name"][]
 ): Promise<HydratedDocument<IBlogPost> | null> => {
+  const tagsDocs = await TagService.getTagsByName(tags);
+
   return BlogPost.findByIdAndUpdate(blogPostId, {
-    tags
+    tags: tagsDocs
   });
 };
 

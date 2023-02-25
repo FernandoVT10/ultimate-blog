@@ -1,4 +1,5 @@
 import BlogPostController from "../controllers/BlogPostController";
+import BlogPostService from "../services/BlogPostService";
 import BlogPostValidation from "../validation/BlogPostValidation";
 import asyncHandler from "express-async-handler";
 import checkValidation from "../middlewares/checkValidation";
@@ -9,8 +10,6 @@ import { query, body, param, checkSchema } from "express-validator";
 import { Router, Request } from "express";
 import { transformIntoStringArray } from "../utils/sanitizers";
 import { isValidObjectId } from "mongoose";
-
-const BLOG_POST_FETCH_LIMIT = 20;
 
 const router = Router();
 
@@ -36,7 +35,7 @@ router.get(
   asyncHandler(async (req: Request<{}, {}, {}, GetBlogPostsQuery>, res) => {
     const blogPosts = await BlogPostController.getAll({
       tags: req.query?.tags,
-      limit: req.query?.limit || BLOG_POST_FETCH_LIMIT,
+      limit: req.query?.limit,
       excludePost: req.query?.excludePost
     });
 
@@ -103,7 +102,7 @@ router.put(
     const { blogPostId } = req.params;
     const { title } = req.body;
 
-    await BlogPostController.updateTitle(blogPostId, title);
+    await BlogPostService.updateTitle(blogPostId, title);
 
     res.sendStatus(204);
   })
@@ -124,7 +123,7 @@ router.put(
     const { blogPostId } = req.params;
     const { content } = req.body;
 
-    await BlogPostController.updateContent(blogPostId, content);
+    await BlogPostService.updateContent(blogPostId, content);
 
     res.sendStatus(204);
   })
@@ -171,7 +170,7 @@ router.put(
     const { blogPostId } = req.params;
     const { tags } = req.body;
 
-    await BlogPostController.updateTags(blogPostId, tags);
+    await BlogPostService.updateTags(blogPostId, tags);
 
     res.sendStatus(204);
   })
@@ -190,7 +189,7 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { blogPostId } = req.params;
 
-    const deletedBlogPost = await BlogPostController.deletePost(blogPostId);
+    const deletedBlogPost = await BlogPostService.deletePost(blogPostId);
 
     res.json(deletedBlogPost);
   })

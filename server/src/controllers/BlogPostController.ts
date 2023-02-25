@@ -75,14 +75,6 @@ const createOne = async (data: BlogPostCommonData) => {
   }
 };
 
-const updateTitle = async (blogPostId: string, title: string): Promise<void> => {
-  await BlogPostService.updateTitle(blogPostId, title);
-};
-
-const updateContent = async (blogPostId: string, content: string): Promise<void> => {
-  await BlogPostService.updateContent(blogPostId, content);
-};
-
 const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
   const newCover = new BlogPostCover();
 
@@ -109,23 +101,9 @@ const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) =
   }
 };
 
-const updateTags = async (blogPostId: string, tags: string[]) => {
-  const tagDocs = await TagService.getTagsByName(tags);
-
-  await BlogPostService.updateTags(blogPostId, tagDocs);
-};
-
-const deletePost = (blogPostId: string) => {
-  return BlogPostService.deletePost(blogPostId);
-};
-
 export default {
   getAll,
   getById,
   createOne,
-  updateTitle,
-  updateContent,
-  updateCover,
-  updateTags,
-  deletePost
+  updateCover
 };
