@@ -1,5 +1,5 @@
 import httpMocks from "node-mocks-http";
-import checkValidation from "@app/middlewares/checkValidation";
+import checkValidation from "../checkValidation";
 
 import { body } from "express-validator";
 

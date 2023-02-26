@@ -1,7 +1,7 @@
-import errorHandler from "@app/middlewares/errorHandler";
+import errorHandler from "../errorHandler";
 import httpMocks from "node-mocks-http";
 
-import { RequestError } from "@app/utils/errors";
+import { RequestError } from "../../utils/errors";
 
 describe("middlewares/errorHandler", () => {
   const loggerSpy = jest.spyOn(console, "error");

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import jwtHelper from "@app/utils/jwtHelper";
-import { JWT_SECRET_KEY } from "@app/config/constants";
+import jwtHelper from "../jwtHelper";
+import { JWT_SECRET_KEY } from "../../config/constants";
 
 describe("utils/jwtHelper", () => {
   const data = { user: "jhon" };

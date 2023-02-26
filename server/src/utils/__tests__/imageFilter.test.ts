@@ -1,6 +1,6 @@
-import imageFilter from "@app/utils/imageFilter";
+import imageFilter from "../imageFilter";
 
-import { RequestError } from "@app/utils/errors";
+import { RequestError } from "../errors";
 
 describe("imageFilter", () => {
   const req: any = {};

@@ -1,4 +1,4 @@
-import { transformIntoStringArray } from "@app/utils/sanitizers";
+import { transformIntoStringArray } from "../sanitizers";
 
 const meta = {} as any;
 

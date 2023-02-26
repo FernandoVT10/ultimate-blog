@@ -1,7 +1,7 @@
 import path from "path";
 
-import pathTransformers from "@app/utils/pathTransformers";
-import { STATIC_DIR } from "@app/config/constants";
+import pathTransformers from "../pathTransformers";
+import { STATIC_DIR } from "../../config/constants";
 
 jest.mock("@app/config/constants", () => ({
   APP_STATIC_FILES_URL: "https://localhost:3000/static",

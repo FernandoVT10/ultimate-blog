@@ -1,7 +1,7 @@
 import { ADMIN_PASSWORD, AUTH_COOKIE_KEY } from "@app/config/constants";
 
-import authorize from "@app/middlewares/authorize";
-import jwtHelper from "@app/utils/jwtHelper";
+import authorize from "../authorize";
+import jwtHelper from "../../utils/jwtHelper";
 import httpMocks from "node-mocks-http";
 
 describe("middlewares/authorize", () => {
