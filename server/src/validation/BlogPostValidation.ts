@@ -1,4 +1,4 @@
-import modelsConfig from "../config/models";
+import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "../models/BlogPost";
 
 import { isValidObjectId } from "mongoose";
 import { CustomValidator, Schema, ParamSchema } from "express-validator";
@@ -6,8 +6,6 @@ import { transformIntoStringArray } from "../utils/sanitizers";
 
 import BlogPostService from "../services/BlogPostService";
 
-const TITLE_MAX_LENGTH = modelsConfig.blogPost.title.maxLength;
-const CONTENT_MAX_LENGTH = modelsConfig.blogPost.content.maxLength;
 
 const checkId: CustomValidator = async (id) => {
   if(!isValidObjectId(id)) throw new Error("Id is invalid");

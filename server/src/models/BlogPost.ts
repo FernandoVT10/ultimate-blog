@@ -2,8 +2,11 @@ import { Schema, model, Types, HydratedDocument } from "mongoose";
 import { mongooseLeanGetters } from "mongoose-lean-getters";
 import { ITag } from "./Tag";
 
-import modelsConf from "../config/models";
 import BlogPostCover from "../lib/BlogPostCover";
+
+export const MODEL_NAME = "BlogPost";
+export const TITLE_MAX_LENGTH = 100;
+export const CONTENT_MAX_LENGTH = 5000;
 
 export interface IBlogPost {
   title: string;
@@ -14,18 +17,16 @@ export interface IBlogPost {
   updatedAt: number;
 }
 
-const { blogPost: blogPostConf } = modelsConf;
-
 const blogPostSchema = new Schema<IBlogPost>(
   {
     title: {
       type: String,
-      maxlength: blogPostConf.title.maxLength,
+      maxlength: TITLE_MAX_LENGTH,
       required: true
     },
     content: {
       type: String,
-      maxlength: blogPostConf.content.maxLength,
+      maxlength: CONTENT_MAX_LENGTH,
       required: true
     },
     cover: {
@@ -47,6 +48,6 @@ const blogPostSchema = new Schema<IBlogPost>(
 
 blogPostSchema.plugin(mongooseLeanGetters);
 
-const BlogPost = model<IBlogPost>("BlogPost", blogPostSchema);
+const BlogPost = model<IBlogPost>(MODEL_NAME, blogPostSchema);
 
 export default BlogPost;

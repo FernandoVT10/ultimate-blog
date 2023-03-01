@@ -1,13 +1,11 @@
 import { Router } from "express";
 import { body } from "express-validator";
+import { NAME_MAX_LENGTH } from "../models/Tag";
 
 import TagService from "../services/TagService";
 import asyncHandler from "express-async-handler";
 import authorize from "../middlewares/authorize";
 import checkValidation from "../middlewares/checkValidation";
-import modelConfig from "../config/models";
-
-const NAME_MAXLENGTH = modelConfig.tag.name.maxLength;
 
 const router = Router();
 
@@ -27,8 +25,8 @@ router.post(
     .withMessage("Name is required")
     .isString()
     .withMessage("Name must be a string")
-    .isLength({ max: NAME_MAXLENGTH })
-    .withMessage(`Name can't be larger than ${NAME_MAXLENGTH} characters`)
+    .isLength({ max: NAME_MAX_LENGTH })
+    .withMessage(`Name can't be larger than ${NAME_MAX_LENGTH} characters`)
     .custom(async (name) => {
       if(await TagService.checkNameExists(name)) {
         throw new Error(`A tag called "${name}" already exists`);
