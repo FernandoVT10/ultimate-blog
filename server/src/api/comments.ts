@@ -5,7 +5,7 @@ import authorize from "../middlewares/authorize";
 import asyncHandler from "express-async-handler";
 import checkValidation from "../middlewares/checkValidation";
 import CommentValidation from "../validation/CommentValidation";
-import CommentService from "@app/services/CommentService";
+import CommentService from "../services/CommentService";
 
 const router = Router();
 
