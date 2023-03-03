@@ -7,13 +7,13 @@ export const CONTENT_MAX_LENGTH = 1000;
 
 const MODEL_NAME = "Comment";
 
-export const REPLIED_TO_MODEL_NAMES = [BLOG_POST_MODEL_NAME, MODEL_NAME];
+export const PARENT_TYPES = [BLOG_POST_MODEL_NAME, MODEL_NAME];
 
 export interface IComment {
   authorName: string;
   content: string;
-  repliedTo: Types.ObjectId;
-  repliedToModel: "BlogPost" | "Comment";
+  parentId: Types.ObjectId;
+  parentType: "BlogPost" | "Comment";
   createdAt: number;
   updatedAt: number;
 }
@@ -29,14 +29,14 @@ const commentSchema = new Schema<IComment>({
     type: String,
     required: true
   },
-  repliedTo: {
+  parentId: {
     type: Schema.Types.ObjectId,
-    refPath: "repliedToModel",
+    refPath: "parentType",
     required: true
   },
-  repliedToModel: {
+  parentType: {
     type: String,
-    enum: REPLIED_TO_MODEL_NAMES,
+    enum: PARENT_TYPES,
     required: true
   }
 }, { timestamps: true });

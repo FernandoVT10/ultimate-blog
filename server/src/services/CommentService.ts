@@ -5,8 +5,8 @@ import Comment, { IComment } from "../models/Comment";
 interface CreateCommentData {
   authorName: IComment["authorName"];
   content: IComment["authorName"];
-  repliedToModel: IComment["repliedToModel"];
-  repliedTo: string;
+  parentType: IComment["parentType"];
+  parentId: string;
 }
 
 const create = (data: CreateCommentData): Promise<HydratedDocument<IComment>> => {

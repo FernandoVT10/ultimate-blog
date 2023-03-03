@@ -11,8 +11,8 @@ const createOne = async (): Promise<HydratedDocument<IComment>> => {
   return Comment.create({
     authorName: faker.internet.userName(),
     content: faker.lorem.paragraph(),
-    repliedToModel: "BlogPost",
-    repliedTo: blogPost._id
+    parentType: "BlogPost",
+    parentId: blogPost._id
   });
 };
 

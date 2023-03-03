@@ -15,8 +15,8 @@ router.post(
   checkSchema({
     authorName: CommentValidation.authorName,
     content: CommentValidation.content,
-    repliedToModel: CommentValidation.repliedToModel,
-    repliedTo: CommentValidation.repliedTo
+    parentType: CommentValidation.parentType,
+    parentId: CommentValidation.parentId
   }),
 
   checkValidation(),
@@ -25,8 +25,8 @@ router.post(
     const createdComment = await CommentService.create({
       authorName: req.body.authorName,
       content: req.body.content,
-      repliedToModel: req.body.repliedToModel,
-      repliedTo: req.body.repliedTo
+      parentType: req.body.parentType,
+      parentId: req.body.parentId
     });
 
     res.json(createdComment);

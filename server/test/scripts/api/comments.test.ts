@@ -43,53 +43,53 @@ describe("integration /api/comments", () => {
         required: true
       });
 
-      it("should fail when repliedToModel is invalid", async () => {
+      it("should fail when parentType is invalid", async () => {
         const res = await getRequest()
-  .send({ repliedToModel: "invalid string" })
+          .send({ parentType: "invalid string" })
           .expect(400);
 
         expect(res).toContainValidationError({
-          field: "repliedToModel",
-          message: "repliedToModel is invalid"
+          field: "parentType",
+          message: "parentType is invalid"
         });
       });
 
-      it("should fail when repliedTo is invalid", async () => {
+      it("should fail when parentId is invalid", async () => {
         const res = await getRequest()
-          .send({ repliedTo: "invalid id" })
+          .send({ parentId: "invalid id" })
           .expect(400);
 
         expect(res).toContainValidationError({
-          field: "repliedTo",
-          message: "repliedTo is invalid"
+          field: "parentId",
+          message: "parentId is invalid"
         });
       });
 
-      it("should fail when the id in repliedTo doesn't exist", async () => {
-        // case when repliedToModel is equal to BlogPost
+      it("should fail when the id in parentId doesn't exist", async () => {
+        // case when parentType is equal to BlogPost
         let res = await getRequest()
           .send({
-            repliedToModel: "BlogPost",
-            repliedTo: faker.database.mongodbObjectId()
+            parentType: "BlogPost",
+            parentId: faker.database.mongodbObjectId()
           })
           .expect(400);
 
         expect(res).toContainValidationError({
-          field: "repliedTo",
-          message: "BlogPost not found"
+          field: "parentId",
+          message: "BlogPost matching parentId not found"
         });
 
-        // case when repliedToModel is equal to Comment
+        // case when parentType is equal to Comment
         res = await getRequest()
           .send({
-            repliedToModel: "Comment",
-            repliedTo: faker.database.mongodbObjectId()
+            parentType: "Comment",
+            parentId: faker.database.mongodbObjectId()
           })
           .expect(400);
 
         expect(res).toContainValidationError({
-          field: "repliedTo",
-          message: "Comment not found"
+          field: "parentId",
+          message: "Comment matching parentId not found"
         });
       });
     });
@@ -100,8 +100,8 @@ describe("integration /api/comments", () => {
       const comment = {
         authorName: faker.internet.userName(),
         content: faker.lorem.paragraph(),
-        repliedToModel: "BlogPost",
-        repliedTo: blogPost._id
+        parentType: "BlogPost",
+        parentId: blogPost._id
       };
 
       const res = await getRequest().send(comment);

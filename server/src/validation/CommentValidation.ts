@@ -7,7 +7,7 @@ import { isValidObjectId, Error as MongooseError } from "mongoose";
 import {
   AUTHOR_NAME_MAX_LENGTH,
   CONTENT_MAX_LENGTH,
-  REPLIED_TO_MODEL_NAMES,
+  PARENT_TYPES,
   IComment
 } from "../models/Comment";
 
@@ -47,29 +47,29 @@ const content: ParamSchema = {
   }
 };
 
-const repliedToModel: ParamSchema = {
+const parentType: ParamSchema = {
   in: ["body"],
   isIn: {
-    errorMessage: "repliedToModel is invalid",
-    options: REPLIED_TO_MODEL_NAMES
+    errorMessage: "parentType is invalid",
+    options: PARENT_TYPES
   }
 };
 
-const repliedTo: ParamSchema = {
+const parentId: ParamSchema = {
   in: ["body"],
   custom: {
     options: async (value, { req }) => {
-      if(!isValidObjectId(value)) throw new Error("repliedTo is invalid");
+      if(!isValidObjectId(value)) throw new Error("parentId is invalid");
 
-      const repliedToModel: IComment["repliedToModel"] = req.body.repliedToModel;
+      const parentType: IComment["parentType"] = req.body.parentType;
 
       try {
-        if(repliedToModel === "BlogPost" && !await BlogPostService.checkIfExists(value)) {
-          throw new Error("BlogPost not found");
+        if(parentType === "BlogPost" && !await BlogPostService.checkIfExists(value)) {
+          throw new Error("BlogPost matching parentId not found");
         }
 
-        if(repliedToModel === "Comment" && !await CommentService.checkIfExists(value)) {
-          throw new Error("Comment not found");
+        if(parentType === "Comment" && !await CommentService.checkIfExists(value)) {
+          throw new Error("Comment matching parentId not found");
         } 
       } catch (err) {
         if(err instanceof MongooseError) {
@@ -114,7 +114,7 @@ const commentId: ParamSchema = {
 export default {
   authorName,
   content,
-  repliedToModel,
-  repliedTo,
+  parentType,
+  parentId,
   commentId
 };
