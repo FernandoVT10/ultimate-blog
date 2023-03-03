@@ -5,14 +5,14 @@ import { HydratedDocument } from "mongoose";
 
 import BlogPostFactory from "./BlogPostFactory";
 
-const createOne = async (): Promise<HydratedDocument<IComment>> => {
+const createOne = async (data: Partial<IComment> = {}): Promise<HydratedDocument<IComment>> => {
   const blogPost = await BlogPostFactory.createOne();
 
   return Comment.create({
     authorName: faker.internet.userName(),
     content: faker.lorem.paragraph(),
-    parentType: "BlogPost",
-    parentId: blogPost._id
+    parentType: data.parentType || "BlogPost",
+    parentId: data.parentId || blogPost._id
   });
 };
 

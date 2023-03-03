@@ -146,4 +146,39 @@ describe("integration /api/comments", () => {
       expect(res.body).toEqual(convertToResponseBody(comment));
     });
   });
+
+  describe("GET /api/comments", () => {
+    it("should get all comments", async () => {
+      const blogPost = await BlogPostFactory.createOne();
+
+      const commentA = await CommentFactory.createOne({
+        parentType: "BlogPost",
+        parentId: blogPost._id
+      });
+
+      const commentB = await CommentFactory.createOne({
+        parentType: "BlogPost",
+        parentId: blogPost._id
+      });
+
+      const res = await request.get("/api/comments").query({
+        parentId: blogPost._id.toString()
+      }).expect(200);
+
+      expect(res.body).toEqual(
+        convertToResponseBody([commentA, commentB])
+      );
+    });
+  });
+
+  it("should fail when parentId is invalid", async () => {
+    const res = await request.get("/api/comments").query({
+      parentId: "abc"
+    }).expect(400);
+
+    expect(res).toContainValidationError({
+      field: "parentId",
+      message: "parentId is invalid"
+    });
+  });
 });

@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { checkSchema } from "express-validator";
+import { query, checkSchema } from "express-validator";
 
 import authorize from "../middlewares/authorize";
 import asyncHandler from "express-async-handler";
 import checkValidation from "../middlewares/checkValidation";
 import CommentValidation from "../validation/CommentValidation";
 import CommentService from "../services/CommentService";
+import CommonValidators from "../validation/CommonValidators";
 
 const router = Router();
 
@@ -49,5 +50,23 @@ router.delete(
     res.json(deletedComment);
   }
 ));
+
+router.get(
+  "/comments",
+
+  query("parentId")
+    .custom(CommonValidators.isIdValid)
+    .withMessage("parentId is invalid"),
+
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { parentId } = req.query;
+
+    const comments = await CommentService.getAllByParentId(parentId as string);
+
+    res.json(comments);
+  })
+);
 
 export default router;

@@ -21,8 +21,13 @@ const deleteById = async (commentId: string): Promise<HydratedDocument<IComment>
   return await Comment.findByIdAndDelete(commentId) as HydratedDocument<IComment>;
 };
 
+const getAllByParentId = async (parentId: string): Promise<HydratedDocument<IComment>[]> => {
+  return Comment.find({ parentId });
+};
+
 export default {
   checkIfExists,
   create,
-  deleteById
+  deleteById,
+  getAllByParentId
 };
