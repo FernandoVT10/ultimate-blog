@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ClockFillIcon } from "@primer/octicons-react";
-import { BlogPost } from "@services/BlogPostService";
 import { dateToTimeAgo } from "@utils/formatters";
+
+import type { BlogPost } from "@customTypes/collections";
 
 import styles from "./BlogPostCards.module.scss";
 

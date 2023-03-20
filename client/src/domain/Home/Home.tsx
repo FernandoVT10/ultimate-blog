@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "@components/Header";
 import BlogPostCards from "@components/BlogPostCards";
 
-import type { BlogPost } from "@services/BlogPostService";
+import type { BlogPost } from "@customTypes/collections";
 
 import styles from "./Home.module.scss";
 
