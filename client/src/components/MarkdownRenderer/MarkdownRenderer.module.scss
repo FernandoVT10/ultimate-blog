@@ -30,7 +30,7 @@
   }
 
   & a {
-    color: var(--color-fg-highlight);
+    color: var(--color-highlight-text);
     text-decoration: none;
     transition: .3s;
 
@@ -41,8 +41,8 @@
   }
 
   & code {
-    color: var(--color-fg-highlight);
-    background: var(--color-bg);
+    color: var(--color-highlight-text);
+    background: var(--color-primary-bg);
     padding: 5px;
     border-radius: 5px;
   }
@@ -67,7 +67,7 @@
   & :global(.hljs) {
     margin-top: 20px;
     padding: 20px 0;
-    background: var(--color-bg);
+    background: var(--color-primary-bg);
     font-weight: bold;
     white-space: normal;
 

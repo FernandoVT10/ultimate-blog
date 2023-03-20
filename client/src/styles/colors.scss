@@ -3,6 +3,7 @@
   --color-black: #08121e;
 
   --color-primary: var(--color-blue);
+  --color-primary-rgb: 137, 180, 250;
 
   --color-primary-bg: var(--color-black);
   --color-base-bg: #04090f;
@@ -15,9 +16,8 @@
   // NOTE: old variables: these variables are going to be remove in a future
   --color-highlight: #89b4fa;
 
-  --color-bg: #0b1017;
   --color-bg: red;
-  --color-bg-surface: #080b0f;
+  --color-bg-surface: red;
   --color-danger-bg: #FF715B;
 
   --color-fg-dark: var(--color-bg);

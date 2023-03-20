@@ -34,7 +34,7 @@ const callApi = async <T>(method: Method, url: string, data?: Variables): Promis
   }
 };
 
-type Args = [string, Variables | undefined];
+type Args = [string, Variables?];
 
 const api = {
   get: <T>(...args: Args) => callApi<T>("get", ...args),

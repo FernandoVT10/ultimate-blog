@@ -1,31 +1,32 @@
-import moment from "moment";
+import type { BlogPost as BlogPostType, Tag } from "@customTypes/collections";
 
-import type { BlogPost as BlogPostType } from "@services/BlogPostService";
 import { ClockFillIcon } from "@primer/octicons-react";
+import { dateToTimeAgo } from "@utils/formatters";
 
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import Link from "next/link";
 import Image from "next/image";
 
-import styles from "./BlogPosts.module.scss";
+import styles from "./BlogPost.module.scss";
 
-function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
+function Tag({ tag }: { tag: Tag }) {
+  return (
+    <Link
+      className={styles.tag}
+      href={`/blog?tags=${tag.name}`}
+    >
+      { tag.name }
+    </Link>
+  );
+}
+
+export default function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
   const getTags = () => {
     if(blogPost.tags.length) {
       return (
         <div className={styles.tags}>
           {blogPost.tags.map((tag, index) => {
-            return (
-              <Link
-                className={styles.tag}
-                href={`/blog?tags=${tag.name}`}
-                key={index}
-              >
-                <span key={index}>
-                  { tag.name }
-                </span>
-              </Link>
-            );
+            return <Tag tag={tag} key={index}/>;
           })}
         </div>
       );
@@ -52,7 +53,7 @@ function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
 
           <p className={styles.date}>
             <ClockFillIcon className={styles.icon} size="small"/>
-            Posted { moment(blogPost.createdAt).fromNow() }
+            Posted { dateToTimeAgo(blogPost.createdAt) }
           </p>
         </div>
       </div>
@@ -64,32 +65,6 @@ function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
           <MarkdownRenderer markdown={blogPost.content}/>
         </div>
       </div>
-    </div>
-  );
-}
-
-interface BlogPostsProps {
-  blogPosts: BlogPostType[]
-}
-
-export default function BlogPosts({ blogPosts }: BlogPostsProps) {
-  const getBlogPosts = () => {
-    if(blogPosts.length) {
-      return blogPosts.map((blogPost, index) => {
-        return <BlogPost key={index} blogPost={blogPost}/>;
-      });
-    }
-
-    return (
-      <div className={styles.messageContainer}>
-        <p className={styles.message}>There are no blog posts.</p>
-      </div>
-    );
-  };
-
-  return (
-    <div className={styles.blogPosts}>
-      { getBlogPosts() }
     </div>
   );
 }

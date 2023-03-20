@@ -1,38 +1,29 @@
-import { GetServerSideProps } from "next";
-import { getAllPosts, BlogPost as BlogPostType } from "@services/BlogPostService";
+import { BlogPost } from "@customTypes/collections";
 
 import Head from "next/head";
-import BlogPosts from "@domain/BlogHome/BlogPosts";
-import Header from "@components/Header";
+import BlogHome from "@domain/BlogHome";
 
-import styles from "@styles/pages/BlogHome.module.scss";
+import catchServerErrors from "@utils/catchServerErrors";
+import axios from "@utils/axios";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const blogPosts = await getAllPosts();
+export const getServerSideProps = catchServerErrors(async () => {
+  const blogPosts = await axios.get("/blogposts");
 
-  return {
-    props: { blogPosts }
-  };
-};
+  return { blogPosts };
+});
 
-interface HomeProps {
-  blogPosts: BlogPostType[];
+interface BlogHomePageProps {
+  blogPosts?: BlogPost[];
 }
 
-export default function BlogHome({ blogPosts }: HomeProps) {
+export default function BlogHomePage({ blogPosts }: BlogHomePageProps) {
   return (
     <>
       <Head>
         <title>FVT - Blog</title>
       </Head>
 
-      <Header height={200}>
-        <h1 className={styles.title}>FVT BLOG</h1>
-      </Header>
-
-      <main className={`wrapper ${styles.blogPostsContainer}`}>
-        <BlogPosts blogPosts={blogPosts}/>
-      </main>
+      <BlogHome blogPosts={blogPosts || []}/>
     </>
   );
 }
