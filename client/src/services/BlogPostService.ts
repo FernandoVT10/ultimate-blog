@@ -1,18 +1,8 @@
 import axios from "@config/axios";
 
-import { Tag } from "./TagService";
+import { BlogPost } from "@customTypes/collections";
 
-export type BlogPost = {
-  _id: string;
-  title: string;
-  content: string;
-  cover: string;
-  tags: Tag[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-export async function getAllPosts(limit?: number, excludePost?: string): Promise<BlogPost[]> {
+const getAllPosts = async (limit?: number, excludePost?: string): Promise<BlogPost[]> => {
   try {
     const res = await axios.get("/blogposts", {
       params: {
@@ -23,7 +13,7 @@ export async function getAllPosts(limit?: number, excludePost?: string): Promise
   } catch {
     return [];
   }
-}
+};
 
 export async function getPostById(blogPostId: string): Promise<BlogPost | null> {
   try {
@@ -148,3 +138,10 @@ export async function deleteBlogPost(blogPostId: BlogPost["_id"]): Promise<boole
     return false;
   }
 }
+
+// TODO: remove this after no longer needed
+export type { BlogPost };
+
+export default {
+  getAllPosts
+};

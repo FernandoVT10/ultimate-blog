@@ -1,39 +1,12 @@
-:root {
-  // TODO: these variable names are a mess
-  --color-highlight: #89b4fa;
+@use "./colors.scss";
+@use "./reset.scss";
 
-  --color-bg: #0b1017;
-  --color-bg-surface: #080b0f;
-  --color-danger-bg: #FF715B;
+body {
+  background: var(--color-primary-bg);
+  color: var(--color-primary-text);
 
-  --color-fg-dark: var(--color-bg);
-  --color-fg: #cdd6f4;
-  --color-fg-danger: #ffb5cf;
-  --color-fg-highlight: var(--color-highlight);
-  --color-fg-secondary: #777e92;
-
-  --color-border: #565a68;
-
-  --color-input-border: #565a68;
-
-  --color-btn-bg: #1e2735;
-  --color-btn-disabled: var(--color-border);
-
-  --toastify-color-dark: var(--color-bg-surface);
-  --toastify-text-color-dark: var(--color-fg);
-  --toastify-color-success: var(--color-highlight);
-}
-
-@import "./reset.scss";
-
-.wrapper {
-  margin: auto;
-  width: 100%;
-  max-width: 1200px;
-
-  @media only screen and (max-width: 1200px) {
-    padding: 0 20px;
-  }
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 .custom-btn {

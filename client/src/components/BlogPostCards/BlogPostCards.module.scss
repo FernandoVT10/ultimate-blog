@@ -1,3 +1,5 @@
+@use "@styles/shared/mixins";
+
 .blogPostCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -21,10 +23,10 @@
         position: absolute;
         bottom: 15px;
         left: 10px;
-        color: var(--color-bg);
+        color: var(--color-dark-text);
         padding: 5px 10px;
         border-radius: 20px;
-        background: var(--color-fg-highlight);
+        background: var(--color-primary);
         font-weight: bold;
         font-size: 12px;
 
@@ -35,34 +37,22 @@
     }
 
     & .details {
-      background: var(--color-bg-surface);
+      background: var(--color-base-bg);
       padding: 15px;
 
       & .title {
         font-size: 18px;
-        transition: .3s;
 
-        &:hover {
-          color: var(--color-fg-highlight);
-        }
+        @include mixins.link;
       }
     }
   }
 
-  @media only screen and (max-width: 1000px) {
-    &.threePosts .blogPostCard:nth-child(3) {
-      display: none;
-    }
-
+  @include mixins.respond-to("large") {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media only screen and (max-width: 600px) {
-
-    &.threePosts .blogPostCard:nth-child(3) {
-      display: block;
-    }
-
+  @include mixins.respond-to("medium") {
     row-gap: 20px;
     grid-template-columns: repeat(1, 1fr);
   }

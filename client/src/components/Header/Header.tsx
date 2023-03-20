@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-
-import { checkAdminStatusFromClient } from "@services/AdminService";
-
 import Image from "next/image";
 import Link from "next/link";
+
+import { useQuery } from "@hooks/api";
 
 import styles from "./Header.module.scss";
 
@@ -13,18 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ children, height }: HeaderProps) {
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // I think this is a bad thing to do,
-      // it must be done from the server component (getServerSideProps),
-      // but next js doesn't allow me to do it
-      setIsAdmin(await checkAdminStatusFromClient());
-    };
-
-    fetchData();
-  }, []);
+  const { value: adminStatus } = useQuery<{ isLogged: boolean }>("/admin/status");
 
   return (
     <header className={styles.header} style={{ height: height || 50 }}>
@@ -48,7 +35,7 @@ export default function Header({ children, height }: HeaderProps) {
             </Link>
           </li>
 
-          { isAdmin &&
+          { adminStatus?.isLogged &&
             <li className={styles.menuItem}>
               <Link href="/blog/createPost" className={styles.link}>
                 Create Post

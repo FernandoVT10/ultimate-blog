@@ -1,16 +1,11 @@
-import moment from "moment";
-
 import Image from "next/image";
 import Link from "next/link";
 
 import { ClockFillIcon } from "@primer/octicons-react";
 import { BlogPost } from "@services/BlogPostService";
+import { dateToTimeAgo } from "@utils/formatters";
 
 import styles from "./BlogPostCards.module.scss";
-
-interface BlogPostCardsProps {
-  blogPosts: BlogPost[];
-}
 
 function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
   return (
@@ -26,7 +21,7 @@ function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
 
         <div className={styles.date}>
           <ClockFillIcon className={styles.icon} size={12}/>
-          { moment(blogPost.createdAt).fromNow() }
+          { dateToTimeAgo(blogPost.createdAt) }
         </div>
       </div>
 
@@ -41,11 +36,14 @@ function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
   );
 }
 
-export default function BlogPostCards({ blogPosts }: BlogPostCardsProps) {
-  const threePostsClassName = blogPosts.length === 3 && styles.threePosts;
 
+interface BlogPostCardsProps {
+  blogPosts: BlogPost[];
+}
+
+export default function BlogPostCards({ blogPosts }: BlogPostCardsProps) {
   return (
-    <div className={`${styles.blogPostCards} ${threePostsClassName}`}>
+    <div className={styles.blogPostCards}>
       {blogPosts.map((blogPost, index) => {
         return <BlogPostCard blogPost={blogPost} key={index}/>;
       })}

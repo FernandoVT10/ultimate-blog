@@ -1,0 +1,40 @@
+@use "./variables" as vars;
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key(vars.$breakpoints, $breakpoint) {
+    @media only screen and (max-width: #{map-get(vars.$breakpoints, $breakpoint)}) {
+      @content;
+    }
+  }
+ 
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys(vars.$breakpoints)}.";
+  }
+}
+
+@mixin link(
+  $text-color: var(--color-primary-text),
+  $highlight-color: var(--color-highlight-text)
+) {
+  color: $text-color;
+  transition: .3s;
+
+  &:hover {
+    color: $highlight-color;
+  }
+}
+
+@mixin size($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin responsive-wrapper {
+  width: 100%;
+  max-width: map-get(vars.$breakpoints, "xl");
+
+  @include respond-to("xl") {
+    padding: 0 20px;
+  }
+}

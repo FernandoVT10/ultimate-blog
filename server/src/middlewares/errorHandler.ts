@@ -5,7 +5,7 @@ import { RequestError } from "../utils/errors";
 const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunction) => {
   if(err instanceof RequestError) {
     return res.status(err.statusCode).json({
-      message: err.message
+      error: err.message
     });
   }
 
@@ -19,7 +19,7 @@ const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunctio
   }
 
   res.status(500).json({
-    message: "There was an internal server error trying to complete your request"
+    error: "There was an internal server error trying to complete your request"
   });
 };
 

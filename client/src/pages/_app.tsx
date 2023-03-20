@@ -1,6 +1,8 @@
 import type { AppProps } from "next/app";
-import Head from "next/head";
+
 import { ToastContainer } from "react-toastify";
+
+import Head from "next/head";
 
 import "react-toastify/dist/ReactToastify.min.css";
 import "highlight.js/styles/base16/circus.css";

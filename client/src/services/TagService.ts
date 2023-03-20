@@ -1,11 +1,8 @@
 import axios from "@config/axios";
 
-import { AxiosError } from "axios";
+import { Tag } from "@customTypes/collections";
 
-export type Tag = {
-  _id: string;
-  name: string;
-}
+import { AxiosError } from "axios";
 
 export async function getTags(): Promise<Tag[]> {
   try {
@@ -50,3 +47,6 @@ export async function createTag(name: Tag["name"]): Promise<{ success: boolean; 
     error: "There was an unexpected error trying to create the tag"
   };
 }
+
+// TODO: remove this after no longer needed
+export type { Tag };

@@ -1,3 +1,5 @@
+@use "@styles/shared/mixins";
+
 .header {
   position: relative;
   display: flex;
@@ -23,12 +25,8 @@
         margin-right: 20px;
 
         & .link {
-          transition: .3s;
+          @include mixins.link;
           font-weight: bold;
-
-          &:hover {
-            color: var(--color-fg-highlight);
-          }
         }
       }
     }
