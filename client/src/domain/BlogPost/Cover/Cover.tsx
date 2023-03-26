@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { toast } from "react-toastify";
 
-import { useState } from "react";
-import { BlogPost, updateCover } from "@services/BlogPostService";
+import type { BlogPost } from "@customTypes/collections";
 
 import CoverSelection from "@components/BlogPostForm/CoverSelection";
 
@@ -21,14 +21,14 @@ export default function Cover({
   const handleOnChange = async (cover: File) => {
     setLoading(true);
 
-    const res = await updateCover(blogPostId, cover);
-
-    setLoading(false);
-
-    if(res.error) {
-      toast.error(res.error);
-      return false;
-    }
+    // const res = await updateCover(blogPostId, cover);
+    //
+    // setLoading(false);
+    //
+    // if(res.error) {
+    //   toast.error(res.error);
+    //   return false;
+    // }
 
     return true;
   };
