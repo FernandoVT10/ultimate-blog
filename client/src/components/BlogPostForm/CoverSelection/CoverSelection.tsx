@@ -9,7 +9,6 @@ import Spinner from "@components/Spinner";
 
 import styles from "./CoverSelection.module.scss";
 
-// TODO: make a shared library or something to share this this with the one of the server's imageFilter
 const ACCEPTED_IMAGE_TYPES = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
 
 const getURLFromFile = (file: File): Promise<string> => {
@@ -129,7 +128,6 @@ export default function CoverSelection({
           />
         </div>
       }
-
 
       <div className={styles.coverImageContainer}>
         { getCover() }
