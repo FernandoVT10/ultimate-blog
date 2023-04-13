@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestError } from "../utils/errors";
 
+const DEFAULT_MESSAGE = "There was an internal server error trying to complete your request";
+
 // eslint-disable-next-line
 const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunction) => {
   if(err instanceof RequestError) {
     return res.status(err.statusCode).json({
-      error: err.message
+      errors: { message: err.message }
     });
   }
 
@@ -19,7 +21,7 @@ const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunctio
   }
 
   res.status(500).json({
-    error: "There was an internal server error trying to complete your request"
+    errors: { message: DEFAULT_MESSAGE }
   });
 };
 
