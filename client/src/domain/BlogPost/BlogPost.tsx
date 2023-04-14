@@ -1,5 +1,6 @@
 import Cover from "./Cover";
 import Title from "./Title";
+import Content from "./Content";
 
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
@@ -19,6 +20,7 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
         blogPostId={blogPost._id}
         isAdmin={isAdmin}
       />
+
       <section className={styles.contentContainer}>
         <Title
           title={blogPost.title}
@@ -26,15 +28,13 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
           blogPostId={blogPost._id}
         />
 
-      {/**
-        <Title
-          title={blogPost.title}
-          isAdmin={isAdmin}
+        <Content
           blogPostId={blogPost._id}
+          content={blogPost.content}
+          isAdmin={isAdmin}
         />
 
-        <BlogDate createdAt={blogPost.createdAt}/>
-
+      {/**
         <Content
           blogPostId={blogPost._id}
           content={blogPost.content}

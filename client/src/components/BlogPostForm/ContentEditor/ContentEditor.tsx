@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import { EyeIcon, CodeIcon } from "@primer/octicons-react";
 
 import MarkdownRenderer from "@components/MarkdownRenderer";
-
-import { EyeIcon, FileCodeIcon } from "@primer/octicons-react";
+import classNames from "classnames";
 
 import styles from "./ContentEditor.module.scss";
 
@@ -11,14 +11,9 @@ const CONTENT_MAX_LENGTH = 5000;
 interface ContentEditorProps {
   content: string;
   setContent: (content: string) => void;
-  otherOptions?: JSX.Element;
 }
 
-export default function ContentEditor({
-  content,
-  setContent,
-  otherOptions
-}: ContentEditorProps) {
+export default function ContentEditor({ content, setContent }: ContentEditorProps) {
   const [previewing, setPreviewing] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -62,30 +57,28 @@ export default function ContentEditor({
     );
   };
 
+  const buttonClassNames = classNames("custom-btn", styles.option);
+
   return (
     <div className={styles.contentEditor}>
       <div className={styles.optionsContainer}>
-        <div className={styles.leftOptions}>
-          <button
-            className={`${styles.button} ${styles.option} ${!previewing && styles.active}`}
-            onClick={() => setPreviewing(false)}
-            type="button"
-          >
-            <FileCodeIcon size={14} className={styles.icon}/>
-            Edit
-          </button>
+        <button
+          className={classNames(buttonClassNames, {[styles.active]: !previewing})}
+          onClick={() => setPreviewing(false)}
+          type="button"
+        >
+          <CodeIcon size={14} className="icon"/>
+          Edit
+        </button>
 
-          <button
-            className={`${styles.button} ${styles.option} ${previewing && styles.active}`}
-            onClick={() => setPreviewing(true)}
-            type="button"
-          >
-            <EyeIcon size={14} className={styles.icon}/>
-            Preview
-          </button>
-        </div>
-
-        { otherOptions }
+        <button
+          className={classNames(buttonClassNames, {[styles.active]: previewing})}
+          onClick={() => setPreviewing(true)}
+          type="button"
+        >
+          <EyeIcon size={14} className="icon" />
+          Preview
+        </button>
       </div>
 
       { getContent() }

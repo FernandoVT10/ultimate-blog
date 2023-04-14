@@ -1,0 +1,28 @@
+.button {
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: .3s;
+  background: var(--color-btn-bg);
+
+  &:hover,
+  &.active {
+    // color: var(--color-fg-highlight);
+    border-color: var(--color-fg-highlight);
+  }
+
+  &:disabled {
+    cursor: wait;
+  }
+
+  & .loader {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  & .icon {
+    margin-right: 5px;
+  }
+}

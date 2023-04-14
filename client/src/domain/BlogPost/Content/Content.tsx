@@ -1,19 +1,17 @@
 import MarkdownRenderer from "@components/MarkdownRenderer";
-import Spinner from "@components/Spinner";
 
 import { toast } from "react-toastify";
-import { useState } from "react";
-import { BlogPost, updateContent } from "@services/BlogPostService";
+import { FormEvent, useState } from "react";
+import { BlogPost } from "@customTypes/collections";
 
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
+import Button from "@components/Button";
 
-import {
-  FileCodeIcon,
-  ReplyIcon,
-  SidebarCollapseIcon
-} from "@primer/octicons-react";
+import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
 
 import styles from "./Content.module.scss";
+import { useMutation } from "@hooks/api";
+import { serverErrorHandler } from "@utils/errorHandlers";
 
 interface ContentProps {
   blogPostId: BlogPost["_id"];
@@ -22,86 +20,50 @@ interface ContentProps {
 }
 
 export default function Content({ blogPostId, content: initialContent, isAdmin }: ContentProps) {
-  const [content, setContent] = useState(initialContent);
-  const [editing, setEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleCancelButton = () => {
-    setEditing(false);
-    setContent(initialContent);
-  };
-
-  const handleUpdateContent = async () => {
-    setLoading(true);
-
-    if(await updateContent(blogPostId, content)) {
-      setEditing(false);
-      toast.success("Content updated successfully");
-    } else {
-      toast.error("There was an error trying to update the content");
-    }
-
-    setLoading(false);
-  };
-
-  const otherOptions = (
-    <div className={styles.rightOptions}>
-      <button
-        className={`${styles.button} ${styles.option}`}
-        onClick={handleUpdateContent}
-      >
-        <SidebarCollapseIcon size={14} className={styles.icon}/>
-        Update
-      </button>
-
-      <button
-        className={`${styles.button} ${styles.option}`}
-        onClick={handleCancelButton}
-      >
-        <ReplyIcon size={14} className={styles.icon}/>
-        Cancel
-      </button>
-    </div>
+  const { loading, run: updateContent } = useMutation(
+    "put",
+    `/blogposts/${blogPostId}/updateContent`,
+    serverErrorHandler
   );
 
-  const getContent = () => {
-    if(!editing) {
-      return (
-        <div className={`${styles.mainContentRenderer} ${isAdmin && styles.isAdmin}`}>
-          <MarkdownRenderer markdown={content}/>
-        </div>
-      );
-    }
+  const [content, setContent] = useState(initialContent);
+  const [actualContent, setActualContent] = useState(initialContent);
 
-    return (
-      <ContentEditor
-        content={content}
-        setContent={setContent}
-        otherOptions={otherOptions}
-      />
-    );
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if(await updateContent({ content })) {
+      toast.success("Content updated successfully");
+      setActualContent(content);
+    }
   };
+
+  if(!isAdmin) {
+    return (
+      <div className={styles.mainContentRenderer}>
+        <MarkdownRenderer markdown={content}/>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.contentContainer}>
-      {loading &&
-        <div className={styles.loaderContainer}>
-          <Spinner size={50}/>
-          <p className={styles.text}>Updating content</p>
-        </div>
-      }
+      <form onSubmit={handleSubmit}>
+        <ContentEditor
+          content={content}
+          setContent={setContent}
+        />
 
-      {!editing && isAdmin &&
-        <button
-          className={`${styles.button} ${styles.editButton}`}
-          onClick={() => setEditing(true)}
-        >
-          <FileCodeIcon size={12} className={styles.icon}/>
-          Edit Content
-        </button>
-      }
-
-      { getContent() }
+        <Button
+          type="submit"
+          text="Update Content"
+          loadingText="Updating"
+          show={actualContent !== content}
+          className={styles.button}
+          icon={FileDirectoryOpenFillIcon}
+          loading={loading}
+        />
+      </form>
     </div>
   );
 }
