@@ -5,9 +5,8 @@ import { serverErrorHandler } from "@utils/errorHandlers";
 import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
 import { FormEvent, useState } from "react";
 
-import Spinner from "@components/Spinner";
-
 import styles from "./Title.module.scss";
+import Button from "@components/Button";
 
 // TODO: it's better to get this number from the BlogPost model of the server
 const TITLE_MAX_LENGTH = 100;
@@ -65,25 +64,15 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
           />
         </div>
 
-        { title !== actualTitle &&
-          <button
-            className={`custom-btn ${styles.button}`}
-            type="submit"
-            disabled={loading}
-          >
-            {loading ?
-              <>
-                <Spinner size={10} borderWidth={2} className={styles.loader}/>
-                {"Updating"}
-              </>
-            :
-              <>
-                <FileDirectoryOpenFillIcon size={14} className="icon"/>
-                {"Update Title"}
-              </>
-            }
-          </button>
-        }
+        <Button
+          type="submit"
+          text="Update Title"
+          loadingText={"Updating"}
+          show={title !== actualTitle}
+          icon={FileDirectoryOpenFillIcon}
+          className={styles.button}
+          loading={loading}
+        />
       </form>
     </div>
   );
