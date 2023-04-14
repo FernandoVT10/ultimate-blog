@@ -1,6 +1,6 @@
 :root {
   --color-blue: #89b4fa;
-  --color-black: #08121e;
+  --color-black: #121922;
 
   --color-primary: var(--color-blue);
   --color-primary-rgb: 137, 180, 250;
@@ -12,6 +12,7 @@
   --color-highlight-text: var(--color-blue);
   --color-dark-text: var(--color-black);
 
+  --color-btn-bg: #0655b7;
 
   // NOTE: old variables: these variables are going to be remove in a future
   --color-highlight: #89b4fa;
@@ -30,7 +31,6 @@
 
   --color-input-border: #565a68;
 
-  --color-btn-bg: #1e2735;
   --color-btn-disabled: var(--color-border);
 
   --toastify-color-dark: var(--color-base-bg);

@@ -11,15 +11,16 @@ body {
 
 .custom-btn {
   padding: 10px;
-  border: solid 1px var(--color-border);
+  border: none;
   background: transparent;
   font-weight: bold;
   border-radius: 5px;
   transition: .3s;
+  background: var(--color-btn-bg);
 
   &:hover,
   &.active {
-    color: var(--color-fg-highlight);
+    // color: var(--color-fg-highlight);
     border-color: var(--color-fg-highlight);
   }
 

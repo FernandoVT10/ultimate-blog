@@ -1,32 +1,27 @@
-.formContainer {
-  margin-bottom: 20px;
+.titleForm {
+  & .titleInput {
+    & .label {
+      display: block;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-  & .formButtons {
-    margin-top: 10px;
-
-    & .formButton {
-      & .loader {
-        display: inline-block;
-        margin-right: 5px;
-      }
-
-      &:disabled {
-        cursor: wait;
-      }
-
-      &.cancelButton {
-        margin-left: 10px;
-      }
+    & .input {
+      width: 100%;
+      background: var(--color-primary-bg);
+      padding: 15px;
+      font-size: 16px;
+      border: none;
     }
   }
-}
-
-.titleContainer {
-  display: flex;
 
   & .button {
-    background: transparent;
-    border: none;
-    color: inherit;
+    margin-top: 10px;
+
+    & .loader {
+      display: inline-block;
+      margin-right: 5px;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import axios from "@utils/axios";
+import axios from "axios";
 
 import { AUTH_COOKIE_KEY } from "@config/constants";
 

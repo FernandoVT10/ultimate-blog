@@ -1,4 +1,4 @@
-import axios from "@config/axios";
+import axios from "axios";
 
 import { BlogPost } from "@customTypes/collections";
 
