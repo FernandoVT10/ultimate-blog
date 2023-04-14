@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { BlogPost } from "@services/BlogPostService";
+import { BlogPost } from "@customTypes/collections";
 import { useMutation } from "@hooks/api";
 import { serverErrorHandler } from "@utils/errorHandlers";
 import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
