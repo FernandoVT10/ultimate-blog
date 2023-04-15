@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const serverErrorHandler = (error: any) => {
-  if(error instanceof AxiosError && error.status === 500) {
+  if(error instanceof AxiosError && error.response?.status === 500) {
     const message = error.response?.data.errors[0].message;
     return toast.error(message);
   }
