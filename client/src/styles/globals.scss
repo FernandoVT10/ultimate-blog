@@ -22,3 +22,17 @@ body {
     margin-right: 5px;
   }
 }
+
+.custom-label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.custom-input {
+  width: 100%;
+  background: var(--color-primary-bg);
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+}

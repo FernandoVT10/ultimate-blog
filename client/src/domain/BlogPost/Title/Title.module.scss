@@ -1,20 +1,5 @@
 .titleForm {
-  & .titleInput {
-    & .label {
-      display: block;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    & .input {
-      width: 100%;
-      background: var(--color-primary-bg);
-      padding: 15px;
-      font-size: 16px;
-      border: none;
-    }
-  }
+  & .titleInput .input { margin-top: 10px; }
 
   & .button { margin-top: 10px; }
 }

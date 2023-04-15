@@ -5,8 +5,10 @@ import { serverErrorHandler } from "@utils/errorHandlers";
 import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
 import { FormEvent, useState } from "react";
 
-import styles from "./Title.module.scss";
 import Button from "@components/Button";
+import classNames from "classnames";
+
+import styles from "./Title.module.scss";
 
 // TODO: it's better to get this number from the BlogPost model of the server
 const TITLE_MAX_LENGTH = 100;
@@ -44,10 +46,7 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
     <div className={styles.titleForm}>
       <form onSubmit={handleSubmit}>
         <div className={styles.titleInput}>
-          <label
-            htmlFor="title-input"
-            className={styles.label}
-          >
+          <label htmlFor="title-input" className="custom-label">
             {"Title"}
           </label>
 
@@ -57,7 +56,7 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
             value={title}
             placeholder="Write an amazing title"
             onChange={({ target: { value } }) => setTitle(value)}
-            className={styles.input}
+            className={classNames("custom-input", styles.input)}
             maxLength={TITLE_MAX_LENGTH}
             autoComplete="off"
             required
