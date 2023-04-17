@@ -1,14 +1,14 @@
-import TagsModal from "@components/BlogPostForm/TagsModal";
-import TagsList from "@components/BlogPostForm/TagsList";
-
-import { useModal } from "@components/Modal";
 import { useState } from "react";
-import { Tag } from "@services/TagService";
 import { toast } from "react-toastify";
+import { BlogPost, Tag } from "@customTypes/collections";
+import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { useMutation } from "@hooks/api";
+import { serverErrorHandler } from "@utils/errorHandlers";
 
-import { BlogPost, updateTags } from "@services/BlogPostService";
-import { SidebarCollapseIcon } from "@primer/octicons-react";
-
+import TagEditor, { getNamesFromTags } from "@components/BlogPostForm/TagEditor";
+import TagBadgets from "@components/BlogPostForm/TagEditor/TagBadgets";
+import Button from "@components/Button";
+import Spinner from "@components/Spinner";
 
 import styles from "./Tags.module.scss";
 
@@ -18,61 +18,52 @@ interface TagsProps {
   blogPostId: BlogPost["_id"];
 }
 
-const getNamesFromTags = (tags: Tag[]): string[] => tags.map(tag => tag.name);
-
-export default function Tags({ tags: initialTags, isAdmin, blogPostId }: TagsProps) {
-  const [tags, setTags] = useState(initialTags);
+export default function Tags({ tags: initialSelectedTags, isAdmin, blogPostId }: TagsProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>(
-    getNamesFromTags(initialTags)
+    getNamesFromTags(initialSelectedTags)
   );
-  const [loading, setLoading] = useState(false);
 
-  const modal = useModal();
+  const { loading, run: updateTags } = useMutation(
+    "put",
+    `/blogposts/${blogPostId}/updateTags`,
+    serverErrorHandler
+  );
 
   const handleUpdateTags = async () => {
-    setLoading(true);
-
-    if(await updateTags(blogPostId, selectedTags)) {
-      setTags(selectedTags.map(tagName => {
-        return {
-          _id: "",
-          name: tagName
-        };
-      }));
-
-      modal.hideModal();
+    if(await updateTags({ tags: selectedTags })) {
       toast.success("Tags updated successfully");
-    } else {
-      toast.error("There was an error trying to update the tags");
     }
-
-    setLoading(false);
   };
 
-  const updateTagsOption = (
-    <button
-      className={`custom-btn ${styles.createTagButton}`}
+
+  if(!isAdmin) {
+    if(!initialSelectedTags.length) return null;
+
+    return (
+      <TagBadgets tags={getNamesFromTags(initialSelectedTags)}/>
+    );
+  }
+
+  const updateButton = (
+    <Button
+      text="Update Tags"
+      icon={FileDirectoryOpenFillIcon}
       onClick={handleUpdateTags}
-    >
-      <SidebarCollapseIcon size={14} className="icon"/>
-      Update tags
-    </button>
+    />
   );
 
   return (
-    <div className={styles.tagsContainer}>
-      <TagsModal
-        modal={modal}
+    <div className={styles.container}>
+      {loading && (
+        <div className={styles.loader}>
+          <Spinner size={50}/>
+        </div>
+      )}
+
+      <TagEditor
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
-        otherOption={updateTagsOption}
-        loading={loading}
-      />
-
-      <TagsList
-        tags={tags.map(tag => tag.name)}
-        showEditButton={isAdmin}
-        showTagsModal={() => modal.showModal()}
+        optionalButton={updateButton}
       />
     </div>
   );

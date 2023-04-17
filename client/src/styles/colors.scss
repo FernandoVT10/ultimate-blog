@@ -1,37 +1,22 @@
 :root {
   --color-blue: #89b4fa;
   --color-black: #121922;
+  --color-dark-blue: #0655b7;
 
   --color-primary: var(--color-blue);
   --color-primary-rgb: 137, 180, 250;
 
   --color-primary-bg: var(--color-black);
   --color-base-bg: #04090f;
+  --color-blue-bg: var(--color-dark-blue);
 
   --color-primary-text: #cdd6f4;
   --color-highlight-text: var(--color-blue);
   --color-dark-text: var(--color-black);
+  --color-danger-text: #ffb5cf;
 
-  --color-btn-bg: #0655b7;
-
-  // NOTE: old variables: these variables are going to be remove in a future
-  --color-highlight: #89b4fa;
-
-  --color-bg: red;
-  --color-bg-surface: red;
-  --color-danger-bg: #FF715B;
-
-  --color-fg-dark: var(--color-bg);
-  --color-fg: #cdd6f4;
-  --color-fg-danger: #ffb5cf;
-  --color-fg-highlight: var(--color-highlight);
-  --color-fg-secondary: #777e92;
-
-  --color-border: #565a68;
-
-  --color-input-border: #565a68;
-
-  --color-btn-disabled: var(--color-border);
+  --color-btn-bg: var(--color-dark-blue);
+  --color-btn-caution: #b70647;
 
   --toastify-color-dark: var(--color-base-bg);
   --toastify-text-color-dark: var(--color-primary-text);

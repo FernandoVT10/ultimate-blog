@@ -1,0 +1,26 @@
+.tagEditor {
+  position: relative;
+  border: solid 1px #565a69;
+  padding: 20px;
+  border-radius: 10px;
+
+  &:after {
+    content: "Tags";
+    position: absolute;
+    top: -7px;
+    background: var(--color-base-bg);
+    font-weight: bold;
+    font-size: 14px;
+    left: 20px;
+    padding: 0 10px;
+  }
+
+  & .tagBadgets {
+    margin-bottom: 20px;
+  }
+
+  & .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -21,6 +21,10 @@ body {
   & .icon {
     margin-right: 5px;
   }
+
+  &.caution {
+    background: var(--color-btn-caution);
+  }
 }
 
 .custom-label {

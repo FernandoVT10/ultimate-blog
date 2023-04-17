@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+
+  & .badgets {
+    padding-bottom: 0;
+
+    & .badget {
+      font-weight: bold;
+      font-size: 12px;
+      margin-right: 10px;
+      background: var(--color-blue-bg);
+      padding: 5px 10px;
+      border-radius: 10px;
+      transition: .3s;
+
+      &:hover {
+        color: var(--color-highlight-text);
+      }
+    }
+  }
+}

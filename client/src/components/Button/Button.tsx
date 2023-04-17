@@ -6,11 +6,11 @@ import { IconProps } from "@primer/octicons-react";
 import styles from "./Button.module.scss";
 
 interface ButtonProps {
-  show: boolean;
   text: string;
   loadingText?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: () => any;
+  show?: boolean;
   className?: string;
   icon?: React.FC<IconProps>;
   loading?: boolean;
@@ -27,7 +27,7 @@ export default function Button({
   loading,
   type
 }: ButtonProps) {
-  if(!show) return null;
+  if(show === false) return null;
 
   return (
     <button

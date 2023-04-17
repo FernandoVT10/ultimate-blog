@@ -1,6 +1,7 @@
 import Cover from "./Cover";
 import Title from "./Title";
 import Content from "./Content";
+import Tags from "./Tags";
 
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
@@ -34,19 +35,12 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
           isAdmin={isAdmin}
         />
 
-      {/**
-        <Content
-          blogPostId={blogPost._id}
-          content={blogPost.content}
-          isAdmin={isAdmin}
-        />
-
         <Tags
           tags={blogPost.tags}
           isAdmin={isAdmin}
           blogPostId={blogPost._id}
         />
-
+      {/**
         <DeleteButton
           isAdmin={isAdmin}
           title={blogPost.title}
