@@ -3,6 +3,7 @@ import Title from "./Title";
 import Content from "./Content";
 import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
+import BlogPostCards from "@components/BlogPostCards";
 
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
@@ -12,9 +13,10 @@ const isAdmin = true;
 
 interface BlogPostProps {
   blogPost: BlogPostType;
+  recentBlogPosts: BlogPostType[];
 }
 
-export default function BlogPost({ blogPost }: BlogPostProps) {
+export default function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
   return (
     <main className={styles.container}>
       <Cover
@@ -51,12 +53,12 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
         </section>
       )}
 
-      { /**recentBlogPosts.length &&
+      {recentBlogPosts.length > 0 && (
         <section className={styles.recentBlogPosts}>
-          <h2 className={styles.subtitle}>Other Posts</h2>
+          <h2>Other Posts</h2>
           <BlogPostCards blogPosts={recentBlogPosts}/>
         </section>
-      }**/}
+      )}
     </main>
   );
 }

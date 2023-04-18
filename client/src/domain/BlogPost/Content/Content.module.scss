@@ -1,4 +1,5 @@
 .contentContainer {
+  margin-top: 20px;
   position: relative;
 
   &:hover .editButton {
@@ -33,7 +34,6 @@
     padding: 5px 0;
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
 
     & .option:nth-child(1) {
       margin-right: 10px;

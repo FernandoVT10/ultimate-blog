@@ -10,7 +10,7 @@ import BlogPost from "@domain/BlogPost";
 
 import catchServerErrors from "@utils/catchServerErrors";
 
-// const BLOG_POSTS_FETCH_LIMIT = 3;
+const BLOG_POSTS_FETCH_LIMIT = 3;
 
 export const getServerSideProps = catchServerErrors(async ({ params, req }) => {
   const blogPostId = params?.blogId;
@@ -25,26 +25,26 @@ export const getServerSideProps = catchServerErrors(async ({ params, req }) => {
     return { notFound: true };
   }
 
-  // const recentBlogPosts = await axios.get("/blogposts/", {
-  //   limit: BLOG_POSTS_FETCH_LIMIT,
-  //   excludePost: blogPost._id
-  // });
+  const recentBlogPosts = await axios.get("/blogposts/", {
+    limit: BLOG_POSTS_FETCH_LIMIT,
+    excludePost: blogPost._id
+  });
 
   // const authToken = req.cookies[AUTH_COOKIE_KEY];
   // const isAdmin = await checkAdminStatusFromServer(authToken);
 
   // return { blogPost, isAdmin, recentBlogPosts };
 
-  return { blogPost };
+  return { blogPost, recentBlogPosts };
 });
 
 interface BlogPageProps {
   blogPost: BlogPostType;
-  recentBlogPosts: BlogPostType[];
+  recentBlogPosts?: BlogPostType[];
   isAdmin: boolean;
 }
 
-export default function BlogPostPage({ blogPost }: BlogPageProps) {
+export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProps) {
   return (
     <>
       <Head>
@@ -53,7 +53,10 @@ export default function BlogPostPage({ blogPost }: BlogPageProps) {
 
       <Header/>
 
-      <BlogPost blogPost={blogPost}/>
+      <BlogPost
+        blogPost={blogPost}
+        recentBlogPosts={recentBlogPosts || []}
+      />
     </>
   );
 }
