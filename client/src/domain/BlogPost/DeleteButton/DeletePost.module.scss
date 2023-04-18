@@ -1,0 +1,26 @@
+.container {
+  margin-top: 20px;
+
+  & .warningContainer {
+    & .input { margin-top: 20px; }
+
+    & .acceptButton {
+      margin-top: 20px;
+      width: 100%;
+
+      &:disabled {
+        cursor: not-allowed;
+        background: var(--color-btn-disabled);
+      }
+    }
+  }
+
+  & .title {
+    color: var(--color-danger-text);
+    margin: 0;
+  }
+
+  & .description {
+    margin: 10px 0;
+  }
+}

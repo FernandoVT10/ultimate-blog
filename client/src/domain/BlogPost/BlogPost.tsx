@@ -2,6 +2,7 @@ import Cover from "./Cover";
 import Title from "./Title";
 import Content from "./Content";
 import Tags from "./Tags";
+import DeleteButton from "./DeleteButton";
 
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
@@ -40,15 +41,18 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
           isAdmin={isAdmin}
           blogPostId={blogPost._id}
         />
-      {/**
-        <DeleteButton
-          isAdmin={isAdmin}
-          title={blogPost.title}
-          blogPostId={blogPost._id}
-        />
-
-        **/}
       </section>
+
+      {isAdmin && (
+        <section className={styles.dangerZone}>
+          <h2 className={styles.subtitle}>Danger Zone</h2>
+
+          <DeleteButton
+            isAdmin={isAdmin}
+            blogPostId={blogPost._id}
+          />
+        </section>
+      )}
 
       { /**recentBlogPosts.length &&
         <section className={styles.recentBlogPosts}>

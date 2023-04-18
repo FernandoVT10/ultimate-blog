@@ -15,6 +15,7 @@ interface ButtonProps {
   icon?: React.FC<IconProps>;
   loading?: boolean;
   type?: "submit" | "button";
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -25,7 +26,8 @@ export default function Button({
   icon: Icon,
   onClick,
   loading,
-  type
+  type,
+  disabled
 }: ButtonProps) {
   if(show === false) return null;
 
@@ -34,7 +36,7 @@ export default function Button({
       type={type || "button"}
       className={classNames("custom-btn", className, styles.button)}
       onClick={onClick}
-      disabled={loading}
+      disabled={loading || disabled}
     >
 
     {loading ?
