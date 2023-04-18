@@ -16,11 +16,10 @@ import styles from "./DeletePost.module.scss";
 const ACCEPT_TEXT = "I understand";
 
 interface DeletePostProps {
-  isAdmin: boolean;
   blogPostId: BlogPost["_id"];
 }
 
-export default function DeletePost({ isAdmin, blogPostId }: DeletePostProps) {
+export default function DeletePost({ blogPostId }: DeletePostProps) {
   const [confirmationText, setConfirmationText] = useState("");
   const [valid, setValid] = useState(false);
   const { run: deletePost, loading } = useMutation(
@@ -45,8 +44,6 @@ export default function DeletePost({ isAdmin, blogPostId }: DeletePostProps) {
       return router.push("/blog");
     }
   };
-
-  if(!isAdmin) return null;
 
   return (
     <div className={styles.container}>

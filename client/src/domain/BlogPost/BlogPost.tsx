@@ -47,10 +47,7 @@ export default function BlogPost({ blogPost }: BlogPostProps) {
         <section className={styles.dangerZone}>
           <h2 className={styles.subtitle}>Danger Zone</h2>
 
-          <DeleteButton
-            isAdmin={isAdmin}
-            blogPostId={blogPost._id}
-          />
+          <DeleteButton blogPostId={blogPost._id}/>
         </section>
       )}
 
