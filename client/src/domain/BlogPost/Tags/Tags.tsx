@@ -40,7 +40,9 @@ export default function Tags({ tags: initialSelectedTags, isAdmin, blogPostId }:
     if(!initialSelectedTags.length) return null;
 
     return (
-      <TagBadgets tags={getNamesFromTags(initialSelectedTags)}/>
+      <div className={styles.tags}>
+        <TagBadgets tags={getNamesFromTags(initialSelectedTags)}/>
+      </div>
     );
   }
 
