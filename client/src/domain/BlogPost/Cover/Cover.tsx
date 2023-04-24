@@ -3,6 +3,7 @@ import type { BlogPost } from "@customTypes/collections";
 import CoverSelector, { CoverImage } from "@components/BlogPostForm/CoverSelector";
 import { useMutation } from "@hooks/api";
 import { serverErrorHandler } from "@utils/errorHandlers";
+import { toast } from "react-toastify";
 
 interface CoverProps {
   blogPostId: BlogPost["_id"];
@@ -21,7 +22,13 @@ export default function Cover({
     const formData = new FormData();
     formData.append("cover", cover);
 
-    return await run(formData);
+    const success = await run(formData);
+    
+    if(success) {
+      toast.success("Cover updated successfully");
+    }
+
+    return success;
   };
 
   if(!isAdmin) return <CoverImage coverURL={cover}/>;

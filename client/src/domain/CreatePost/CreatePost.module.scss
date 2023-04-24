@@ -1,19 +1,15 @@
-.createPost {
-  padding: 20px;
-  background: var(--color-bg-surface);
-  margin: 40px auto;
+@use "@styles/shared/mixins";
 
-  & .titleInputContainer,
-  & .tagsListContainer {
-    margin-top: 20px;
+.container {
+  margin: 40px auto;
+  @include mixins.responsive-wrapper;
+
+  & .contentContainer {
+    padding: 20px;
+    background: var(--color-base-bg);
   }
 
   & .submitButton {
     margin-top: 20px;
-
-    & .loader {
-      display: inline-block;
-      margin-right: 5px;
-    }
   }
 }

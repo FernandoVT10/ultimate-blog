@@ -1,17 +1,17 @@
-import { useReducer, useState } from "react";
-import { useModal } from "@components/Modal";
-import { createPost } from "@services/BlogPostService";
+import { useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { useMutation } from "@hooks/api";
+import { serverErrorHandler } from "@utils/errorHandlers";
+import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { BlogPost } from "@customTypes/collections";
+import { appendArrayToFormData } from "@utils/form";
 
-import { SidebarCollapseIcon } from "@primer/octicons-react";
-
-import CoverSelection from "@components/BlogPostForm/CoverSelection";
+import CoverSelector from "@components/BlogPostForm/CoverSelector";
 import TitleInput from "@components/BlogPostForm/TitleInput";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
-import TagsModal from "@components/BlogPostForm/TagsModal";
-import TagsList from "@components/BlogPostForm/TagsList";
-import Spinner from "@components/Spinner";
+import TagEditor from "@components/BlogPostForm/TagEditor";
+import Button from "@components/Button";
 
 import styles from "./CreatePost.module.scss";
 
@@ -62,10 +62,21 @@ const initialState: State = {
 
 export default function CreatePost() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [loading, setLoading] = useState(false);
+  const { loading, run: createPost, value: createdPost } = useMutation<BlogPost>(
+    "post",
+    "/blogposts",
+    serverErrorHandler
+  );
 
-  const tagsModal = useModal();
   const router = useRouter();
+
+  useEffect(() => {
+    // NOTE: not best, but it works for now
+    if(createdPost) {
+      router.push(`/blog/${createdPost._id}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createdPost]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,23 +85,15 @@ export default function CreatePost() {
       return toast.error("Cover is required");
     }
 
-    setLoading(true);
+    const formData = new FormData();
 
-    try {
-      const createdPost = await createPost({
-        title: state.title,
-        content: state.content,
-        cover: state.cover,
-        tags: state.tags
-      });
+    formData.append("title", state.title);
+    formData.append("content", state.content);
+    formData.append("cover", state.cover);
 
-      router.push(`/blog/${createdPost._id}`);
-    } catch (error) {
-      console.log(error);
-      toast.error("There was an error trying to create the post");
-    }
+    appendArrayToFormData("tags", state.tags, formData);
 
-    setLoading(false);
+    await createPost(formData);
   };
 
   const handleOnChangeCover = (cover: File): boolean => {
@@ -102,23 +105,11 @@ export default function CreatePost() {
   };
 
   return (
-    <div className={styles.createPost}>
-      <TagsModal
-        modal={tagsModal}
-        selectedTags={state.tags}
-        setSelectedTags={(tags) => dispatch({
-          type: "CHANGE_TAGS",
-          value: tags
-        })}
-      />
+    <div className={styles.container}>
+      <CoverSelector onChangeCover={handleOnChangeCover}/>
 
-      <form onSubmit={handleSubmit}>
-        <CoverSelection
-          onChangeCover={handleOnChangeCover}
-          displayChangeButton
-        />
-
-        <div className={styles.titleInputContainer}>
+      <div className={styles.contentContainer}>
+        <form onSubmit={handleSubmit}>
           <TitleInput
             title={state.title}
             setTitle={(title) => dispatch({
@@ -127,39 +118,33 @@ export default function CreatePost() {
               value: title
             })}
           />
-        </div>
 
-        <ContentEditor content={state.content} setContent={(content) => dispatch({
-          type: "CHANGE_STRING",
-          field: "content",
-          value: content
-        })}/>
+          <ContentEditor content={state.content} setContent={
+            (content) => dispatch({
+              type: "CHANGE_STRING",
+              field: "content",
+              value: content
+            })
+          }/>
 
-        <div className={styles.tagsListContainer}>
-          <TagsList
-            tags={state.tags}
-            showTagsModal={() => tagsModal.showModal()}
-            showEditButton
+          <TagEditor
+            selectedTags={state.tags}
+            setSelectedTags={(tags) => dispatch({
+              type: "CHANGE_TAGS",
+              value: tags
+            })}
           />
-        </div>
 
-        <button
-          className={`custom-btn ${styles.submitButton}`}
-          disabled={loading}
-        >
-          { loading ?
-            <>
-              <Spinner size={10} borderWidth={2} className={styles.loader}/>
-              Creating Post
-            </>
-          :
-            <>
-              <SidebarCollapseIcon size={16} className="icon" />
-              Create Post
-            </>
-          }
-        </button>
-      </form>
+          <Button
+            type="submit"
+            text="Create Post"
+            loadingText={"Creating Post"}
+            loading={loading}
+            icon={FileDirectoryOpenFillIcon}
+            className={styles.submitButton}
+          />
+        </form>
+      </div>
     </div>
   );
 }

@@ -23,10 +23,9 @@ const getURLFromFile = (file: File): Promise<string> => {
   });
 };
 
-
 interface CoverSelectorProps {
-  coverURL: string;
-  onChangeCover: (cover: File) => Promise<boolean>;
+  coverURL?: string;
+  onChangeCover: (cover: File) => Promise<boolean> | boolean;
 }
 
 export default function CoverSelector({ coverURL, onChangeCover }: CoverSelectorProps) {
@@ -49,7 +48,6 @@ export default function CoverSelector({ coverURL, onChangeCover }: CoverSelector
 
     if(await onChangeCover(file)) {
       setUpdatedCover(await getURLFromFile(file));
-      toast.success("Cover updated successfully");
     }
 
     setLoading(false);
@@ -57,24 +55,35 @@ export default function CoverSelector({ coverURL, onChangeCover }: CoverSelector
 
   return (
     <div className={styles.coverSelector}>
-      {loading && 
+      {loading && (
         <div className={styles.loader}>
           <Spinner size={50}/>
           <p className={styles.text}>Uploading new cover</p>
         </div>
-      }
+      )}
 
       <div className={styles.uploadContainer}>
-        <label
-          className={styles.label}
-          htmlFor="cover-image-input"
-        >
-          <PencilIcon size={14} className={styles.icon} />
+        {coverURL || updatedCover ? (
+          <label
+            className={styles.label}
+            htmlFor="cover-image-input"
+          >
+            <PencilIcon size={14} className={styles.icon} />
 
-          <p className={styles.helpText}>
-            Upload a new cover
-          </p>
-        </label>
+            <p className={styles.helpText}>
+              Upload a new cover
+            </p>
+          </label>
+        ) : (
+          <label
+            className={styles.noCoverLabel}
+            htmlFor="cover-image-input"
+          >
+            <p className={styles.helpText}>
+              Click here to upload a new cover
+            </p>
+          </label>
+        )}
 
         <input
           type="file"
@@ -83,15 +92,16 @@ export default function CoverSelector({ coverURL, onChangeCover }: CoverSelector
           onChange={handleChange}
         />
       </div>
-      { updatedCover ?
+
+      {updatedCover ? (
         <img
           className={styles.updatedCover}
           src={updatedCover}
           alt="Post cover"
         />
-      :
+      ) : (
         <CoverImage coverURL={coverURL}/>
-      }
+      )}
     </div>
   );
 }

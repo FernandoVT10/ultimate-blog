@@ -6,12 +6,9 @@ import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
 import { FormEvent, useState } from "react";
 
 import Button from "@components/Button";
-import classNames from "classnames";
+import TitleInput from "@components/BlogPostForm/TitleInput";
 
 import styles from "./Title.module.scss";
-
-// TODO: it's better to get this number from the BlogPost model of the server
-const TITLE_MAX_LENGTH = 100;
 
 interface TitleProps {
   blogPostId: BlogPost["_id"];
@@ -45,23 +42,7 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
   return (
     <div className={styles.titleForm}>
       <form onSubmit={handleSubmit}>
-        <div className={styles.titleInput}>
-          <label htmlFor="title-input" className="custom-label">
-            {"Title"}
-          </label>
-
-          <input
-            type="text"
-            id="title-input"
-            value={title}
-            placeholder="Write an amazing title"
-            onChange={({ target: { value } }) => setTitle(value)}
-            className={classNames("custom-input", styles.input)}
-            maxLength={TITLE_MAX_LENGTH}
-            autoComplete="off"
-            required
-          />
-        </div>
+        <TitleInput title={title} setTitle={setTitle}/>
 
         <Button
           type="submit"

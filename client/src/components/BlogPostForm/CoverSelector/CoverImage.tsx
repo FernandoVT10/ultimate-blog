@@ -2,7 +2,9 @@ import Image from "next/image";
 
 import styles from "./CoverSelector.module.scss";
 
-export default function CoverImage({ coverURL }: { coverURL: string }) {
+export default function CoverImage({ coverURL }: { coverURL?: string }) {
+  if(!coverURL) return null;
+
   return (
     <div className={styles.cover}>
       <Image
