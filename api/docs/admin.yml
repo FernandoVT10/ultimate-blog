@@ -35,3 +35,18 @@ paths:
                 properties:
                   token:
                     type: string
+  /admin/isLogged:
+    get:
+      tags: [admin]
+      description: Returns whether true or false
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isLogged:
+                    type: boolean

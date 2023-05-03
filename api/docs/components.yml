@@ -18,3 +18,9 @@ components:
             type: string
           field:
             type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

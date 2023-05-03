@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import asyncHandler from "express-async-handler";
 import AdminService from "../services/AdminService";
 import checkValidation from "../middlewares/checkValidation";
+import getAuthTokenFromRequest from "../utils/getAuthTokenFromRequest";
 
 const router = Router();
 
@@ -24,12 +25,12 @@ router.post(
   })
 );
 
-// router.get("/admin/status", asyncHandler(async (req, res) => {
-//   const authToken = req.cookies[AUTH_COOKIE_KEY];
-//
-//   const status = await AdminController.checkStatus(authToken);
-//
-//   res.json(status);
-// }));
+router.get("/admin/islogged", asyncHandler(async (req, res) => {
+  const authToken = getAuthTokenFromRequest(req);
+
+  const isLogged = await AdminService.isLogged(authToken);
+
+  res.json({ isLogged });
+}));
 
 export default router;
