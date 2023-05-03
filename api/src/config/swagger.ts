@@ -10,7 +10,8 @@ const swaggerSpec = swaggerJSDoc({
     },
     servers: [{ url: "/api" }]
   },
-  apis: ["./src/routes/**.ts"]
+  // This path is relative to the current directory from which the Node.js ran
+  apis: ["./docs/**.yml"]
 });
 
 export default swaggerSpec;

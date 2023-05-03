@@ -10,37 +10,6 @@ import TagRepository from "../repositories/TagRepository";
 
 const router = Router();
 
-/**
-* @swagger
-* components:
-*   schemas:
-*     Tag:
-*       type: object
-*       properties:
-*         _id:
-*           type: string
-*         name:
-*           type: string
-*
-* tags: [name: tag]
-*/
-
-/**
-* @swagger
-* /tags:
-*   get:
-*     tags: [tag]
-*     description: Returns all tags
-*     responses:
-*       200:
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: "#/components/schemas/Tag"
-*
-* */
 router.get("/tags", asyncHandler(async (_, res) => {
   const tags = await TagRepository.getAll();
 

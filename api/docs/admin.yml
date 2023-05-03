@@ -1,0 +1,37 @@
+components:
+  requestBodies:
+    AdminLoginRequest:
+      type: object
+      properties:
+        password:
+          type: string
+
+tags: [name: admin]
+
+paths:
+  /admin/login:
+    post:
+      tags: [admin]
+      description: Creates a jsonwebtoken to be authenticated as an admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/AdminLoginRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/AdminLoginRequest"
+      responses:
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string

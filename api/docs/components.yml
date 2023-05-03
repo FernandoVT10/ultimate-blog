@@ -1,0 +1,20 @@
+components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+
+  responses:
+    ValidationErrorResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          message:
+            type: string
+          field:
+            type: string
