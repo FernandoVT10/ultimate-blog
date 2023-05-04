@@ -1,3 +1,11 @@
+components:
+  requestBodies:
+    CreateTagRequest:
+      type: object
+      properties:
+        name:
+          type: string
+
 tags: [name: tag]
 paths:
   /tags:
@@ -12,3 +20,32 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Tag"
+    post:
+      security:
+        - BearerAuth: []
+      tags: [tag]
+      description: Creates a tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/CreateTagRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/CreateTagRequest"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"

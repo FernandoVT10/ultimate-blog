@@ -1,11 +1,10 @@
 import { Router } from "express";
-// import { body } from "express-validator";
-// import { NAME_MAX_LENGTH } from "../models/Tag";
+import { NAME_MAX_LENGTH } from "../models/Tag";
 
 import asyncHandler from "express-async-handler";
-// import TagService from "../services/TagService";
-// import authorize from "../middlewares/authorize";
-// import checkValidation from "../middlewares/checkValidation";
+import authorize from "../middlewares/authorize";
+import checkValidation from "../middlewares/checkValidation";
+import validators from "../utils/validators";
 import TagRepository from "../repositories/TagRepository";
 
 const router = Router();
@@ -16,33 +15,24 @@ router.get("/tags", asyncHandler(async (_, res) => {
   res.json(tags);
 }));
 
-// router.post(
-//   "/tags",
-//
-//   authorize(),
-//
-//   body("name")
-//     .exists({ checkFalsy: true, checkNull: true })
-//     .withMessage("Name is required")
-//     .isString()
-//     .withMessage("Name must be a string")
-//     .isLength({ max: NAME_MAX_LENGTH })
-//     .withMessage(`Name can't be larger than ${NAME_MAX_LENGTH} characters`)
-//     .custom(async (name) => {
-//       if(await TagService.checkNameExists(name)) {
-//         throw new Error(`A tag called "${name}" already exists`);
-//       }
-//     }),
-//
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { name } = req.body;
-//
-//     await TagService.createOne(name);
-//
-//     res.sendStatus(204);
-//   })
-// );
+router.post(
+  "/tags",
+
+  authorize(),
+
+  validators.stringValidator("name", NAME_MAX_LENGTH)
+    .custom(async (name) => {
+      if(await TagRepository.checkNameExists(name)) {
+        throw new Error(`A tag called "${name}" already exists`);
+      }
+    }),
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { name } = req.body;
+    const createdTag = await TagRepository.createOne(name);
+    res.json(createdTag);
+  })
+);
 
 export default router;

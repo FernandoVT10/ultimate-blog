@@ -18,6 +18,13 @@ components:
             type: string
           field:
             type: string
+    NotAuthorizedError:
+      type: array
+      items:
+        type: object
+        properties:
+          message:
+            type: string
 
   securitySchemes:
     BearerAuth:
