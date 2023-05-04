@@ -1,6 +1,7 @@
 components:
   requestBodies:
     CreateTagRequest:
+      required: [name]
       type: object
       properties:
         name:
@@ -33,6 +34,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "#/components/requestBodies/CreateTagRequest"
+        required: true
       responses:
         200:
           content:

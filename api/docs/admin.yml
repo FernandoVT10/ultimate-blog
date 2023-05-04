@@ -1,6 +1,7 @@
 components:
   requestBodies:
     AdminLoginRequest:
+      required: [password]
       type: object
       properties:
         password:
@@ -21,6 +22,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "#/components/requestBodies/AdminLoginRequest"
+        required: true
       responses:
         400:
           content:
