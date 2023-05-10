@@ -15,6 +15,7 @@ components:
         content:
           type: string
           maxLength: 5000
+
   parameters:
     blogPostId:
       in: path
@@ -158,6 +159,40 @@ paths:
       responses:
         204:
           description: Content updated successfully
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
+        404:
+          description: BlogPost not found
+
+  /blogposts/{blogPostId}/updateCover:
+    put:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Updates BlogPost's cover
+      parameters:
+        - $ref: "#/components/parameters/blogPostId"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [cover]
+              properties:
+                cover:
+                  type: string
+                  format: binary
+      responses:
+        204:
+          description: Cover updated successfully
         400:
           content:
             application/json:

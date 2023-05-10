@@ -3,11 +3,7 @@ import BlogPost, { IBlogPost } from "../models/BlogPost";
 import { LeanDocument, HydratedDocument } from "mongoose";
 import { ITag } from "../models/Tag";
 
-// import TagService from "./TagService";
-
 const BLOG_POST_FETCH_LIMIT = 20;
-
-// export type BlogPostServiceFilter = FilterQuery<IBlogPost & { _id: string }>;
 
 export interface GetAllOptions {
   limit?: number;
@@ -47,13 +43,7 @@ const updateById = async (
     $set: data
   });
 };
-//
-// const updateCover = async (blogPostId: string, cover: string) => {
-//   return BlogPost.findByIdAndUpdate(blogPostId, {
-//     $set: { cover }
-//   }, { new: false });
-// };
-//
+
 // const updateTags = async (
 //   blogPostId: string,
 //   tags: ITag["name"][]
@@ -75,9 +65,4 @@ export default {
   getById,
   createOne,
   updateById,
-  // updateContent,
-  // updateCover,
-  // updateTags,
-  // checkIfExists,
-  // deletePost
 };

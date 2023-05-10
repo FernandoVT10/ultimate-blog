@@ -11,6 +11,7 @@ import { query, param } from "express-validator";
 import { Router, Request } from "express";
 
 const router = Router();
+const multerInstance = createMulterInstance();
 
 interface GetBlogPostsQuery {
   tags?: string[];
@@ -43,8 +44,6 @@ router.get(
     res.json(blogPost);
   })
 );
-
-const multerInstance = createMulterInstance();
 
 router.post(
   "/blogposts",
@@ -112,30 +111,29 @@ router.put(
     res.sendStatus(204);
   })
 );
-//
-// router.put(
-//   "/blogposts/:blogPostId/updateCover",
-//
-//   authorize(),
-//
-//   upload.single("cover"),
-//
-//   param("blogPostId")
-//     .custom(BlogPostValidation.checkId),
-//   body("cover")
-//     .custom(BlogPostValidation.coverValidator),
-//
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { blogPostId } = req.params;
-//     const coverFile = req.file as Express.Multer.File;
-//
-//     await BlogPostController.updateCover(blogPostId, coverFile);
-//
-//     res.sendStatus(204);
-//   })
-// );
+
+router.put(
+  "/blogposts/:blogPostId/updateCover",
+
+  authorize(),
+
+  multerInstance.single("cover"),
+
+  BlogPostValidation.createCoverChain(),
+  BlogPostValidation.createPostIdChain(),
+  checkValidation(),
+
+  BlogPostValidation.existsBlogPost(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const coverFile = req.file as Express.Multer.File;
+
+    await BlogPostService.updateCover(blogPostId, coverFile);
+
+    res.sendStatus(204);
+  })
+);
 //
 // router.put(
 //   "/blogposts/:blogPostId/updateTags",

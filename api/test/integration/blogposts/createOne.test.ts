@@ -1,24 +1,13 @@
 import fs from "fs";
-import sharp from "sharp";
 import path from "path";
 import checkAuthorizeMiddleware from "../../utils/checkAuthorizationMiddleware";
+import generators from "../../utils/generators";
 import BlogPostCover from "@app/utils/BlogPostCover";
 
 import { createAuthorizedAgent } from "../../utils/request";
 import { TagFactory } from "../../factories";
 import { faker } from "@faker-js/faker";
 import { SuperAgentTest } from "supertest";
-
-const generateTestImage = async (): Promise<Buffer> => {
-  return await sharp({
-    create: {
-      width: 10,
-      height: 10,
-      channels: 3,
-      background: { r: 255, g: 0, b: 0 }
-    }
-  }).png().toBuffer();
-};
 
 describe("integration POST /api/blogposts", () => {
   let authenticatedRequest: SuperAgentTest;
@@ -38,7 +27,7 @@ describe("integration POST /api/blogposts", () => {
 
     const title = faker.lorem.words(3);
     const content = faker.lorem.sentence();
-    const cover = await generateTestImage();
+    const cover = await generators.generateImageBuffer();
 
     const res = await authenticatedRequest.post("/api/blogposts")
       .field("title", title)

@@ -63,38 +63,37 @@ const updateContent = (blogPostId: string, content: string) => {
   );
 };
 
-//
-// const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
-//   const newCover = new BlogPostCover();
-//
-//   try {
-//     await newCover.saveBuffer(coverFile.buffer);
-//
-//     const oldBlogPost = await BlogPostService.updateCover(
-//       blogPostId, newCover.getName()
-//     );
-//
-//     if(!oldBlogPost) {
-//       throw new RequestError(500, "An error happen trying to update the Blog Post");
-//     }
-//
-//     const oldCover = new BlogPostCover(
-//       oldBlogPost.get("cover", null, { getters: false })
-//     );
-//
-//     await oldCover.delete();
-//   } catch(error) {
-//     await newCover.delete();
-//
-//     throw error;
-//   }
-// };
+const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
+  const newCover = new BlogPostCover();
+
+  try {
+    await newCover.saveBuffer(coverFile.buffer);
+
+    const oldBlogPost = await BlogPostRepository.updateById(
+      blogPostId, { cover: newCover.getName() }
+    );
+
+    if(!oldBlogPost) {
+      throw new RequestError(500, "An error happened trying to update the Blog Post");
+    }
+
+    const oldCover = new BlogPostCover(
+      oldBlogPost.get("cover", null, { getters: false })
+    );
+
+    await oldCover.delete();
+  } catch(error) {
+    await newCover.delete();
+
+    throw error;
+  }
+};
 
 export default {
   getAll,
   getById,
   createOne,
   updateTitle,
-  updateContent
-  // updateCover
+  updateContent,
+  updateCover
 };
