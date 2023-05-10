@@ -1,3 +1,20 @@
+components:
+  requestBodies:
+    UpdateTitle:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          maxLength: 100
+  parameters:
+    blogPostId:
+      in: path
+      name: blogPostId
+      required: true
+      schema:
+        type: string
+
 tags: [name: blogpost]
 paths:
   /blogposts:
@@ -61,16 +78,12 @@ paths:
                 $ref: "#/components/responses/NotAuthorizedError"
 
 
-  /blogposts/{blogPostId}:
+  /blogposts/{blogPostId}/updateTitle:
     get:
       tags: [blogpost]
       summary: Returns the specified blog post
       parameters:
-        - in: path
-          name: blogPostId
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/blogPostId"
       responses:
         200:
           content:
@@ -83,5 +96,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/ValidationErrorResponse"
+        404:
+          description: BlogPost not found
+    put:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Updates BlogPost's title
+      parameters:
+        - $ref: "#/components/parameters/blogPostId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/UpdateTitle"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/UpdateTitle"
+      responses:
+        204:
+          description: Title updated successfully
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
         404:
           description: BlogPost not found

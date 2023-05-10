@@ -38,23 +38,16 @@ interface CreateBlogPostData {
 const createOne = async (data: CreateBlogPostData): Promise<HydratedDocument<IBlogPost>> => {
   return BlogPost.create(data);
 };
-//
-// const updateById = async (
-//   blogPostId: string,
-//   data: object
-// ): Promise<HydratedDocument<IBlogPost> | null> => {
-//   return BlogPost.findByIdAndUpdate(blogPostId, {
-//     $set: data
-//   });
-// };
-//
-// const updateTitle = (blogPostId: string, title: string) => {
-//   return updateById(
-//     blogPostId,
-//     { title }
-//   );
-// };
-//
+
+const updateById = async (
+  blogPostId: string,
+  data: object
+): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findByIdAndUpdate(blogPostId, {
+    $set: data
+  });
+};
+
 // const updateContent = (blogPostId: string, content: string) => {
 //   return updateById(
 //     blogPostId,
@@ -79,13 +72,6 @@ const createOne = async (data: CreateBlogPostData): Promise<HydratedDocument<IBl
 //   });
 // };
 //
-// const checkIfExists = async (blogPostId: string): Promise<boolean> => {
-//   if(await BlogPost.exists({ _id: blogPostId })) {
-//     return true;
-//   }
-//
-//   return false;
-// };
 //
 // const deletePost = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
 //   return BlogPost.findByIdAndDelete(blogPostId);
@@ -95,8 +81,8 @@ export default {
   getAll,
   getById,
   createOne,
+  updateById,
   // updateContent,
-  // updateTitle,
   // updateCover,
   // updateTags,
   // checkIfExists,

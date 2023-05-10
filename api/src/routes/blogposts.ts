@@ -1,16 +1,14 @@
-// import BlogPostController from "../controllers/BlogPostController";
 import BlogPostService from "../services/BlogPostService";
 import BlogPostValidation from "../validation/BlogPostValidation";
-// import BlogPostValidation from "../validation/BlogPostValidation";
+
 import asyncHandler from "express-async-handler";
 import checkValidation from "../middlewares/checkValidation";
 import authorize from "../middlewares/authorize";
 import validators from "../utils/validators";
 import createMulterInstance from "../utils/createMulterInstance";
 
-import { query, param, body } from "express-validator";
+import { query, param } from "express-validator";
 import { Router, Request } from "express";
-// import { transformIntoStringArray } from "../utils/sanitizers";
 
 const router = Router();
 
@@ -72,28 +70,31 @@ router.post(
     res.json(createdPost);
   })
 );
-//
-// router.put(
-//   "/blogposts/:blogPostId/updateTitle",
-//
-//   authorize(),
-//
-//   checkSchema(
-//     BlogPostValidation.updateBlogPostTitleSchema
-//   ),
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { blogPostId } = req.params;
-//     const { title } = req.body;
-//
-//     await BlogPostService.updateTitle(blogPostId, title);
-//
-//     res.sendStatus(204);
-//   })
-// );
-//
-//
+
+router.put(
+  "/blogposts/:blogPostId/updateTitle",
+
+  authorize(),
+
+  // checkSchema(
+  //   BlogPostValidation.updateBlogPostTitleSchema
+  // ),
+  BlogPostValidation.createPostIdChain(),
+  BlogPostValidation.createTitleChain(),
+  checkValidation(),
+
+  BlogPostValidation.existsBlogPost(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { title } = req.body;
+
+    await BlogPostService.updateTitle(blogPostId, title);
+
+    res.sendStatus(204);
+  })
+);
+
 // router.put(
 //   "/blogposts/:blogPostId/updateContent",
 //

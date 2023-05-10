@@ -4,8 +4,8 @@ import path from "path";
 import checkAuthorizeMiddleware from "../../utils/checkAuthorizationMiddleware";
 import BlogPostCover from "@app/utils/BlogPostCover";
 
-import { createAgent } from "../../utils/request";
-import { AuthFactory, TagFactory } from "../../factories";
+import { createAuthorizedAgent } from "../../utils/request";
+import { TagFactory } from "../../factories";
 import { faker } from "@faker-js/faker";
 import { SuperAgentTest } from "supertest";
 
@@ -24,10 +24,7 @@ describe("integration POST /api/blogposts", () => {
   let authenticatedRequest: SuperAgentTest;
   
   beforeEach(async () => {
-    const authToken = await AuthFactory.generateToken();
-
-    authenticatedRequest = createAgent();
-    authenticatedRequest.set("Authorization", `Bearer ${authToken}`);
+    authenticatedRequest = await createAuthorizedAgent();
   });
 
   checkAuthorizeMiddleware("/api/blogposts", "post");

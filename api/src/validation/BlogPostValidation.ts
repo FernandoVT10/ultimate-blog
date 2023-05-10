@@ -1,10 +1,14 @@
 import sharp from "sharp";
-
-import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "../models/BlogPost";
-import { CustomValidator, body } from "express-validator";
-
+import asyncHandler from "express-async-handler";
 import validators from "../utils/validators";
 import sanitizers from "../utils/sanitizers";
+
+import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "../models/BlogPost";
+import { CustomValidator, body, param } from "express-validator";
+import { RequestHandler } from "express";
+import { RequestError } from "../utils/errors";
+
+import BlogPostRepository from "../repositories/BlogPostRepository";
 
 // const checkId: CustomValidator = async (id) => {
 //   if(!isValidObjectId(id)) throw new Error("Id is invalid");
@@ -51,26 +55,25 @@ const createTagsChain = () =>
     sanitizers.transformIntoStringArray
   );
 
-// const blogPostIdValidation: ParamSchema = {
-//   in: "params",
-//   custom: {
-//     options: checkId
-//   }
-// };
-//
-// const updateBlogPostTitleSchema: Schema = {
-//   blogPostId: blogPostIdValidation,
-//   title: titleValidation
-// };
-//
-// const updateBlogPostContentSchema: Schema = {
-//   blogPostId: blogPostIdValidation,
-//   content: contentValidation
-// };
+const createPostIdChain = () =>
+  param("blogPostId").custom(validators.validateId);
+
+// must to be ran after the id validation
+const existsBlogPost = (): RequestHandler => asyncHandler(async (req, _, next) => {
+  const { blogPostId } = req.params;
+
+  if(await BlogPostRepository.getById(blogPostId)) {
+    return next();
+  }
+
+  next(new RequestError(404, "blog post not found"));
+});
 
 export default {
   createCoverChain,
   createTitleChain,
   createContentChain,
-  createTagsChain
+  createTagsChain,
+  createPostIdChain,
+  existsBlogPost
 };
