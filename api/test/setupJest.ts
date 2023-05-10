@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import fs from "fs";
 
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { STATIC_DIR } from "@app/constants";
 
 let mongod: MongoMemoryServer;
 
@@ -18,7 +20,20 @@ global.beforeEach(async () => {
   for(const collection of collections) {
     await collection.deleteMany({});
   }
+
+  // clean all files created in the tests
+  try {
+    await fs.promises.rm(STATIC_DIR, { recursive: true });
+  } catch (error) {
+    if((error as NotFoundFileError).code !== "ENOENT") {
+      throw error;
+    }
+  }
 });
+
+type NotFoundFileError = {
+  code: string;
+};
 
 global.afterAll(async () => {
   await mongoose.disconnect();

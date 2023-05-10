@@ -1,4 +1,5 @@
-import { body, ValidationChain } from "express-validator";
+import { body, CustomValidator, ValidationChain } from "express-validator";
+import { isValidObjectId } from "mongoose";
 
 const stringValidator = (field: string, maxLength: number): ValidationChain => {
   return body(field)
@@ -10,4 +11,10 @@ const stringValidator = (field: string, maxLength: number): ValidationChain => {
     .withMessage(`${field} can'be larger than ${maxLength} characters`);
 };
 
-export default { stringValidator };
+const validateId: CustomValidator = (value) => {
+  if(isValidObjectId(value)) return true;
+
+  throw new Error("Id is invalid");
+};
+
+export default { stringValidator, validateId };

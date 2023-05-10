@@ -1,0 +1,87 @@
+tags: [name: blogpost]
+paths:
+  /blogposts:
+    get:
+      tags: [blogpost]
+      summary: Returns all blogposts
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Max number of posts to return
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+    post:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Creates a post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, content, tags, cover]
+              properties:
+                title:
+                  type: string
+                  maxLength: 100
+                content:
+                  type: string
+                  maxLength: 5000
+                tags:
+                  type: array
+                  items:
+                    type: string
+                cover:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
+
+
+  /blogposts/{blogPostId}:
+    get:
+      tags: [blogpost]
+      summary: Returns the specified blog post
+      parameters:
+        - in: path
+          name: blogPostId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        400:
+          description: Invalid Id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        404:
+          description: BlogPost not found

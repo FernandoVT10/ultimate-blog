@@ -6,6 +6,8 @@ const DEFAULT_MESSAGE = "There was an internal server error trying to complete y
 // eslint-disable-next-line
 const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunction) => {
   if(err instanceof RequestError) {
+    if(!err.message) return res.sendStatus(err.statusCode);
+
     return res.status(err.statusCode).json({
       errors: [{ message: err.message }]
     });

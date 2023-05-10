@@ -2,17 +2,9 @@ import { SuperAgentTest } from "supertest";
 import { AuthFactory, TagFactory } from "../factories";
 import { createRequest, createAgent } from "../utils/request";
 
+import checkAuthorizeMiddleware from "../utils/checkAuthorizationMiddleware";
+
 const request = createRequest();
-
-type Method = "post" | "get" | "delete" | "put";
-
-const checkAuthorizeMiddleware = (url: string, method: Method) => {
-  it("should return 401 if user is not authenticated", async () => {
-    const res = await request[method](url).expect(401);
-
-    expect(res.status).toBe(401);
-  });
-};
 
 describe("integration api/tags", () => {
   describe("GET /api/tags", () => {

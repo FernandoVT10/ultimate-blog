@@ -1,7 +1,7 @@
 export class RequestError extends Error {
   constructor(
     readonly statusCode: number,
-    message: string
+    message?: string
   ) {
     super(message);
   }

@@ -20,4 +20,8 @@ const checkNameExists = async (name: string): Promise<boolean> => {
   }
 };
 
-export default { getAll, createOne, checkNameExists };
+const getTagsByName = async (names: string[]): Promise<HydratedDocument<ITag>[]> => {
+  return Tag.find({ name: { $in: names } });
+};
+
+export default { getAll, createOne, checkNameExists, getTagsByName };

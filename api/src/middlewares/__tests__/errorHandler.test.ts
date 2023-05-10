@@ -24,9 +24,9 @@ describe("middlewares/errorHandler", () => {
   };
 
   describe("when the error is instance of RequestError", () => {
-    const validationError = new RequestError(403, "error");
-
     it("should send a response to the user", () => {
+      const validationError = new RequestError(403, "error");
+
       const res = callMiddleware(validationError);
 
       expect(res.statusCode).toBe(validationError.statusCode);
@@ -35,6 +35,15 @@ describe("middlewares/errorHandler", () => {
           message: validationError.message
         }]
       });
+    });
+
+    it("should return no body when no message is setted", () => {
+      const validationError = new RequestError(403);
+
+      const res = callMiddleware(validationError);
+
+      expect(res.statusCode).toBe(validationError.statusCode);
+      expect(res._isJSON()).toBeFalsy();
     });
   });
 

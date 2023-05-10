@@ -7,6 +7,24 @@ components:
           type: string
         name:
           type: string
+    BlogPost:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        cover:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
 
   responses:
     ValidationErrorResponse:
