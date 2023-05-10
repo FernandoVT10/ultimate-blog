@@ -47,13 +47,6 @@ const updateById = async (
     $set: data
   });
 };
-
-// const updateContent = (blogPostId: string, content: string) => {
-//   return updateById(
-//     blogPostId,
-//     { content }
-//   );
-// };
 //
 // const updateCover = async (blogPostId: string, cover: string) => {
 //   return BlogPost.findByIdAndUpdate(blogPostId, {

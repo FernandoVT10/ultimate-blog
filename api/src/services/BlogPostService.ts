@@ -55,6 +55,14 @@ const updateTitle = (blogPostId: string, title: string) => {
   );
 };
 
+
+const updateContent = (blogPostId: string, content: string) => {
+  return BlogPostRepository.updateById(
+    blogPostId,
+    { content }
+  );
+};
+
 //
 // const updateCover = async (blogPostId: string, coverFile: Express.Multer.File) => {
 //   const newCover = new BlogPostCover();
@@ -86,6 +94,7 @@ export default {
   getAll,
   getById,
   createOne,
-  updateTitle
+  updateTitle,
+  updateContent
   // updateCover
 };

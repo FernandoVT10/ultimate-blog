@@ -7,6 +7,14 @@ components:
         title:
           type: string
           maxLength: 100
+
+    UpdateContent:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          maxLength: 5000
   parameters:
     blogPostId:
       in: path
@@ -78,7 +86,7 @@ paths:
                 $ref: "#/components/responses/NotAuthorizedError"
 
 
-  /blogposts/{blogPostId}/updateTitle:
+  /blogposts/{blogPostId}:
     get:
       tags: [blogpost]
       summary: Returns the specified blog post
@@ -98,6 +106,8 @@ paths:
                 $ref: "#/components/responses/ValidationErrorResponse"
         404:
           description: BlogPost not found
+
+  /blogposts/{blogPostId}/updateTitle:
     put:
       security:
         - BearerAuth: []
@@ -116,6 +126,38 @@ paths:
       responses:
         204:
           description: Title updated successfully
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
+        404:
+          description: BlogPost not found
+  
+  /blogposts/{blogPostId}/updateContent:
+    put:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Updates BlogPost's content
+      parameters:
+        - $ref: "#/components/parameters/blogPostId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/UpdateContent"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/UpdateContent"
+      responses:
+        204:
+          description: Content updated successfully
         400:
           content:
             application/json:

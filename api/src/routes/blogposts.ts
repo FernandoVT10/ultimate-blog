@@ -76,9 +76,6 @@ router.put(
 
   authorize(),
 
-  // checkSchema(
-  //   BlogPostValidation.updateBlogPostTitleSchema
-  // ),
   BlogPostValidation.createPostIdChain(),
   BlogPostValidation.createTitleChain(),
   checkValidation(),
@@ -95,25 +92,26 @@ router.put(
   })
 );
 
-// router.put(
-//   "/blogposts/:blogPostId/updateContent",
-//
-//   authorize(),
-//
-//   checkSchema(
-//     BlogPostValidation.updateBlogPostContentSchema
-//   ),
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { blogPostId } = req.params;
-//     const { content } = req.body;
-//
-//     await BlogPostService.updateContent(blogPostId, content);
-//
-//     res.sendStatus(204);
-//   })
-// );
+router.put(
+  "/blogposts/:blogPostId/updateContent",
+
+  authorize(),
+
+  BlogPostValidation.createPostIdChain(),
+  BlogPostValidation.createContentChain(),
+  checkValidation(),
+
+  BlogPostValidation.existsBlogPost(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { content } = req.body;
+
+    await BlogPostService.updateContent(blogPostId, content);
+
+    res.sendStatus(204);
+  })
+);
 //
 // router.put(
 //   "/blogposts/:blogPostId/updateCover",
