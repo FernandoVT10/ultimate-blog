@@ -134,29 +134,29 @@ router.put(
     res.sendStatus(204);
   })
 );
-//
-// router.put(
-//   "/blogposts/:blogPostId/updateTags",
-//
-//   authorize(),
-//
-//   param("blogPostId")
-//     .custom(BlogPostValidation.checkId),
-//
-//   body("tags")
-//     .customSanitizer(transformIntoStringArray),
-//
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { blogPostId } = req.params;
-//     const { tags } = req.body;
-//
-//     await BlogPostService.updateTags(blogPostId, tags);
-//
-//     res.sendStatus(204);
-//   })
-// );
+
+router.put(
+  "/blogposts/:blogPostId/updateTags",
+
+  authorize(),
+
+  BlogPostValidation.createPostIdChain(),
+  // FIX: when using xxx-urlencoded-formdata, the tags array is not parsed as an array
+  // rather is parsed as a text
+  BlogPostValidation.createTagsChain(),
+  checkValidation(),
+
+  BlogPostValidation.existsBlogPost(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+    const { tags } = req.body;
+
+    await BlogPostService.updateTags(blogPostId, tags);
+
+    res.sendStatus(204);
+  })
+);
 //
 // router.delete(
 //   "/blogposts/:blogPostId",

@@ -14,7 +14,16 @@ components:
       properties:
         content:
           type: string
-          maxLength: 5000
+          maxLength: 500
+
+    UpdateTags:
+      type: object
+      required: [tags]
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
 
   parameters:
     blogPostId:
@@ -193,6 +202,38 @@ paths:
       responses:
         204:
           description: Cover updated successfully
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
+        404:
+          description: BlogPost not found
+
+  /blogposts/{blogPostId}/updateTags:
+    put:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Updates BlogPost's tags
+      parameters:
+        - $ref: "#/components/parameters/blogPostId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/UpdateTags"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/UpdateTags"
+      responses:
+        204:
+          description: Tags updated successfully
         400:
           content:
             application/json:

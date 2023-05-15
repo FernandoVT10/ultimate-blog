@@ -21,6 +21,7 @@ global.beforeEach(async () => {
     await collection.deleteMany({});
   }
 
+  // TODO: I think is better to use mock-fs for this job
   // clean all files created in the tests
   try {
     await fs.promises.rm(STATIC_DIR, { recursive: true });

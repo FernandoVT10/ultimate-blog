@@ -41,7 +41,7 @@ describe("PUT /api/blogposts/:blogPostId/updateContent", () => {
 
     expect(res.body.errors).toHaveLength(1);
   });
-  //
+
   it("should return a 404", async () => {
     const fakeId = faker.database.mongodbObjectId();
 
