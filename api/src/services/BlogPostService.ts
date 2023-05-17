@@ -97,6 +97,24 @@ const updateTags = async (blogPostId: string, tags: string[]) => {
   });
 };
 
+const deleteOneById = async (blogPostId: string) => {
+  const deletedPost = await BlogPostRepository.deleteOneById(blogPostId);
+
+  // this is not necessary since it's supposed to be a validation middleware
+  // to check that the post exists, but if for some reason the middleware is
+  // forgotten we avoid a crash with this
+  if(!deletedPost) {
+    throw new RequestError(500, "There was an error trying to find the post to be deleted");
+  }
+
+  const coverName = deletedPost.get("cover", null, { getters: false });
+  const cover = new BlogPostCover(coverName);
+
+  await cover.delete();
+
+  return deletedPost;
+};
+
 export default {
   getAll,
   getById,
@@ -104,5 +122,6 @@ export default {
   updateTitle,
   updateContent,
   updateCover,
-  updateTags
+  updateTags,
+  deleteOneById
 };

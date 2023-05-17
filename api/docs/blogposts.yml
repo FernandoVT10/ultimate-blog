@@ -116,6 +116,32 @@ paths:
                 $ref: "#/components/responses/ValidationErrorResponse"
         404:
           description: BlogPost not found
+    delete:
+      security:
+        - BearerAuth: []
+      tags: [blogpost]
+      summary: Deletes a post
+      parameters:
+        - $ref: "#/components/parameters/blogPostId"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/NotAuthorizedError"
+        404:
+          description: BlogPost not found
+
 
   /blogposts/{blogPostId}/updateTitle:
     put:

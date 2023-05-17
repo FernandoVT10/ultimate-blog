@@ -157,24 +157,24 @@ router.put(
     res.sendStatus(204);
   })
 );
-//
-// router.delete(
-//   "/blogposts/:blogPostId",
-//
-//   authorize(),
-//
-//   param("blogPostId")
-//     .custom(BlogPostValidation.checkId),
-//
-//   checkValidation(),
-//
-//   asyncHandler(async (req, res) => {
-//     const { blogPostId } = req.params;
-//
-//     const deletedBlogPost = await BlogPostService.deletePost(blogPostId);
-//
-//     res.json(deletedBlogPost);
-//   })
-// );
+
+router.delete(
+  "/blogposts/:blogPostId",
+
+  authorize(),
+
+  BlogPostValidation.createPostIdChain(),
+  checkValidation(),
+
+  BlogPostValidation.existsBlogPost(),
+
+  asyncHandler(async (req, res) => {
+    const { blogPostId } = req.params;
+
+    const deletedBlogPost = await BlogPostService.deleteOneById(blogPostId);
+
+    res.json(deletedBlogPost);
+  })
+);
 
 export default router;

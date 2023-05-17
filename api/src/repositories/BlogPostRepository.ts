@@ -44,25 +44,14 @@ const updateById = async (
   });
 };
 
-// const updateTags = async (
-//   blogPostId: string,
-//   tags: ITag["name"][]
-// ): Promise<HydratedDocument<IBlogPost> | null> => {
-//   const tagsDocs = await TagService.getTagsByName(tags);
-//
-//   return BlogPost.findByIdAndUpdate(blogPostId, {
-//     tags: tagsDocs
-//   });
-// };
-//
-//
-// const deletePost = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
-//   return BlogPost.findByIdAndDelete(blogPostId);
-// };
+const deleteOneById = async (blogPostId: string): Promise<HydratedDocument<IBlogPost> | null> => {
+  return BlogPost.findByIdAndDelete(blogPostId);
+};
 
 export default {
   getAll,
   getById,
   createOne,
   updateById,
+  deleteOneById
 };
