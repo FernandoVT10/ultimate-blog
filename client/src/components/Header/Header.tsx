@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { useQuery } from "@hooks/api";
+import { useAuthProvider } from "@providers/AuthProvider";
 
 import styles from "./Header.module.scss";
 
@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ children, height }: HeaderProps) {
-  const { value: adminStatus } = useQuery<{ isLogged: boolean }>("/admin/status");
+  const authStatus = useAuthProvider();
 
   return (
     <header className={styles.header} style={{ height: height || 50 }}>
@@ -35,7 +35,7 @@ export default function Header({ children, height }: HeaderProps) {
             </Link>
           </li>
 
-          { adminStatus?.isLogged &&
+          { authStatus?.isLogged &&
             <li className={styles.menuItem}>
               <Link href="/blog/createPost" className={styles.link}>
                 Create Post

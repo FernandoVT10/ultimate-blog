@@ -1,18 +1,16 @@
 import axios from "@utils/axios";
+import catchServerErrors from "@utils/catchServerErrors";
 
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
-// import { checkAdminStatusFromServer } from "@services/AdminService";
-// import { AUTH_COOKIE_KEY } from "@config/constants";
 
 import Head from "next/head";
 import Header from "@components/Header";
 import BlogPost from "@domain/BlogPost";
-
-import catchServerErrors from "@utils/catchServerErrors";
+import AuthProvider from "@providers/AuthProvider";
 
 const BLOG_POSTS_FETCH_LIMIT = 3;
 
-export const getServerSideProps = catchServerErrors(async ({ params, req }) => {
+export const getServerSideProps = catchServerErrors(async ({ params }) => {
   const blogPostId = params?.blogId;
 
   if(!blogPostId) {
@@ -25,15 +23,10 @@ export const getServerSideProps = catchServerErrors(async ({ params, req }) => {
     return { notFound: true };
   }
 
+  // TODO: instead of fetching recent posts, fetch related posts
   const recentBlogPosts = await axios.get("/blogposts/", {
-    limit: BLOG_POSTS_FETCH_LIMIT,
-    excludePost: blogPost._id
+    limit: BLOG_POSTS_FETCH_LIMIT
   });
-
-  // const authToken = req.cookies[AUTH_COOKIE_KEY];
-  // const isAdmin = await checkAdminStatusFromServer(authToken);
-
-  // return { blogPost, isAdmin, recentBlogPosts };
 
   return { blogPost, recentBlogPosts };
 });
@@ -41,7 +34,6 @@ export const getServerSideProps = catchServerErrors(async ({ params, req }) => {
 interface BlogPageProps {
   blogPost: BlogPostType;
   recentBlogPosts?: BlogPostType[];
-  isAdmin: boolean;
 }
 
 export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProps) {
@@ -51,12 +43,14 @@ export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProp
         <title>{ blogPost.title }</title>
       </Head>
 
-      <Header/>
+      <AuthProvider>
+        <Header/>
 
-      <BlogPost
-        blogPost={blogPost}
-        recentBlogPosts={recentBlogPosts || []}
-      />
+        <BlogPost
+          blogPost={blogPost}
+          recentBlogPosts={recentBlogPosts || []}
+        />
+      </AuthProvider>
     </>
   );
 }

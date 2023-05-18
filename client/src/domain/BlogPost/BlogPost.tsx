@@ -5,18 +5,22 @@ import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
 import BlogPostCards from "@components/BlogPostCards";
 
+import { useAuthProvider } from "@providers/AuthProvider";
+
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
 import styles from "./BlogPost.module.scss";
-
-const isAdmin = true;
 
 interface BlogPostProps {
   blogPost: BlogPostType;
   recentBlogPosts: BlogPostType[];
 }
 
-export default function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
+function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
+  const authStatus = useAuthProvider();
+
+  const isAdmin = authStatus.isLogged;
+
   return (
     <main className={styles.container}>
       <Cover
@@ -62,3 +66,5 @@ export default function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
     </main>
   );
 }
+
+export default BlogPost;
