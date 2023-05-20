@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 
 import { ToastContainer } from "react-toastify";
 
+import AuthProvider from "@providers/AuthProvider";
 import Head from "next/head";
 
 import "react-toastify/dist/ReactToastify.min.css";
@@ -16,7 +17,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+
       <ToastContainer
         position="bottom-left"
         theme="dark"

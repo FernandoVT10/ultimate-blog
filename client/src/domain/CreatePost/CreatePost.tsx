@@ -13,6 +13,8 @@ import ContentEditor from "@components/BlogPostForm/ContentEditor";
 import TagEditor from "@components/BlogPostForm/TagEditor";
 import Button from "@components/Button";
 
+import withAuthorization from "../../hoc/withAuthorization";
+
 import styles from "./CreatePost.module.scss";
 
 type State = {
@@ -60,7 +62,7 @@ const initialState: State = {
   tags: []
 };
 
-export default function CreatePost() {
+function CreatePost() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loading, run: createPost, value: createdPost } = useMutation<BlogPost>(
     "post",
@@ -78,9 +80,7 @@ export default function CreatePost() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createdPost]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleClick = async () => {
     if(!state.cover) {
       return toast.error("Cover is required");
     }
@@ -109,42 +109,43 @@ export default function CreatePost() {
       <CoverSelector onChangeCover={handleOnChangeCover}/>
 
       <div className={styles.contentContainer}>
-        <form onSubmit={handleSubmit}>
-          <TitleInput
-            title={state.title}
-            setTitle={(title) => dispatch({
-              type: "CHANGE_STRING",
-              field: "title",
-              value: title
-            })}
-          />
+        <TitleInput
+          title={state.title}
+          setTitle={(title) => dispatch({
+            type: "CHANGE_STRING",
+            field: "title",
+            value: title
+          })}
+        />
 
-          <ContentEditor content={state.content} setContent={
-            (content) => dispatch({
-              type: "CHANGE_STRING",
-              field: "content",
-              value: content
-            })
-          }/>
+        <ContentEditor content={state.content} setContent={
+          (content) => dispatch({
+            type: "CHANGE_STRING",
+            field: "content",
+            value: content
+          })
+        }/>
 
-          <TagEditor
-            selectedTags={state.tags}
-            setSelectedTags={(tags) => dispatch({
-              type: "CHANGE_TAGS",
-              value: tags
-            })}
-          />
+        <TagEditor
+          selectedTags={state.tags}
+          setSelectedTags={(tags) => dispatch({
+            type: "CHANGE_TAGS",
+            value: tags
+          })}
+        />
 
-          <Button
-            type="submit"
-            text="Create Post"
-            loadingText={"Creating Post"}
-            loading={loading}
-            icon={FileDirectoryOpenFillIcon}
-            className={styles.submitButton}
-          />
-        </form>
+        <Button
+          type="submit"
+          text="Create Post"
+          loadingText={"Creating Post"}
+          loading={loading}
+          icon={FileDirectoryOpenFillIcon}
+          className={styles.submitButton}
+          onClick={handleClick}
+        />
       </div>
     </div>
   );
 }
+
+export default withAuthorization(CreatePost);

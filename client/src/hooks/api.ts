@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import axios, { Variables, Method } from "@utils/axios";
 import useAsync, { ErrorHandler, UseAsyncReturn } from "./useAsync";
@@ -7,16 +7,27 @@ export const useQuery = <T,>(
   url: string,
   parameters?: Variables
 ): Omit<UseAsyncReturn<T>, "run"> => {
+  const [localLoading, setLocalLoading] = useState(true);
+
   const { run, ...state } = useAsync<T>(async () => {
     return await axios.get<T>(url, parameters);
   });
 
   useEffect(() => {
-    run();
+    const runQuery = async () => {
+      await run();
+      setLocalLoading(false);
+    };
+
+    runQuery();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return state;
+  // here we're using a local loading instead of the one returned by the
+  // useAsync hook, because when the app loads the hook returns
+  // false and this hook must return true since the beginning 
+  return { ...state, loading: localLoading };
 };
 
 export const useMutation = <T,>(

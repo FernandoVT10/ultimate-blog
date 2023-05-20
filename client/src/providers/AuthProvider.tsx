@@ -1,27 +1,27 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { useQuery } from "@hooks/api";
 
 type AuthData = {
   isLogged: boolean;
+  loading: boolean;
 }
 
-const initialData: AuthData = {
-  isLogged: false
-};
-
-export const AuthContext = createContext<AuthData>(initialData);
+export const AuthContext = createContext<AuthData>({
+  isLogged: false,
+  loading: true
+});
 
 interface AuthProviderProps {
   children: React.ReactNode
 }
 
 const AuthProvider = (props: AuthProviderProps) => {
-  const [authData, setAuthData] = useState(initialData);
-  const { value: authStatus } = useQuery<{ isLogged: boolean }>("/admin/isLogged");
+  const { value: authStatus, loading } = useQuery<{ isLogged: boolean }>("/admin/isLogged");
 
-  useEffect(() => {
-    if(authStatus) setAuthData({ isLogged: authStatus.isLogged });
-  }, [authStatus]);
+  const authData: AuthData = {
+    loading,
+    isLogged: authStatus?.isLogged || false
+  };
 
   return <AuthContext.Provider value={authData} {...props}/>;
 };

@@ -6,7 +6,6 @@ import type { BlogPost as BlogPostType } from "@customTypes/collections";
 import Head from "next/head";
 import Header from "@components/Header";
 import BlogPost from "@domain/BlogPost";
-import AuthProvider from "@providers/AuthProvider";
 
 const BLOG_POSTS_FETCH_LIMIT = 3;
 
@@ -43,14 +42,12 @@ export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProp
         <title>{ blogPost.title }</title>
       </Head>
 
-      <AuthProvider>
-        <Header/>
+      <Header/>
 
-        <BlogPost
-          blogPost={blogPost}
-          recentBlogPosts={recentBlogPosts || []}
-        />
-      </AuthProvider>
+      <BlogPost
+        blogPost={blogPost}
+        recentBlogPosts={recentBlogPosts || []}
+      />
     </>
   );
 }
