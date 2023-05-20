@@ -15,7 +15,6 @@ const checkNameExists = async (name: string): Promise<boolean> => {
 
     return false;
   } catch {
-    // TODO: return a Server Error instead
     return false;
   }
 };

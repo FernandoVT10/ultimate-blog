@@ -10,21 +10,6 @@ import { RequestError } from "../utils/errors";
 
 import BlogPostRepository from "../repositories/BlogPostRepository";
 
-// const checkId: CustomValidator = async (id) => {
-//   if(!isValidObjectId(id)) throw new Error("Id is invalid");
-//
-//   try {
-//     if(await BlogPostService.checkIfExists(id)) {
-//       return true;
-//     } 
-//   } catch (error) {
-//     // TODO: log this error correctly
-//     console.error(error);
-//   }
-//
-//   throw new Error("Blog Post not found");
-// };
-
 const coverValidator: CustomValidator = async (_, { req }) => {
   const cover = req.file as Express.Multer.File;
 

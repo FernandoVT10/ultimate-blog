@@ -77,7 +77,6 @@ describe("PUT /api/blogposts/:blogpostId/updateCover", () => {
     );
   });
 
-  // TODO: somehow share this test cases with the ones in updateContent and updateTitle
   it("should fail when blogPostId is invalid", async () => {
     const coverBuffer = await generators.generateImageBuffer();
 
