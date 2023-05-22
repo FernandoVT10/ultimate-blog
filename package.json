@@ -9,7 +9,7 @@
     "dev:server": "npm run dev -w server",
     "dev:api": "npm run dev -w api",
     "dev": "concurrently \"npm:dev:client\" \"npm:dev:api\"",
-    "test:server": "npm run test -w server",
+    "test:api": "npm run test -w api",
     "test": "npm run test --workspaces",
     "lint": "eslint . --cache",
     "lint:fix": "eslint . --cache --fix",
