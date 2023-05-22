@@ -28,8 +28,7 @@
     "test": "jest --runInBand",
     "test:integration": "jest ./test/integration/ --runInBand",
     "test:unit": "jest ./src/",
-    "test:watch": "jest --watch",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "npm run build:clean & tsc --project tsconfig.build.json",
     "build:clean": "rimraf ./build"
   },
   "config": {
