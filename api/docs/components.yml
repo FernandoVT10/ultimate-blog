@@ -24,6 +24,24 @@ components:
           type: string
         updatedAt:
           type: string
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        authorName:
+          type: string
+        content:
+          type: string
+        parentModel:
+          type: string
+          enum: [BlogPost, Comment]
+        parentId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
 
 
   responses:

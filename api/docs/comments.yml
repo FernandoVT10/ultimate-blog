@@ -1,0 +1,43 @@
+components:
+  requestBodies:
+    CreateComment:
+      type: object
+      required: [authorName, content, parentModel, parentId]
+      properties:
+        authorName:
+          type: string
+        content:
+          type: string
+        parentModel:
+          type: string
+          enum: [BlogPost, Comment]
+        parentId:
+          type: string
+
+tags: [name: comment]
+paths:
+  /comments:
+    post:
+      tags: [comment]
+      summary: Creates a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/CreateComment"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/requestBodies/CreateComment"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        404:
+          description: Blog Post or Comment not found

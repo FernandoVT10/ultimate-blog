@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "build"
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./types/**/*"],
   "exclude": [
     "**/*.test.ts"
   ]
