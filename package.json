@@ -19,7 +19,6 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "server",
     "client",
     "api"
   ],
