@@ -1,17 +1,16 @@
-import { HydratedDocument } from "mongoose";
-import Tag, { ITag } from "../models/Tag";
+import TagModel, { Tag } from "../models/Tag";
 
-const getAll = async (): Promise<HydratedDocument<ITag>[]> => {
-  return Tag.find();
+const getAll = async (): Promise<Tag[]> => {
+  return TagModel.find();
 };
 
-const createOne = async (name: string): Promise<HydratedDocument<ITag>> => {
-  return Tag.create({ name });
+const createOne = async (name: string): Promise<Tag> => {
+  return TagModel.create({ name });
 };
 
 const checkNameExists = async (name: string): Promise<boolean> => {
   try {
-    if(await Tag.exists({ name })) return true;
+    if(await TagModel.exists({ name })) return true;
 
     return false;
   } catch {
@@ -19,8 +18,8 @@ const checkNameExists = async (name: string): Promise<boolean> => {
   }
 };
 
-const getTagsByName = async (names: string[]): Promise<HydratedDocument<ITag>[]> => {
-  return Tag.find({ name: { $in: names } });
+const getTagsByName = async (names: string[]): Promise<Tag[]> => {
+  return TagModel.find({ name: { $in: names } });
 };
 
 export default { getAll, createOne, checkNameExists, getTagsByName };

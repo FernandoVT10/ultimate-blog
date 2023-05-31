@@ -8,7 +8,7 @@ describe("integration GET /api/blogposts/:id", () => {
   it("should response a blog post with its tags", async () => {
     const tag = await TagFactory.createOne();
     const blogPost = await BlogPostFactory.createOne({
-      tags: [tag]
+      tags: [tag._id]
     });
 
     const res = await request

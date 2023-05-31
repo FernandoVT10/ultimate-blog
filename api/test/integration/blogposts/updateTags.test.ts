@@ -23,7 +23,7 @@ describe("PUT /api/blogposts/:blogPostId/updateTags", () => {
     const tagC = await TagFactory.createOne();
 
     const blogPost = await BlogPostFactory.createOne({
-      tags: [tagA]
+      tags: [tagA._id]
     });
 
     await authenticatedRequest

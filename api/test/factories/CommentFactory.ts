@@ -1,5 +1,4 @@
-import Comment, { IComment } from "@app/models/Comment";
-import { HydratedDocument } from "mongoose";
+import CommentModel, { Comment } from "@app/models/Comment";
 
 import { faker } from "@faker-js/faker";
 
@@ -10,8 +9,8 @@ const getParentId = async () => {
   return blogPost._id;
 };
 
-const createOne = async (data: Partial<IComment> = {}): Promise<HydratedDocument<IComment>> => {
-  return Comment.create({
+const createOne = async (data: Partial<Comment> = {}): Promise<Comment> => {
+  return CommentModel.create({
     authorName: data.authorName || faker.name.firstName(),
     content: data.content || faker.lorem.words(5),
     parentModel: data.parentModel || "BlogPost",

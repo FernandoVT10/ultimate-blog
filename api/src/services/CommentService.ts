@@ -1,5 +1,5 @@
 import { RequestError } from "../utils/errors";
-import { IComment } from "../models/Comment";
+import { Comment } from "../models/Comment";
 
 import CommentRepository, { CreateCommentData } from "../repositories/CommentRepository";
 
@@ -31,7 +31,7 @@ const getById = async (commentId: string) => {
 
 const checkNestLevel = async (
   parentId: string,
-  parentModel: IComment["parentModel"]
+  parentModel: Comment["parentModel"]
 ): Promise<boolean> => {
   if(parentModel !== "Comment") return true;
 
@@ -47,7 +47,7 @@ const checkNestLevel = async (
 
 const existsByModel = async (
   parentId: string,
-  parentModel: IComment["parentModel"]
+  parentModel: Comment["parentModel"]
 ): Promise<boolean> => {
   const doc = await CommentRepository.getOneByParentModel(parentId, parentModel);
 

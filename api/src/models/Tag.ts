@@ -1,20 +1,37 @@
-import { Schema, model } from "mongoose";
+import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose";
+import { Types } from "mongoose";
 
 export const NAME_MAX_LENGTH = 100;
 
-export interface ITag {
-  name: string;
+@modelOptions({
+  schemaOptions: { collection: "tags" }
+})
+export class Tag {
+  public _id: Types.ObjectId;
+
+  @prop({
+    default: true,
+    unique: true,
+    maxlength: NAME_MAX_LENGTH,
+    type: String
+  })
+  public name: string;
 }
 
-const tagScheme = new Schema<ITag>({
-  name: {
-    type: String,
-    maxlength: NAME_MAX_LENGTH,
-    unique: true,
-    required: true
-  }
-});
+// export interface ITag {
+//   name: string;
+// }
+//
+// const tagScheme = new Schema<ITag>({
+//   name: {
+//     type: String,
+//     maxlength: NAME_MAX_LENGTH,
+//     unique: true,
+//     required: true
+//   }
+// });
 
-const Tag = model<ITag>("Tag", tagScheme);
+// const Tag = model<ITag>("Tag", tagScheme);
 
-export default Tag;
+const TagModel = getModelForClass(Tag);
+export default TagModel;

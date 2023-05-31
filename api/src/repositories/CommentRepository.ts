@@ -1,41 +1,36 @@
-import Comment, { IComment } from "../models/Comment";
-import { HydratedDocument, Model} from "mongoose";
+import CommentModel, { Comment } from "../models/Comment";
+import BlogPostModel, { BlogPost } from "../models/BlogPost";
 
-import BlogPost, { IBlogPost } from "../models/BlogPost";
+import { Model } from "mongoose";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any 
-const MODELS: {[key in IComment["parentModel"]]: Model<any>} = {
-  BlogPost: BlogPost,
-  Comment: Comment
+const MODELS = {
+  BlogPost: BlogPostModel,
+  Comment: CommentModel
 };
 
 export interface CreateCommentData {
-  authorName: IComment["authorName"];
-  content: IComment["content"];
+  authorName: Comment["authorName"];
+  content: Comment["content"];
   parentId: string;
-  parentModel: IComment["parentModel"];
+  parentModel: Comment["parentModel"];
   level: number;
 }
 
-const createOne = (data: CreateCommentData): Promise<HydratedDocument<IComment>> => {
-  return Comment.create(data);
+const createOne = (data: CreateCommentData): Promise<Comment> => {
+  return CommentModel.create(data);
 };
 
-const getById = async (commentId: string): Promise<HydratedDocument<IComment> | null> => {
-  return Comment.findById(commentId);
+const getById = async (commentId: string): Promise<Comment | null> => {
+  return CommentModel.findById(commentId);
 };
 
-type GetOneByModelReturn = Promise<
-  HydratedDocument<IBlogPost>
-  | HydratedDocument<IComment>
-  | null>;
-
-
-const getOneByParentModel = async (
+const getOneByParentModel = (
   id: string,
-  model: IComment["parentModel"]
-): GetOneByModelReturn => {
-  return MODELS[model].findById(id);
+  model: Comment["parentModel"]
+): Promise<BlogPost | Comment | null> => {
+  // TODO: remove the any type
+  // eslint-disable-next-line
+  return (MODELS[model] as Model<any>).findById(id);
 };
 
 export default {

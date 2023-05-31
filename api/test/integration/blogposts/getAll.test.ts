@@ -8,15 +8,15 @@ describe("integration GET /api/blogposts", () => {
     const actualDate = Date.now();
 
     const blogPostA = await BlogPostFactory.createOne({
-      createdAt: actualDate - 1000
+      createdAt: new Date(actualDate - 1000)
     });
 
     const blogPostB = await BlogPostFactory.createOne({
-      createdAt: actualDate
+      createdAt: new Date(actualDate)
     });
 
     const blogPostC = await BlogPostFactory.createOne({
-      createdAt: actualDate - 2000
+      createdAt: new Date(actualDate - 2000)
     });
 
     const res = await request.get("/api/blogposts").expect(200);
@@ -33,7 +33,7 @@ describe("integration GET /api/blogposts", () => {
     const tagB = await TagFactory.createOne();
 
     await BlogPostFactory.createOne({
-      tags: [tagA, tagB]
+      tags: [tagA._id, tagB._id]
     });
 
     const res = await request.get("/api/blogposts").expect(200);
@@ -50,7 +50,7 @@ describe("integration GET /api/blogposts", () => {
       const blogPostA = await BlogPostFactory.createOne();
       await BlogPostFactory.createOne({
         // this is necessary to always get blogPostA first
-        createdAt: Date.now() - 1000
+        createdAt: new Date(Date.now() - 1000)
       });
 
       const res = await request

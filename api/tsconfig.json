@@ -11,6 +11,9 @@
     "skipLibCheck": true,
     "paths": {
       "@app/*": ["./src/*"]
-    }
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   }
 }

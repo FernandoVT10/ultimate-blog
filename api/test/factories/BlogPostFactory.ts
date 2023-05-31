@@ -1,10 +1,9 @@
-import BlogPost, { IBlogPost } from "@app/models/BlogPost";
-import { HydratedDocument } from "mongoose";
+import BlogPostModel, { BlogPost } from "@app/models/BlogPost";
 
 import { faker } from "@faker-js/faker";
 
-const createOne = (data: Partial<IBlogPost> = {}): Promise<HydratedDocument<IBlogPost>> => {
-  return BlogPost.create({
+const createOne = (data: Partial<BlogPost> = {}): Promise<BlogPost> => {
+  return BlogPostModel.create({
     title: data.title || faker.lorem.words(3),
     content: data.content || faker.lorem.text(),
     cover: data.cover || faker.system.commonFileName("webp"),
