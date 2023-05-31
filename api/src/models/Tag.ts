@@ -18,20 +18,5 @@ export class Tag {
   public name: string;
 }
 
-// export interface ITag {
-//   name: string;
-// }
-//
-// const tagScheme = new Schema<ITag>({
-//   name: {
-//     type: String,
-//     maxlength: NAME_MAX_LENGTH,
-//     unique: true,
-//     required: true
-//   }
-// });
-
-// const Tag = model<ITag>("Tag", tagScheme);
-
 const TagModel = getModelForClass(Tag);
 export default TagModel;
