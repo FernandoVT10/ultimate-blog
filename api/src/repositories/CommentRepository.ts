@@ -1,9 +1,10 @@
 import CommentModel, { Comment } from "../models/Comment";
-import BlogPostModel, { BlogPost } from "../models/BlogPost";
+import BlogPostModel from "../models/BlogPost";
 
 import { Model } from "mongoose";
 
-const MODELS = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const MODELS: {[key: string]: Model<any>} = {
   BlogPost: BlogPostModel,
   Comment: CommentModel
 };
@@ -24,17 +25,28 @@ const getById = async (commentId: string): Promise<Comment | null> => {
   return CommentModel.findById(commentId);
 };
 
-const getOneByParentModel = (
+// this function check if a document exists using the models in the array
+// declared above
+const checkModelAndIdExists = async (
   id: string,
   model: Comment["parentModel"]
-): Promise<BlogPost | Comment | null> => {
-  // TODO: remove the any type
-  // eslint-disable-next-line
-  return (MODELS[model] as Model<any>).findById(id);
+): Promise<boolean> => {
+  const doc = await MODELS[model].exists({ _id: id });
+
+  if(doc === null) return false;
+  return true;
+};
+
+const getAllByIdAndModel = async (
+  id: string,
+  model: Comment["parentModel"]
+): Promise<Comment[]> => {
+  return CommentModel.find({ parentId: id, parentModel: model }, { comments: 0 });
 };
 
 export default {
   createOne,
   getById,
-  getOneByParentModel
+  checkModelAndIdExists,
+  getAllByIdAndModel
 };

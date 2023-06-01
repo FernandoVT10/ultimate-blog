@@ -41,3 +41,34 @@ paths:
                 $ref: "#/components/responses/ValidationErrorResponse"
         404:
           description: Blog Post or Comment not found
+    get:
+      tags: [comment]
+      summary: Gets all comments
+      parameters:
+        - in: query
+          name: parentId
+          schema:
+            type: string
+          required: true
+          description: The id of the comments' parent
+        - in: query
+          name: parentModel
+          schema:
+            type: string
+          required: true
+          description: Parent type (e.g. BlogPost, Comment)
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ValidationErrorResponse"
+        404:
+          description: Parent not found

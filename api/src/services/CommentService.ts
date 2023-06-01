@@ -44,20 +44,24 @@ const checkNestLevel = async (
   return true;
 };
 
-
-const existsByModel = async (
+const existsByIdAndModel = (
   parentId: string,
   parentModel: Comment["parentModel"]
 ): Promise<boolean> => {
-  const doc = await CommentRepository.getOneByParentModel(parentId, parentModel);
+  return CommentRepository.checkModelAndIdExists(parentId, parentModel);
+};
 
-  if(doc) return true;
-  return false;
+const getAllByIdAndModel = async (
+  parentId: string,
+  parentModel: Comment["parentModel"]
+) => {
+  return CommentRepository.getAllByIdAndModel(parentId, parentModel);
 };
 
 export default {
   createOne,
   getById,
   checkNestLevel,
-  existsByModel
+  existsByIdAndModel,
+  getAllByIdAndModel
 };

@@ -1,4 +1,4 @@
-import { body, CustomValidator, ValidationChain } from "express-validator";
+import { body, query, CustomValidator, ValidationChain, matchedData } from "express-validator";
 import { RequestError } from "../utils/errors";
 import {
   AUTHOR_NAME_MAX_LENGTH,
@@ -16,10 +16,18 @@ const createAuthorNameChain = (): ValidationChain =>
 const createContentChain = (): ValidationChain =>
   validators.stringValidator("content", CONTENT_MAX_LENGTH);
 
-const parentIdValidator: CustomValidator = async (parentId, { req }) => {
-  const { parentModel } = req.body;
+const createParentModelChain = (isQuery = false): ValidationChain =>
+  (isQuery ? query : body)("parentModel")
+    .isIn(PARENT_MODELS)
+    .withMessage("model name must be a valid one")
+    // important, avoids the execution of the parentIdValidator that will throw if
+    // parentModel is invalid
+    .bail({ level: "request" });
 
-  const exists = await CommentService.existsByModel(parentId, parentModel);
+const parentIdValidator: CustomValidator = async (parentId, { req }) => {
+  const { parentModel } = matchedData(req);
+
+  const exists = await CommentService.existsByIdAndModel(parentId, parentModel);
 
   if(!exists) {
     req.requestError = new RequestError(404, `${parentModel.toLowerCase()} not found`); 
@@ -35,16 +43,8 @@ const parentIdValidator: CustomValidator = async (parentId, { req }) => {
   return true;
 };
 
-const createParentModelChain = (): ValidationChain =>
-  body("parentModel")
-    .isIn(PARENT_MODELS)
-    .withMessage("model name must be a valid one")
-    // important, avoids the execution of the parentIdValidator that will throw if
-    // parentModel is invalid
-    .bail({ level: "request" });
-
-const createParentIdChain = (): ValidationChain =>
-  body("parentId")
+const createParentIdChain = (isQuery = false): ValidationChain =>
+  (isQuery ? query : body)("parentId")
     .custom(validators.validateId)
     .custom(parentIdValidator);
 
