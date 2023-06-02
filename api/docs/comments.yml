@@ -55,6 +55,7 @@ paths:
           name: parentModel
           schema:
             type: string
+            enum: [BlogPost, Comment]
           required: true
           description: Parent type (e.g. BlogPost, Comment)
       responses:
@@ -72,3 +73,24 @@ paths:
                 $ref: "#/components/responses/ValidationErrorResponse"
         404:
           description: Parent not found
+
+  /comments/{commentId}:
+    delete:
+      security:
+        - BearerAuth: []
+      tags: [comment]
+      summary: Deletes a comment using its id
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        404:
+          description: Comment not found

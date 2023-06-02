@@ -53,9 +53,16 @@ const existsByIdAndModel = (
 
 const getAllByIdAndModel = async (
   parentId: string,
-  parentModel: Comment["parentModel"]
+  parentModel: string
 ) => {
-  return CommentRepository.getAllByIdAndModel(parentId, parentModel);
+  return CommentRepository.getAllByIdAndModel(
+    parentId,
+    parentModel as Comment["parentModel"]
+  );
+};
+
+const deleteOneById = async (commentId: string) => {
+  return CommentRepository.deleteOneById(commentId);
 };
 
 export default {
@@ -63,5 +70,6 @@ export default {
   getById,
   checkNestLevel,
   existsByIdAndModel,
-  getAllByIdAndModel
+  getAllByIdAndModel,
+  deleteOneById
 };

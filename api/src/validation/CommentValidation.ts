@@ -1,14 +1,20 @@
-import { body, query, CustomValidator, ValidationChain, matchedData } from "express-validator";
-import { RequestError } from "../utils/errors";
+import {
+  body,
+  query,
+  param,
+  CustomValidator,
+  ValidationChain,
+  matchedData
+} from "express-validator";
 import {
   AUTHOR_NAME_MAX_LENGTH,
   PARENT_MODELS,
   CONTENT_MAX_LENGTH
 } from "../models/Comment";
-
-import validators from "../utils/validators";
+import { RequestError } from "../utils/errors";
 
 import CommentService from "../services/CommentService";
+import validators from "../utils/validators";
 
 const createAuthorNameChain = (): ValidationChain =>
   validators.stringValidator("authorName", AUTHOR_NAME_MAX_LENGTH);
@@ -48,9 +54,26 @@ const createParentIdChain = (isQuery = false): ValidationChain =>
     .custom(validators.validateId)
     .custom(parentIdValidator);
 
+const commentIdValidator: CustomValidator = async (commentId, { req }) => {
+  const comment = await CommentService.getById(commentId);
+
+  if(!comment) {
+    req.requestError = new RequestError(404, "comment not found");
+    return false;
+  }
+
+  return true;
+};
+
+const createCommentIdChain = (): ValidationChain =>
+  param("commentId")
+    .custom(validators.validateId)
+    .custom(commentIdValidator);
+
 export default {
   createAuthorNameChain,
   createContentChain,
   createParentModelChain,
-  createParentIdChain
+  createParentIdChain,
+  createCommentIdChain
 };

@@ -44,9 +44,14 @@ const getAllByIdAndModel = async (
   return CommentModel.find({ parentId: id, parentModel: model }, { comments: 0 });
 };
 
+const deleteOneById = async (commentId: string): Promise<Comment | null> => {
+  return CommentModel.findByIdAndDelete(commentId);
+};
+
 export default {
   createOne,
   getById,
   checkModelAndIdExists,
-  getAllByIdAndModel
+  getAllByIdAndModel,
+  deleteOneById
 };

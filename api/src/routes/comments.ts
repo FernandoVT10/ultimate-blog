@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import asyncHandler from "express-async-handler";
 import checkValidation from "../middlewares/checkValidation";
+import authorize from "../middlewares/authorize";
 
 import CommentService from "../services/CommentService";
 import CommentValidation from "../validation/CommentValidation";
@@ -17,7 +18,8 @@ router.get(
   checkValidation(),
 
   asyncHandler(async (req, res) => {
-    const { parentId, parentModel } = req.query as any;
+    const parentId = req.query.parentId as string;
+    const parentModel = req.query.parentModel as string;
 
     const comments = await CommentService.getAllByIdAndModel(parentId, parentModel);
 
@@ -44,6 +46,22 @@ router.post(
 
     res.json(createdComment);
   }),
+);
+
+router.delete(
+  "/comments/:commentId",
+  authorize(),
+
+  CommentValidation.createCommentIdChain(),
+  checkValidation(),
+
+  asyncHandler(async (req, res) => {
+    const { commentId } = req.params;
+
+    const deletedComment = await CommentService.deleteOneById(commentId);
+
+    res.json(deletedComment);
+  })
 );
 
 export default router;

@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import {
   prop,
+  post,
   modelOptions,
   getModelForClass,
   Ref
@@ -16,6 +17,12 @@ export const PARENT_MODELS = ["Comment", "BlogPost"];
     collection: "comments",
     timestamps: true
   }
+})
+@post<Comment>("findOneAndDelete", async function(comment) {
+  await this.model.deleteMany({
+    parentId: comment._id,
+    parentModel: "Comment"
+  });
 })
 export class Comment {
   public readonly _id: Types.ObjectId;
