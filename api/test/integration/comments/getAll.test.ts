@@ -9,16 +9,25 @@ const request = createRequest();
 describe("GET /api/comments/", () => {
   it("should get all comments from a blog post", async () => {
     const blogPost = await BlogPostFactory.createOne();
+
+    const actualDate = Date.now();
+
     const commentA = await CommentFactory.createOne({
       parentModel: "BlogPost",
       parentId: blogPost._id,
-      createdAt: new Date()
+      createdAt: new Date(actualDate)
     });
 
     const commentB = await CommentFactory.createOne({
       parentModel: "BlogPost",
       parentId: blogPost._id,
-      createdAt: new Date(Date.now() - 10000)
+      createdAt: new Date(actualDate - 10000)
+    });
+
+    const commentC = await CommentFactory.createOne({
+      parentModel: "BlogPost",
+      parentId: blogPost._id,
+      createdAt: new Date(actualDate + 10000)
     });
 
     const res = await request.get("/api/comments")
@@ -28,11 +37,12 @@ describe("GET /api/comments/", () => {
       })
       .expect(200);
 
-    expect(res.body).toHaveLength(2);
+    expect(res.body).toHaveLength(3);
 
     // this will test that the comments were sorted from newest to oldest
-    expect(res.body[0].authorName).toBe(commentA.authorName);
-    expect(res.body[1].authorName).toBe(commentB.authorName);
+    expect(res.body[0].authorName).toBe(commentC.authorName);
+    expect(res.body[1].authorName).toBe(commentA.authorName);
+    expect(res.body[2].authorName).toBe(commentB.authorName);
   });
 
   it("should get all comments from a comment", async () => {

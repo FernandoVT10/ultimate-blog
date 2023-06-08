@@ -15,7 +15,8 @@ const createOne = async (data: Partial<Comment> = {}): Promise<Comment> => {
     content: data.content || faker.lorem.words(5),
     parentModel: data.parentModel || "BlogPost",
     parentId: data.parentId || await getParentId(),
-    level: data.level
+    level: data.level,
+    createdAt: data.createdAt
   });
 };
 

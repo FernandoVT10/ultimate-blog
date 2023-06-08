@@ -41,7 +41,12 @@ const getAllByIdAndModel = async (
   id: string,
   model: Comment["parentModel"]
 ): Promise<Comment[]> => {
-  return CommentModel.find({ parentId: id, parentModel: model }, { comments: 0 });
+  return CommentModel
+    .find({
+      parentId: id,
+      parentModel: model
+    }, { comments: 0 })
+    .sort({ createdAt: "descending" });
 };
 
 const deleteOneById = async (commentId: string): Promise<Comment | null> => {
