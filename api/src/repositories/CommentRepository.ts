@@ -46,11 +46,21 @@ const getAllByIdAndModel = async (
       parentId: id,
       parentModel: model
     }, { comments: 0 })
-    .sort({ createdAt: "descending" });
+    .sort({ createdAt: "descending" })
+    .lean();
 };
 
 const deleteOneById = async (commentId: string): Promise<Comment | null> => {
   return CommentModel.findByIdAndDelete(commentId);
+};
+
+const countReplies = async (commentId: string): Promise<number> => {
+  const count = await CommentModel.countDocuments({
+    parentId: commentId,
+    parentModel: "Comment"
+  });
+
+  return count;
 };
 
 export default {
@@ -58,5 +68,6 @@ export default {
   getById,
   checkModelAndIdExists,
   getAllByIdAndModel,
-  deleteOneById
+  deleteOneById,
+  countReplies
 };

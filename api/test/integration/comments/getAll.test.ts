@@ -45,7 +45,7 @@ describe("GET /api/comments/", () => {
     expect(res.body[2].authorName).toBe(commentB.authorName);
   });
 
-  it("should get all comments from a comment", async () => {
+  it("should get all the replies from a comment", async () => {
     const commentParent = await CommentFactory.createOne();
 
     const comment = await CommentFactory.createOne({
@@ -77,6 +77,32 @@ describe("GET /api/comments/", () => {
       .expect(200);
 
     expect(res.body[0].comments).toBeUndefined();
+  });
+
+  it("should return the number of replies", async () => {
+    const blogPost = await BlogPostFactory.createOne();
+
+    const commentParent = await CommentFactory.createOne({
+      parentId: blogPost._id,
+      parentModel: "BlogPost"
+    });
+
+    await CommentFactory.createOne({
+      parentModel: "Comment", parentId: commentParent._id
+    });
+
+    await CommentFactory.createOne({
+      parentModel: "Comment", parentId: commentParent._id
+    });
+
+    const res = await request.get("/api/comments")
+      .query({
+        parentModel: "BlogPost",
+        parentId: blogPost._id.toString()
+      })
+      .expect(200);
+
+    expect(res.body[0].repliesCount).toBe(2);
   });
 
   it("should fail when parent model is invalid", async () => {

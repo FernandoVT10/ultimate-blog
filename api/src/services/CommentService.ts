@@ -51,14 +51,30 @@ const existsByIdAndModel = (
   return CommentRepository.checkModelAndIdExists(parentId, parentModel);
 };
 
+type CommentWithRepliesCount = Comment & {
+  repliesCount?: number;
+};
+
 const getAllByIdAndModel = async (
   parentId: string,
   parentModel: string
-) => {
-  return CommentRepository.getAllByIdAndModel(
+): Promise<CommentWithRepliesCount[]> => {
+  const comments = await CommentRepository.getAllByIdAndModel(
     parentId,
     parentModel as Comment["parentModel"]
-  );
+  ) as CommentWithRepliesCount[];
+
+  for(const commentIndex in comments) {
+    const comment = comments[commentIndex];
+
+    const count = await CommentRepository.countReplies(
+      comment._id.toString()
+    );
+
+    comments[commentIndex].repliesCount = count;
+  }
+
+  return comments;
 };
 
 const deleteOneById = async (commentId: string) => {
