@@ -25,6 +25,10 @@ body {
   &.caution {
     background: var(--color-btn-caution);
   }
+
+  &.secondary {
+    background: var(--color-primary-bg);
+  }
 }
 
 .custom-label {
@@ -39,4 +43,15 @@ body {
   padding: 15px;
   font-size: 16px;
   border: none;
+}
+
+.custom-textarea {
+  width: 100%;
+  padding: 20px;
+  resize: none;
+  background: var(--color-primary-bg);
+  border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  min-height: 400px;
 }

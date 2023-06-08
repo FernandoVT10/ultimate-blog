@@ -1,33 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import axios, { Variables, Method } from "@utils/axios";
 import useAsync, { ErrorHandler, UseAsyncReturn } from "./useAsync";
 
+type Options = {
+  lazy?: boolean;
+};
+
+// TODO: change the name for "useInstantQuery"
 export const useQuery = <T,>(
   url: string,
-  parameters?: Variables
-): Omit<UseAsyncReturn<T>, "run"> => {
-  const [localLoading, setLocalLoading] = useState(true);
+  parameters?: Variables,
+  options: Options = {}
+): Omit<UseAsyncReturn<T>, "hasBeenCalled"> => {
+  const { lazy = false } = options;
 
-  const { run, ...state } = useAsync<T>(async () => {
+  const {
+    run,
+    hasBeenCalled,
+    loading,
+    ...state
+  } = useAsync<T>(async () => {
     return await axios.get<T>(url, parameters);
   });
 
   useEffect(() => {
-    const runQuery = async () => {
-      await run();
-      setLocalLoading(false);
-    };
-
-    runQuery();
-
+    if(!lazy) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // here we're using a local loading instead of the one returned by the
-  // useAsync hook, because when the app loads the hook returns
-  // false and this hook must return true since the beginning 
-  return { ...state, loading: localLoading };
+  return {
+    ...state,
+    run,
+    // when app is loaded, the loading variable in the hook is false
+    // but if the query is not lazy it means it must be true since the start
+    loading: !lazy && !hasBeenCalled || loading
+  };
 };
 
 export const useMutation = <T,>(

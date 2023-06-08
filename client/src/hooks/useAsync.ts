@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-function */
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 
 type State<T> = {
   loading: boolean;
@@ -10,11 +10,20 @@ type State<T> = {
 type Action<T> = 
   | { type: "start" }
   | { type: "finish", value: T }
-  | { type: "error", error: any };
+  | { type: "error", error: any }
+  | { type: "setValue", value: T };
 
-type RunFn = (...args: any[]) => Promise<boolean>;
+type RunFn<T> = (...args: any[]) => Promise<{
+  success: boolean;
+  data?: T;
+  error?: any;
+}>;
 
-export type UseAsyncReturn<T> = State<T> & { run: RunFn };
+export type UseAsyncReturn<T> = State<T> & {
+  run: RunFn<T>;
+  setValue: (value: T) => void;
+  hasBeenCalled: boolean;
+};
 
 export type ErrorHandler = (error: any) => void;
 
@@ -22,7 +31,9 @@ const useAsync = <T,>(
   fn: (...args: any[]) => Promise<T>,
   errorHandler: ErrorHandler = () => {}
 ): UseAsyncReturn<T> => {
-  const stateReducer = (_: State<T>, action: Action<T>) => {
+  const hasBeenCalled = useRef(false);
+
+  const stateReducer = (state: State<T>, action: Action<T>) => {
     switch (action.type) {
       case "start":
         return { loading: true, error: null, value: null };
@@ -30,29 +41,46 @@ const useAsync = <T,>(
         return { loading: false, error: null, value: action.value };
       case "error":
         return { loading: false, error: action.error, value: null };
+      case "setValue":
+        return { ...state, value: action.value };
     }
   };
 
   const [state, dispatch] = useReducer(stateReducer, {
     loading: false,
     error: null,
-    value: null 
+    value: null
   });
 
-  const run: RunFn = async (...args) => {
+  const run: RunFn<T> = async (...args) => {
     try {
+      hasBeenCalled.current = true;
       dispatch({ type: "start" });
       const value = await fn(...args);
       dispatch({ type: "finish", value });
-      return true;
+
+      return { success: true, data: value };
     } catch (error) {
       dispatch({ type: "error", error });
       errorHandler(error);
-      return false;
+
+      return { success: false, error };
     }
   };
 
-  return { ...state, run };
+  const setValue = (newValue: T): void => {
+    dispatch({
+      type: "setValue",
+      value: newValue
+    });
+  };
+
+  return {
+    ...state,
+    run,
+    setValue,
+    hasBeenCalled: hasBeenCalled.current
+  };
 };
 
 export default useAsync;

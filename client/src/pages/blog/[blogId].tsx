@@ -1,7 +1,10 @@
 import axios from "@utils/axios";
 import catchServerErrors from "@utils/catchServerErrors";
 
-import type { BlogPost as BlogPostType } from "@customTypes/collections";
+import type {
+  BlogPost as BlogPostType,
+  Comment
+} from "@customTypes/collections";
 
 import Head from "next/head";
 import Header from "@components/Header";
@@ -22,20 +25,30 @@ export const getServerSideProps = catchServerErrors(async ({ params }) => {
     return { notFound: true };
   }
 
+  const comments = await axios.get<Comment[]>("/comments", {
+    parentModel: "BlogPost",
+    parentId: blogPost._id
+  });
+
   // TODO: instead of fetching recent posts, fetch related posts
   const recentBlogPosts = await axios.get("/blogposts/", {
     limit: BLOG_POSTS_FETCH_LIMIT
   });
 
-  return { blogPost, recentBlogPosts };
+  return { blogPost, recentBlogPosts, comments };
 });
 
 interface BlogPageProps {
   blogPost: BlogPostType;
   recentBlogPosts?: BlogPostType[];
+  comments: Comment[];
 }
 
-export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProps) {
+export default function BlogPostPage({
+  blogPost,
+  recentBlogPosts,
+  comments
+}: BlogPageProps) {
   return (
     <>
       <Head>
@@ -47,6 +60,7 @@ export default function BlogPostPage({ blogPost, recentBlogPosts }: BlogPageProp
       <BlogPost
         blogPost={blogPost}
         recentBlogPosts={recentBlogPosts || []}
+        comments={comments}
       />
     </>
   );

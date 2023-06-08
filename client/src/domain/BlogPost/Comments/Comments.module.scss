@@ -1,0 +1,68 @@
+.comments {
+  & .commentContainer {
+    & .comment {
+      padding: 20px;
+      margin-top: 20px;
+      background: var(--color-base-bg);
+
+      & .head {
+        & .authorName {
+          font-size: 18px;
+          font-weight: bold;
+          color: var(--color-highlight-text);
+        }
+
+        & .date {
+          margin-left: 10px;
+          color: var(--color-gray-text);
+        }
+      }
+
+      & .content {
+        margin: 10px 0;
+        line-height: 1.5;
+      }
+
+      & .replyButton {
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--color-gray-text);
+        transition: .3s;
+
+        &:hover {
+          color: var(--color-primary-text);
+        }
+      }
+    }
+  }
+
+  & .formContainer {
+    margin-top: 20px;
+    padding-left: 40px;
+  }
+
+  & .showCommentsButton {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-highlight-text);
+    margin-top: 10px;
+    margin-left: 10px;
+
+    & .icon {
+      margin-right: 5px;
+    }
+  }
+
+  & .loaderContainer {
+    display: flex;
+    justify-content: center;
+  }
+
+  & .nestedComments {
+    padding-left: 40px;
+  }
+}

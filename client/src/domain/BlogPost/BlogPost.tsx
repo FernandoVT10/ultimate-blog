@@ -1,25 +1,39 @@
+import { useState } from "react";
+
 import Cover from "./Cover";
 import Title from "./Title";
 import Content from "./Content";
 import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
 import BlogPostCards from "@components/BlogPostCards";
+import CommentForm from "./CommentForm";
+import Comments from "./Comments";
 
 import { useAuthProvider } from "@providers/AuthProvider";
 
-import type { BlogPost as BlogPostType } from "@customTypes/collections";
+import type {
+  BlogPost as BlogPostType,
+  Comment
+} from "@customTypes/collections";
 
 import styles from "./BlogPost.module.scss";
 
 interface BlogPostProps {
   blogPost: BlogPostType;
   recentBlogPosts: BlogPostType[];
+  comments: Comment[]
 }
 
-function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
+function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: BlogPostProps) {
+  const [comments, setComments] = useState<Comment[]>(initialComments);
+
   const authStatus = useAuthProvider();
 
   const isAdmin = authStatus.isLogged;
+
+  const handleOnCommentCreation = (createdComment: Comment) => {
+    setComments([createdComment, ...comments]);
+  };
 
   return (
     <main className={styles.container}>
@@ -63,6 +77,18 @@ function BlogPost({ blogPost, recentBlogPosts }: BlogPostProps) {
           <BlogPostCards blogPosts={recentBlogPosts}/>
         </section>
       )}
+
+      <section className={styles.comments}>
+        <h2 className={styles.subtitle}>{"Comments"}</h2>
+
+        <CommentForm
+          parentModel="BlogPost"
+          parentId={blogPost._id}
+          onCommentCreation={handleOnCommentCreation}
+        />
+
+        <Comments comments={comments} displayComments/>
+      </section>
     </main>
   );
 }
