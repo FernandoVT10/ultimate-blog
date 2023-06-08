@@ -32,7 +32,9 @@ export default function Content({ blogPostId, content: initialContent, isAdmin }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if(await updateContent({ content })) {
+    const res = await updateContent({ content });
+
+    if(res.success) {
       toast.success("Content updated successfully");
       setActualContent(content);
     }

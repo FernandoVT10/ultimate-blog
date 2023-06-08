@@ -27,8 +27,10 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    
+    const res = await updateTitle({ title });
 
-    if(await updateTitle({ title })) {
+    if(res.success) {
       setActualTitle(title);
       document.title = title;
       toast.success("Title updated successfully");

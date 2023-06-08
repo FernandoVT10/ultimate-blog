@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useMutation } from "@hooks/api";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import Modal, { UseModalReturn } from "@components/Modal";
 import {
   FileDirectoryOpenFillIcon,
@@ -39,10 +40,13 @@ export default function CreateTagModal({ onTagCreation, modal }: CreateTagModalP
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
-    if(await createTag({ name })) {
+    const res = await createTag({ name });
+
+    if(res.success) {
       onTagCreation(name);
       setName("");
       modal.hideModal();
+      toast.success("Tag created successfully");
     }
   };
 

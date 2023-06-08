@@ -30,7 +30,9 @@ export default function Tags({ tags: initialSelectedTags, isAdmin, blogPostId }:
   );
 
   const handleUpdateTags = async () => {
-    if(await updateTags({ tags: selectedTags })) {
+    const res = await updateTags({ tags: selectedTags });
+
+    if(res.success) {
       toast.success("Tags updated successfully");
     }
   };

@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useMutation } from "@hooks/api";
@@ -64,21 +64,13 @@ const initialState: State = {
 
 function CreatePost() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { loading, run: createPost, value: createdPost } = useMutation<BlogPost>(
+  const { loading, run: createPost } = useMutation<BlogPost>(
     "post",
     "/blogposts",
     serverErrorHandler
   );
 
   const router = useRouter();
-
-  useEffect(() => {
-    // NOTE: not best, but it works for now
-    if(createdPost) {
-      router.push(`/blog/${createdPost._id}`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createdPost]);
 
   const handleClick = async () => {
     if(!state.cover) {
@@ -93,7 +85,12 @@ function CreatePost() {
 
     appendArrayToFormData("tags", state.tags, formData);
 
-    await createPost(formData);
+    const res = await createPost(formData);
+
+    if(res.data) {
+      const createdPost = res.data;
+      router.push(`/blog/${createdPost._id}`);
+    }
   };
 
   const handleOnChangeCover = (cover: File): boolean => {

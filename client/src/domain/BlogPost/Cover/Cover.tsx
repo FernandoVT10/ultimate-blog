@@ -22,13 +22,13 @@ export default function Cover({
     const formData = new FormData();
     formData.append("cover", cover);
 
-    const success = await run(formData);
+    const res = await run(formData);
     
-    if(success) {
+    if(res.success) {
       toast.success("Cover updated successfully");
     }
 
-    return success;
+    return res.success;
   };
 
   if(!isAdmin) return <CoverImage coverURL={cover}/>;

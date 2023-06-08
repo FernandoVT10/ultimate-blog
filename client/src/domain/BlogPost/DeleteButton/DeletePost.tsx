@@ -38,10 +38,14 @@ export default function DeletePost({ blogPostId }: DeletePostProps) {
     setConfirmationText(value);
   };
 
-  const handleDeletePost = async () => {
-    if(valid && await deletePost()) {
+  const handleDeletePost = async (): Promise<void> => {
+    if(!valid) return;
+
+    const res = await deletePost();
+
+    if(res.success) {
       toast.success("Post deleted successfully");
-      return router.push("/blog");
+      router.push("/blog");
     }
   };
 
