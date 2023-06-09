@@ -49,6 +49,7 @@ export default function Header({ children, height }: HeaderProps) {
         src="/images/header-bg.jpg"
         alt="Header Image"
         className={styles.bg}
+        priority
         fill
       />
 

@@ -65,8 +65,9 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
               src="/images/section-1-bg.jpg"
               alt="Header Image"
               className={styles.image}
+              sizes="(max-width: 1200px) 600px, 50vw"
               fill
-              />
+            />
           </div>
 
           <div className={styles.sectionContent}>
@@ -85,7 +86,8 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
               alt="Header Image"
               className={styles.image}
               fill
-              />
+              sizes="(max-width: 1200px) 600px, 50vw"
+            />
           </div>
 
           <div className={styles.sectionContent}>
