@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@hooks/api";
+import { CommentWithRepliesCount } from "./Comments";
 
 import type { Comment as CommentType } from "@customTypes/collections";
 
@@ -15,7 +16,7 @@ interface UseCommentHookReturn {
   getParentId: string;
   loading: boolean;
   hasReachedMaxLevel: boolean;
-  replies: CommentType[] | null;
+  replies: CommentWithRepliesCount[] | null;
   handleCommentCreation: (createdComment: CommentType) => void;
 }
 
@@ -28,7 +29,7 @@ export const useCommentHook = (comment: CommentType): UseCommentHookReturn => {
     value: replies,
     setValue: setReplies,
     loading
-  } = useQuery<CommentType[]>("/comments", {
+  } = useQuery<CommentWithRepliesCount[]>("/comments", {
     parentModel: "Comment",
     parentId: comment._id
   }, { lazy: true });
@@ -55,7 +56,10 @@ export const useCommentHook = (comment: CommentType): UseCommentHookReturn => {
     toggleIsFormActive();
 
     if(replies) {
-      setReplies([createdComment, ...(replies || [])]);
+      setReplies([
+        createdComment as CommentWithRepliesCount,
+        ...(replies || [])
+      ]);
     } else {
       handleShowReplies();
     }

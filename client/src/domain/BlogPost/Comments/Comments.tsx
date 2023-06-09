@@ -12,8 +12,12 @@ import styles from "./Comments.module.scss";
 
 const getPluralReply = (repliesCount: number): string => repliesCount > 1 ? "replies" : "reply";
 
+export type CommentWithRepliesCount = CommentType & {
+  repliesCount: number;
+};
+
 interface CommentProps {
-  comment: CommentType;
+  comment: CommentWithRepliesCount;
   displayComment: boolean;
 }
 
@@ -30,8 +34,7 @@ const Comment = ({ comment, displayComment }: CommentProps) => {
     handleCommentCreation
   } = useCommentHook(comment);
 
-  // TODO: use comment.replies instead when implemented
-  const repliesCount = 2;
+  const { repliesCount } = comment;
 
   if(!displayComment) return null;
 
@@ -97,7 +100,7 @@ const Comment = ({ comment, displayComment }: CommentProps) => {
 };
 
 interface CommentsProps {
-  comments: CommentType[];
+  comments: CommentWithRepliesCount[];
   displayComments: boolean;
 }
 

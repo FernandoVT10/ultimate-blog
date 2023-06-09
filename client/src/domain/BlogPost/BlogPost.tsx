@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuthProvider } from "@providers/AuthProvider";
+import { CommentWithRepliesCount } from "./Comments/Comments";
 
 import Cover from "./Cover";
 import Title from "./Title";
@@ -8,8 +10,6 @@ import DeleteButton from "./DeleteButton";
 import BlogPostCards from "@components/BlogPostCards";
 import CommentForm from "./CommentForm";
 import Comments from "./Comments";
-
-import { useAuthProvider } from "@providers/AuthProvider";
 
 import type {
   BlogPost as BlogPostType,
@@ -87,7 +87,10 @@ function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: Blog
           onCommentCreation={handleOnCommentCreation}
         />
 
-        <Comments comments={comments} displayComments/>
+        <Comments
+          comments={comments as CommentWithRepliesCount[]}
+          displayComments
+        />
       </section>
     </main>
   );
