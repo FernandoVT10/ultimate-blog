@@ -65,7 +65,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Comment"
+                  allOf:
+                    - $ref: "#/components/schemas/Comment"
+                    - type: object
+                      properties:
+                        repliesCount:
+                          type: number
         400:
           content:
             application/json:
