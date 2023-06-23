@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    volumes:
+      - storage:/app/static/images
+    depends_on:
+      - mongo
+
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    environment:
+      API_CONTAINER_URL: http://api:3001/api
+    depends_on:
+      - api
+    volumes:
+      - ./client/.env:/app/.env
+      - ./client/next.config.js:/app/next.config.js
+
+  mongo:
+    image: mongo
+    volumes:
+      - db-data:/data/db
+
+  nginx:
+    image: nginx:1.25.1-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+    ports:
+      - "3000:80"
+
+volumes:
+  db-data:
+  storage:

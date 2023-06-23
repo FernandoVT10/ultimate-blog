@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Home from "@domain/Home";
-import axios from "@utils/axios";
+import serverAxios from "@utils/serverAxios";
 import catchServerErrors from "@utils/catchServerErrors";
 
 import type { BlogPost } from "@customTypes/collections";
@@ -8,7 +8,7 @@ import type { BlogPost } from "@customTypes/collections";
 const POSTS_FETCH_LIMIT = 6;
 
 export const getServerSideProps = catchServerErrors(async () => {
-  const blogPosts = await axios.get("/blogposts", {
+  const blogPosts = await serverAxios.get("/blogposts", {
     limit: POSTS_FETCH_LIMIT
   });
 

@@ -4,10 +4,11 @@ const nextConfig = {
   swcMinify: true,
   images: {
     remotePatterns: [
+      // Only needed for development
       {
         protocol: "http",
-        hostname: "localhost",
-        port: "3001",
+        hostname: "172.17.0.1",
+        port: "3000",
         pathname: "/static/images/**"
       }
     ]
