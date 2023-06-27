@@ -62,6 +62,7 @@ describe("utils/BlogPostCover", () => {
 
   describe("saveBuffer", () => {
     it("should call sharp", async () => {
+      const mkdirSpy = jest.spyOn(fs.promises, "mkdir");
       const mockedSharp = jest.mocked(sharp);
 
       const mockSharpFunctions = {
@@ -69,6 +70,7 @@ describe("utils/BlogPostCover", () => {
         toFile: jest.fn().mockResolvedValue(null)
       };
 
+      mkdirSpy.mockResolvedValue("");
       mockedSharp.mockReturnValue(mockSharpFunctions as any);
 
       const blogPostCover = new BlogPostCover();
@@ -77,6 +79,7 @@ describe("utils/BlogPostCover", () => {
 
       await blogPostCover.saveBuffer(buffer);
 
+      expect(mkdirSpy).toHaveBeenCalled();
       expect(mockedSharp).toHaveBeenCalledWith(buffer);
       expect(mockSharpFunctions.webp).toHaveBeenCalled();
       expect(mockSharpFunctions.toFile).toHaveBeenCalledWith(coverPath);

@@ -49,6 +49,7 @@ export default class BlogPostCover {
   }
 
   async saveBuffer(buffer: Buffer): Promise<void> {
+    await fs.promises.mkdir(BlogPostCover.BASE_PATH, { recursive: true });
     await sharp(buffer).webp().toFile(this.getPath());
   }
 

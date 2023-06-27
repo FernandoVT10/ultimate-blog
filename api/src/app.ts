@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger";
 import errorHandler from "./middlewares/errorHandler";
 
-import { STATIC_DIR, PRODUCTION } from "./constants";
+import { PRODUCTION } from "./constants";
 
 const app = express();
 
@@ -25,8 +25,6 @@ if(!PRODUCTION) {
 
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
-
-app.use("/static/", express.static(STATIC_DIR));
 
 app.use("/api", routes);
 
