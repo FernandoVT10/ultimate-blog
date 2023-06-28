@@ -4,10 +4,10 @@ import Head from "next/head";
 import BlogHome from "@domain/BlogHome";
 
 import catchServerErrors from "@utils/catchServerErrors";
-import axios from "@utils/axios";
+import serverAxios from "@utils/serverAxios";
 
 export const getServerSideProps = catchServerErrors(async () => {
-  const blogPosts = await axios.get("/blogposts");
+  const blogPosts = await serverAxios.get("/blogposts");
 
   return { blogPosts };
 });

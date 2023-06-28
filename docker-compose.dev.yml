@@ -1,0 +1,25 @@
+services:
+  api:
+    image: ultimate-blog-api:dev
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+      target: dev
+    volumes:
+      - storage:/data
+      - ./api:/app
+      - /app/node_modules
+
+  client:
+    image: ultimate-blog-client:dev
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+      target: dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+volumes:
+  db-data:
+  storage:

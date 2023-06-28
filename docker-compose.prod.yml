@@ -1,0 +1,15 @@
+services:
+  api:
+    image: ultimate-blog-api:prod
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    volumes:
+      - storage:/data
+
+  client:
+    image: ultimate-blog-client:prod
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+      target: prod

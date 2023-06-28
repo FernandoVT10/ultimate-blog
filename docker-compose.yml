@@ -1,17 +1,9 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: ./api/Dockerfile
-    volumes:
-      - storage:/data
     depends_on:
       - mongo
 
   client:
-    build:
-      context: .
-      dockerfile: ./client/Dockerfile
     environment:
       API_CONTAINER_URL: http://api:3001/api
     depends_on:

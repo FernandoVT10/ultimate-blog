@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@primer/octicons-react": "^19.4.0",
     "axios": "^1.2.0",
     "classnames": "^2.3.2",
     "highlight.js": "^11.7.0",
@@ -23,7 +24,6 @@
     "typescript": "4.9.3"
   },
   "devDependencies": {
-    "@primer/octicons-react": "^19.4.0",
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-container": "^2.0.5",
     "@types/node": "^20.3.2",
