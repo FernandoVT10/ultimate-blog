@@ -45,6 +45,18 @@ body {
   border: none;
 }
 
+.input-error {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--color-danger-text);
+
+  & .icon {
+    margin-right: 5px;
+  }
+}
+
 .custom-textarea {
   width: 100%;
   padding: 20px;

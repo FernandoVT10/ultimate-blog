@@ -1,13 +1,14 @@
 import { FormEvent, useState } from "react";
 import { useMutation } from "@hooks/api";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import Modal, { UseModalReturn } from "@components/Modal";
+import { getMessageFromAxiosError } from "@utils/formatters";
 import {
   FileDirectoryOpenFillIcon,
   XCircleFillIcon,
   XIcon
 } from "@primer/octicons-react";
+
+import Modal, { UseModalReturn } from "@components/Modal";
 
 import Button from "@components/Button";
 import classNames from "classnames";
@@ -20,17 +21,6 @@ interface CreateTagModalProps {
   onTagCreation: (newTag: string) => void;
   modal: UseModalReturn
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getErrorMessage = (error: any): string => {
-  console.log(error);
-  if(error instanceof AxiosError && error.response?.status === 400) {
-    const message = error.response.data.errors[0].message;
-    return message;
-  }
-
-  return "There was an error. Try it later.";
-};
 
 export default function CreateTagModal({ onTagCreation, modal }: CreateTagModalProps) {
   const [name, setName] = useState("");
@@ -68,7 +58,7 @@ export default function CreateTagModal({ onTagCreation, modal }: CreateTagModalP
           {error && 
             <div className={styles.error}>
               <XCircleFillIcon size={14} className={styles.icon}/>
-              <p className={styles.message}>{ getErrorMessage(error) }</p>
+              <p className={styles.message}>{ getMessageFromAxiosError(error) }</p>
             </div>
           }
 
