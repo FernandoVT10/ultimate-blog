@@ -10,6 +10,7 @@ import DeleteButton from "./DeleteButton";
 import BlogPostCards from "@components/BlogPostCards";
 import CommentForm from "./CommentForm";
 import Comments from "./Comments";
+import BlogDate from "@components/BlogDate";
 
 import type {
   BlogPost as BlogPostType,
@@ -21,7 +22,7 @@ import styles from "./BlogPost.module.scss";
 interface BlogPostProps {
   blogPost: BlogPostType;
   recentBlogPosts: BlogPostType[];
-  comments: Comment[]
+  comments: Comment[];
 }
 
 function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: BlogPostProps) {
@@ -37,11 +38,17 @@ function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: Blog
 
   return (
     <main className={styles.container}>
-      <Cover
-        cover={blogPost.cover}
-        blogPostId={blogPost._id}
-        isAdmin={isAdmin}
-      />
+      <div className={styles.coverContainer}>
+        <Cover
+          cover={blogPost.cover}
+          blogPostId={blogPost._id}
+          isAdmin={isAdmin}
+        />
+
+        <div className={styles.date}>
+          <BlogDate createdAt={blogPost.createdAt}/>
+        </div>
+      </div>
 
       <section className={styles.contentContainer}>
         <Title
