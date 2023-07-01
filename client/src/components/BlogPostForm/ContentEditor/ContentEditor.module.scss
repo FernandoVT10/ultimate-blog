@@ -21,6 +21,10 @@
     padding: 20px;
     background: var(--color-primary-bg);
     border-radius: 5px;
+
+    & :global(.hljs) {
+      background: var(--color-base-bg);
+    }
   }
 
   & .textarea {
