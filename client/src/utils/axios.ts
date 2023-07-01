@@ -1,6 +1,6 @@
 import axios, { AxiosError, RawAxiosRequestHeaders } from "axios";
 
-import { API_URL } from "@config/constants";
+import { API_CONTAINER_URL, API_URL } from "@config/constants";
 import { getAuthToken } from "./authToken";
 
 export type Method = "get" | "post" | "put" | "delete";
@@ -30,8 +30,10 @@ const callApi = async <T>(method: Method, url: string, data?: Variables): Promis
     : "application/json";
 
   try {
+    const baseURL = isBrowser() ? API_URL : API_CONTAINER_URL;
+
     const res = await axios({
-      url: `${API_URL}${url}`,
+      url: `${baseURL}${url}`,
       method,
       params: method === "get" ? data : undefined,
       data: method !== "get" ? data : undefined,
