@@ -27,6 +27,19 @@ export default function ContentEditor({ content, setContent }: ContentEditorProp
   };
 
   useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
+      if(e.ctrlKey && e.key === "p") {
+        e.preventDefault();
+        setPreviewing(!previewing);
+      }
+    };
+
+    window.addEventListener("keydown", fn);
+
+    return () => window.removeEventListener("keydown", fn);
+  }, [previewing]);
+
+  useEffect(() => {
     fixTextareaHeight();
   }, [previewing]);
 
