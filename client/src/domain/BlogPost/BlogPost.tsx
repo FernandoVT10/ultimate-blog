@@ -7,7 +7,6 @@ import Title from "./Title";
 import Content from "./Content";
 import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
-import BlogPostCards from "@components/BlogPostCards";
 import CommentForm from "./CommentForm";
 import Comments from "./Comments";
 import BlogDate from "@components/BlogDate";
@@ -21,11 +20,10 @@ import styles from "./BlogPost.module.scss";
 
 interface BlogPostProps {
   blogPost: BlogPostType;
-  recentBlogPosts: BlogPostType[];
   comments: Comment[];
 }
 
-function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: BlogPostProps) {
+function BlogPost({ blogPost, comments: initialComments }: BlogPostProps) {
   const [comments, setComments] = useState<Comment[]>(initialComments);
 
   const authStatus = useAuthProvider();
@@ -78,12 +76,13 @@ function BlogPost({ blogPost, recentBlogPosts, comments: initialComments }: Blog
         </section>
       )}
 
-      {recentBlogPosts.length > 0 && (
+      {/* TODO: Remove this when a decent post recommendation system is added*/}
+      {/*recentBlogPosts.length > 0 && (
         <section className={styles.recentBlogPosts}>
           <h2>Other Posts</h2>
           <BlogPostCards blogPosts={recentBlogPosts}/>
         </section>
-      )}
+      )*/}
 
       <section className={styles.comments}>
         <h2 className={styles.subtitle}>{"Comments"}</h2>
