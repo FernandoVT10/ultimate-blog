@@ -19,3 +19,4 @@ services:
     restart: always
     volumes:
       - ./nginx/prod.conf:/etc/nginx/nginx.conf
+      - /var/www/acme-challenge:/var/www/acme-challenge
