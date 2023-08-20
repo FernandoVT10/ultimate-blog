@@ -2,6 +2,8 @@ services:
   api:
     depends_on:
       - mongo
+    volumes:
+      - storage:/data
 
   client:
     environment:
@@ -17,10 +19,12 @@ services:
   nginx:
     image: nginx:1.25.1-alpine
     volumes:
-      - ./nginx/default.conf:/etc/nginx/nginx.conf
       - storage:/data
     ports:
       - "3000:80"
+    depens_on:
+      - api
+      - client
 
 volumes:
   db-data:

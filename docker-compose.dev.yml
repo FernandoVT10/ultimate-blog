@@ -6,7 +6,6 @@ services:
       dockerfile: ./api/Dockerfile
       target: dev
     volumes:
-      - storage:/data
       - ./api:/app
       - /app/node_modules
 
@@ -20,6 +19,6 @@ services:
       - ./client:/app
       - /app/node_modules
 
-volumes:
-  db-data:
-  storage:
+  nginx:
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/nginx.conf
