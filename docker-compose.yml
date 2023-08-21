@@ -22,7 +22,7 @@ services:
       - storage:/data
     ports:
       - "3000:80"
-    depens_on:
+    depends_on:
       - api
       - client
 
