@@ -18,6 +18,7 @@ help() {
   echo "  build                 Builds and downloads the necessary containers"
   echo "  stop                  Stops the containers"
   echo "  down                  Stops and removes the containers"
+  echo "  restart               Restarts containers"
   echo ""
   echo "Environments:"
   echo "  -p, --production      Runs the ACTION for production"
@@ -69,6 +70,9 @@ case "$1" in
     ;;
   "down")
     docker compose $docker_yml_files down
+    ;;
+  "restart")
+    docker compose $docker_yml_files restart
     ;;
   *)
     help
