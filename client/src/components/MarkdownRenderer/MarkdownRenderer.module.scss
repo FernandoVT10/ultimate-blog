@@ -70,6 +70,7 @@
     background: var(--color-primary-bg);
     font-weight: bold;
     white-space: normal;
+    overflow-x: auto;
 
     & code {
       // this allow us to have breaklines on the code block
