@@ -14,8 +14,8 @@ http {
     # change localhost for your domain
     server_name localhost;
 
-    ssl_certificate www.example.com.crt;
-    ssl_certificate_key www.example.com.key;
+    ssl_certificate /etc/nginx/ssl/example.com/www.example.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/example.com/www.example.com.key;
 
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
