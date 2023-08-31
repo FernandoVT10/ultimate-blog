@@ -8,8 +8,9 @@ import Content from "./Content";
 import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
 import CommentForm from "./CommentForm";
-import Comments from "./Comments";
 import BlogDate from "@components/BlogDate";
+
+import dynamic from "next/dynamic";
 
 import type {
   BlogPost as BlogPostType,
@@ -17,6 +18,10 @@ import type {
 } from "@customTypes/collections";
 
 import styles from "./BlogPost.module.scss";
+
+// this solves weird "Text content does not match server-rendered HTML" error
+// that only happens on the server
+const Comments = dynamic(() => import("./Comments"), { ssr: false });
 
 interface BlogPostProps {
   blogPost: BlogPostType;
@@ -75,14 +80,6 @@ function BlogPost({ blogPost, comments: initialComments }: BlogPostProps) {
           <DeleteButton blogPostId={blogPost._id}/>
         </section>
       )}
-
-      {/* TODO: Remove this when a decent post recommendation system is added*/}
-      {/*recentBlogPosts.length > 0 && (
-        <section className={styles.recentBlogPosts}>
-          <h2>Other Posts</h2>
-          <BlogPostCards blogPosts={recentBlogPosts}/>
-        </section>
-      )*/}
 
       <section className={styles.comments}>
         <h2 className={styles.subtitle}>{"Comments"}</h2>
