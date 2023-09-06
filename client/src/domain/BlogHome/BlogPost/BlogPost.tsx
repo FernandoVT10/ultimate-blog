@@ -1,4 +1,4 @@
-import type { BlogPost as BlogPostType, Tag } from "@customTypes/collections";
+import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
 import { ClockFillIcon } from "@primer/octicons-react";
 import { dateToTimeAgo } from "@utils/formatters";
@@ -9,30 +9,7 @@ import Image from "next/image";
 
 import styles from "./BlogPost.module.scss";
 
-function Tag({ tag }: { tag: Tag }) {
-  return (
-    <Link
-      className={styles.tag}
-      href={`/blog?tags=${tag.name}`}
-    >
-      { tag.name }
-    </Link>
-  );
-}
-
 export default function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
-  const getTags = () => {
-    if(blogPost.tags.length) {
-      return (
-        <div className={styles.tags}>
-          {blogPost.tags.map((tag, index) => {
-            return <Tag tag={tag} key={index}/>;
-          })}
-        </div>
-      );
-    }
-  };
-
   return (
     <div className={styles.blogPost}>
       <div className={styles.coverContainer}>
@@ -58,13 +35,13 @@ export default function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
         </div>
       </div>
 
-      { getTags() }
-
-      <div className={styles.body}>
-        <div className={styles.content}>
-          <MarkdownRenderer markdown={blogPost.content}/>
+      <Link href={`/blog/${blogPost._id}`}>
+        <div className={styles.body}>
+          <div className={styles.content}>
+            <MarkdownRenderer markdown={blogPost.content}/>
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
