@@ -66,6 +66,7 @@ export default function ContentEditor({ content, setContent }: ContentEditorProp
         onChange={handleTextareaChange}
         ref={textareaRef}
         required
+        name="blogpost-content"
       ></textarea>
     );
   };

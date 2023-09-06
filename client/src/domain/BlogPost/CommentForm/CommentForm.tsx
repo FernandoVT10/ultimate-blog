@@ -66,6 +66,7 @@ const CommentForm = ({
           onChange={({ target: { value } }) => setAuthorName(value)}
           className="custom-input"
           placeholder="Write your beautiful name here"
+          name="comment-authorname"
           required
         />
 
@@ -74,6 +75,7 @@ const CommentForm = ({
           onChange={({ target: { value } }) => setContent(value)}
           placeholder="Write something..."
           className={classNames("custom-textarea", styles.contentTextarea)}
+          name="comment-content"
           required
         />
 

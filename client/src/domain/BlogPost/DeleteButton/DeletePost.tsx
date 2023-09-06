@@ -63,6 +63,7 @@ export default function DeletePost({ blogPostId }: DeletePostProps) {
             className={classNames("custom-input", styles.input)}
             onChange={handleInputChange}
             value={confirmationText}
+            name="confirm-delete-post"
           />
 
           <Button
