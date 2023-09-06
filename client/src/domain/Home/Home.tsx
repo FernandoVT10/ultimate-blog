@@ -62,7 +62,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         <section className={styles.section}>
           <div className={styles.imageContainer}>
             <Image
-              src="/images/section-1-bg.jpg"
+              src="/images/section-1-bg.webp"
               alt="Header Image"
               className={styles.image}
               sizes="(max-width: 1200px) 600px, 50vw"
@@ -82,7 +82,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         <section className={`${styles.section} ${styles.reversedFlex}`}>
           <div className={styles.imageContainer}>
             <Image
-              src="/images/section-2-bg.jpg"
+              src="/images/section-2-bg.webp"
               alt="Header Image"
               className={styles.image}
               fill

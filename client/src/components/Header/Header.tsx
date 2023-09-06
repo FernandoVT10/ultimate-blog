@@ -46,7 +46,7 @@ export default function Header({ children, height }: HeaderProps) {
       </nav>
 
       <Image
-        src="/images/header-bg.jpg"
+        src="/images/header-bg.webp"
         alt="Header Image"
         className={styles.bg}
         priority
