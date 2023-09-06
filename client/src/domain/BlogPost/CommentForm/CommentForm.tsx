@@ -6,9 +6,9 @@ import { toast } from "react-toastify";
 import type { Comment } from "@customTypes/collections";
 
 import Button from "@components/Button";
+import classNames from "classnames";
 
 import styles from "./CommentForm.module.scss";
-import classNames from "classnames";
 
 interface CommentForm {
   parentModel: Comment["parentModel"];
@@ -61,14 +61,20 @@ const CommentForm = ({
   return (
     <div className={styles.commentForm}>
       <form onSubmit={handleSubmit}>
-        <input
-          value={authorName}
-          onChange={({ target: { value } }) => setAuthorName(value)}
-          className="custom-input"
-          placeholder="Write your beautiful name here"
-          name="comment-authorname"
-          required
-        />
+        <div className={styles.authorNameContainer}>
+          <label className={classNames(styles.label, "custom-label")}>
+            {"Author Name"}
+          </label>
+
+          <input
+            value={authorName}
+            onChange={({ target: { value } }) => setAuthorName(value)}
+            className="custom-input"
+            placeholder="Write your beautiful name here"
+            name="comment-authorname"
+            required
+          />
+        </div>
 
         <textarea
           value={content}

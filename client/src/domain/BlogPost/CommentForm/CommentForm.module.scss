@@ -2,12 +2,18 @@
   position: relative;
   padding: 20px;
   background: var(--color-base-bg);
-  // border: solid 1px #565a69;
-  border-radius: 5px;
+  border-radius: 10px;
+  
+  & .authorNameContainer {
+    & .label {
+      margin-bottom: 10px;
+    }
+  }
 
   & .contentTextarea {
     margin: 20px 0;
     min-height: 100px;
+    margin-bottom: 15px;
   }
 
   & .buttons {
