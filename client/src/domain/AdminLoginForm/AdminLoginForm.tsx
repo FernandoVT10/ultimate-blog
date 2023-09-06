@@ -41,6 +41,7 @@ const AdminLoginForm = () => {
           <input
             className="custom-input"
             placeholder="Password"
+            type="password"
             value={password}
             onChange={({ target: { value } }) => setPassword(value)}
             required
