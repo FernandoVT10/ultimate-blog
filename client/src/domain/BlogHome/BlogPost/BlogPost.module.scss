@@ -44,13 +44,14 @@
     padding: 20px;
     padding-bottom: 0;
     transition: .3s;
+      background: var(--color-base-bg);
     
     &:hover {
       cursor: pointer;
-      background: black;
+      background: var(--color-active-bg);
 
       & .content:after {
-        background: linear-gradient(to bottom, transparent, black);
+        background: linear-gradient(to bottom, transparent, var(--color-active-bg));
       }
     }
 
