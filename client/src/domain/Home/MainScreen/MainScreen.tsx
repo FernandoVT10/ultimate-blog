@@ -67,7 +67,6 @@ export default function MainScreen() {
         fill
       />
 
-
       <Canvas/>
     </header>
   );

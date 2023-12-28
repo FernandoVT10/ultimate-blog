@@ -95,11 +95,6 @@
       }
     }
 
-    & .bg {
-      width: 100%;
-      object-fit: cover;
-    }
-
     @include mixins.respond-to("medium") {
       & .fullName {
         font-size: 25px;
@@ -118,5 +113,10 @@
         }
       }
     }
+  }
+
+  & .bg {
+    width: 100%;
+    object-fit: cover;
   }
 }

@@ -31,10 +31,10 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
               {"I know how to use "}
               {technologies.map((technology, index) => {
                 return (
-                  <>
+                  <span key={index}>
                     { index !== 0 ? "," : ""}
-                    <span key={index}> {technology}</span>
-                  </>
+                    <span key={index} className={styles.highlight}> {technology}</span>
+                  </span>
                 );
               })}
               {", and more."}
