@@ -49,6 +49,8 @@
   }
 
   & .showCommentsButton {
+    display: flex;
+    align-items: center;
     background: transparent;
     border: none;
     font-size: 14px;

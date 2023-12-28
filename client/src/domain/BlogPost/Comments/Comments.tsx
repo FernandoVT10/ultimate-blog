@@ -6,7 +6,7 @@ import Spinner from "@components/Spinner";
 
 import type { Comment as CommentType } from "@customTypes/collections";
 
-import { ChevronDownIcon, ChevronUpIcon } from "@primer/octicons-react";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 import styles from "./Comments.module.scss";
 
@@ -64,9 +64,9 @@ const Comment = ({ comment, displayComment }: CommentProps) => {
           className={styles.showCommentsButton}
         >
           {showReplies ? (
-            <ChevronUpIcon className={styles.icon} size={14}/>
+            <FaChevronUp className={styles.icon} size={14}/>
           ) : (
-            <ChevronDownIcon className={styles.icon} size={14}/>
+            <FaChevronDown className={styles.icon} size={14}/>
           )}
           {`${repliesCount} ${getPluralReply(repliesCount)}`}
         </button>

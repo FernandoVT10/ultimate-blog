@@ -2,11 +2,7 @@ import { FormEvent, useState } from "react";
 import { useMutation } from "@hooks/api";
 import { toast } from "react-toastify";
 import { getMessageFromAxiosError } from "@utils/formatters";
-import {
-  FileDirectoryOpenFillIcon,
-  XCircleFillIcon,
-  XIcon
-} from "@primer/octicons-react";
+import { FaTimesCircle, FaFolder, FaTimes } from "react-icons/fa";
 
 import Modal, { UseModalReturn } from "@components/Modal";
 
@@ -57,7 +53,7 @@ export default function CreateTagModal({ onTagCreation, modal }: CreateTagModalP
 
           {error && 
             <div className={styles.error}>
-              <XCircleFillIcon size={14} className={styles.icon}/>
+              <FaTimesCircle size={14} className={styles.icon}/>
               <p className={styles.message}>{ getMessageFromAxiosError(error) }</p>
             </div>
           }
@@ -68,13 +64,13 @@ export default function CreateTagModal({ onTagCreation, modal }: CreateTagModalP
               text="Create Tag"
               loadingText="Creating"
               loading={loading}
-              icon={FileDirectoryOpenFillIcon}
+              icon={FaFolder}
               className={styles.button}
             />
 
             <Button
               text="Cancel"
-              icon={XIcon}
+              icon={FaTimes}
               onClick={modal.hideModal}
               className="caution"
             />

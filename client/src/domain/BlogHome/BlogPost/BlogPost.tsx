@@ -1,13 +1,11 @@
 import type { BlogPost as BlogPostType } from "@customTypes/collections";
 
-import { ClockFillIcon } from "@primer/octicons-react";
-import { dateToTimeAgo } from "@utils/formatters";
-
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import Link from "next/link";
 import Image from "next/image";
 
 import styles from "./BlogPost.module.scss";
+import BlogDate from "@components/BlogDate";
 
 export default function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
   return (
@@ -28,10 +26,9 @@ export default function BlogPost({ blogPost }: { blogPost: BlogPostType }) {
             </h2>
           </Link>
 
-          <p className={styles.date}>
-            <ClockFillIcon className={styles.icon} size="small"/>
-            Posted { dateToTimeAgo(blogPost.createdAt) }
-          </p>
+          <div className={styles.date}>
+            <BlogDate createdAt={blogPost.createdAt}/>
+          </div>
         </div>
       </div>
 

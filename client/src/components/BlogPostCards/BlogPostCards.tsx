@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ClockFillIcon } from "@primer/octicons-react";
+import { FaClock } from "react-icons/fa";
 import { dateToTimeAgo } from "@utils/formatters";
 
 import type { BlogPost } from "@customTypes/collections";
@@ -22,7 +22,7 @@ function BlogPostCard({ blogPost }: { blogPost: BlogPost }) {
           />
 
           <div className={styles.date}>
-            <ClockFillIcon className={styles.icon} size={12}/>
+            <FaClock className={styles.icon} size={12}/>
             { dateToTimeAgo(blogPost.createdAt) }
           </div>
         </div>

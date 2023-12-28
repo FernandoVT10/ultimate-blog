@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useMutation } from "@hooks/api";
 import { serverErrorHandler } from "@utils/errorHandlers";
-import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { FaFolder } from "react-icons/fa";
 import { BlogPost } from "@customTypes/collections";
 import { appendArrayToFormData } from "@utils/form";
 
@@ -136,7 +136,7 @@ function CreatePost() {
           text="Create Post"
           loadingText={"Creating Post"}
           loading={loading}
-          icon={FileDirectoryOpenFillIcon}
+          icon={FaFolder}
           className={styles.submitButton}
           onClick={handleClick}
         />

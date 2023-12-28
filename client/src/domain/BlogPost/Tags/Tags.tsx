@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { BlogPost, Tag } from "@customTypes/collections";
-import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { FaFolder } from "react-icons/fa";
 import { useMutation } from "@hooks/api";
 import { serverErrorHandler } from "@utils/errorHandlers";
 
@@ -51,7 +51,7 @@ export default function Tags({ tags: initialSelectedTags, isAdmin, blogPostId }:
   const updateButton = (
     <Button
       text="Update Tags"
-      icon={FileDirectoryOpenFillIcon}
+      icon={FaFolder}
       onClick={handleUpdateTags}
     />
   );

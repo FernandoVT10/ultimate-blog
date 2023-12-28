@@ -1,13 +1,13 @@
 import moment from "moment";
 
-import { ClockFillIcon } from "@primer/octicons-react";
+import { FaClock } from "react-icons/fa";
 
 import styles from "./BlogDate.module.scss";
 
 export default function BlogDate({ createdAt }: { createdAt: string }) {
   return (
     <div className={styles.blogDate}>
-      <ClockFillIcon className={styles.icon} size="small"/>
+      <FaClock className={styles.icon} size={14}/>
       Posted { moment(createdAt).fromNow() }
     </div>
   );

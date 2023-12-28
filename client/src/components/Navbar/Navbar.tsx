@@ -22,12 +22,6 @@ export default function Navbar() {
           </Link>
         </li>
 
-        <li className={styles.menuItem}>
-          <Link href="/#contact-me" className={styles.link}>
-            Contact Me
-          </Link>
-        </li>
-
         { authStatus?.isLogged &&
           <li className={styles.menuItem}>
             <Link href="/blog/createPost" className={styles.link}>

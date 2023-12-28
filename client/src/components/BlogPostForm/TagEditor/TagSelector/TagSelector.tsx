@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { SearchIcon } from "@primer/octicons-react";
+import { FaSearch } from "react-icons/fa";
 
 import Spinner from "@components/Spinner";
 import classNames from "classnames";
@@ -42,7 +42,7 @@ export default function TagSelector({ isSelectedTag, toggleTag, tags, loading }:
           htmlFor="search-tag-input"
           className={styles.label}
         >
-          <SearchIcon size={16} />
+          <FaSearch size={16} />
         </label>
 
         <input

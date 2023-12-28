@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useModal } from "@components/Modal";
 import { Tag } from "@customTypes/collections";
 import { useQuery } from "@hooks/api";
-import { PlusIcon } from "@primer/octicons-react";
+import { FaPlus } from "react-icons/fa";
 
 import CreateTagModal from "./CreateTagModal";
 import TagSelector from "./TagSelector";
@@ -72,7 +72,7 @@ export default function TagEditor({ selectedTags, setSelectedTags, optionalButto
       <div className={styles.buttons}>
         <Button
           text="Create Tag"
-          icon={PlusIcon}
+          icon={FaPlus}
           onClick={modalInstance.showModal}
         />
 

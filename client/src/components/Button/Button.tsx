@@ -1,7 +1,7 @@
 import Spinner from "@components/Spinner";
 import classNames from "classnames";
 
-import { IconProps } from "@primer/octicons-react";
+import { IconType } from "react-icons";
 
 import styles from "./Button.module.scss";
 
@@ -12,7 +12,7 @@ interface ButtonProps {
   onClick?: () => any;
   show?: boolean;
   className?: string;
-  icon?: React.FC<IconProps>;
+  icon?: IconType;
   loading?: boolean;
   type?: "submit" | "button";
   disabled?: boolean;

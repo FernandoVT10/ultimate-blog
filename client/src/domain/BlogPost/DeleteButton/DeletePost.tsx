@@ -1,6 +1,6 @@
 import Modal, { useModal } from "@components/Modal";
 
-import { TrashIcon } from "@primer/octicons-react";
+import { FaTrash } from "react-icons/fa";
 import { BlogPost } from "@customTypes/collections";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
@@ -85,7 +85,7 @@ export default function DeletePost({ blogPostId }: DeletePostProps) {
 
       <Button
         text="Delete Post"
-        icon={TrashIcon}
+        icon={FaTrash}
         className="caution"
         onClick={() => modal.showModal()}
       />

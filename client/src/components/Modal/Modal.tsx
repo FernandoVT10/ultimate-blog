@@ -1,5 +1,5 @@
 import { UseModalReturn } from "./hook";
-import { XIcon } from "@primer/octicons-react";
+import { FaTimes } from "react-icons/fa";
 
 import styles from "./Modal.module.scss";
 
@@ -23,7 +23,7 @@ export default function Modal({ title, modal, children }: ModalProps) {
               className={styles.closeButton}
               onClick={() => modal.hideModal()}
             >
-              <XIcon size={20}/>
+              <FaTimes size={20}/>
             </button>
           </div>
 

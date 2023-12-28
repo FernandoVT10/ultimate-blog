@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { BlogPost } from "@customTypes/collections";
 import { useMutation } from "@hooks/api";
 import { serverErrorHandler } from "@utils/errorHandlers";
-import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { FaFolder } from "react-icons/fa";
 import { FormEvent, useState } from "react";
 
 import Button from "@components/Button";
@@ -51,7 +51,7 @@ export default function Title({ blogPostId, title: initialTitle, isAdmin }: Titl
           text="Update Title"
           loadingText={"Updating"}
           show={title !== actualTitle}
-          icon={FileDirectoryOpenFillIcon}
+          icon={FaFolder}
           className={styles.button}
           loading={loading}
         />

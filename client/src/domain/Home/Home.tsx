@@ -2,7 +2,7 @@
 import Link from "next/link";
 import BlogPostCards from "@components/BlogPostCards";
 
-import { CodeIcon, FileDirectoryOpenFillIcon, GlobeIcon } from "@primer/octicons-react";
+import { FaCode, FaFolder, FaGlobe } from "react-icons/fa6";
 
 import type { BlogPost } from "@customTypes/collections";
 
@@ -23,7 +23,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
       <main className={styles.home}>
         <section className={styles.skills}>
           <div className={styles.card}>
-            <CodeIcon size={40} className={styles.icon}/>
+            <FaCode size={40} className={styles.icon}/>
 
             <h3 className={styles.cardTitle}>Technologies</h3>
 
@@ -42,7 +42,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
           </div>
 
           <div className={styles.card}>
-            <GlobeIcon size={40} className={styles.icon}/>
+            <FaGlobe size={40} className={styles.icon}/>
 
             <h3 className={styles.cardTitle}>Languages</h3>
 
@@ -52,7 +52,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
           </div>
 
           <div className={styles.card}>
-            <FileDirectoryOpenFillIcon size={40} className={styles.icon}/>
+            <FaFolder size={40} className={styles.icon}/>
 
             <h3 className={styles.cardTitle}>Projects</h3>
 

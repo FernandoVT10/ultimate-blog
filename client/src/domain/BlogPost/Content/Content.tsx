@@ -7,7 +7,7 @@ import { BlogPost } from "@customTypes/collections";
 import ContentEditor from "@components/BlogPostForm/ContentEditor";
 import Button from "@components/Button";
 
-import { FileDirectoryOpenFillIcon } from "@primer/octicons-react";
+import { FaFolder } from "react-icons/fa";
 
 import styles from "./Content.module.scss";
 import { useMutation } from "@hooks/api";
@@ -62,7 +62,7 @@ export default function Content({ blogPostId, content: initialContent, isAdmin }
           loadingText="Updating"
           show={actualContent !== content}
           className={styles.button}
-          icon={FileDirectoryOpenFillIcon}
+          icon={FaFolder}
           loading={loading}
         />
       </form>

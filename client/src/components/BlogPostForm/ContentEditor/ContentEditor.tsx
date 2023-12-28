@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { EyeIcon, CodeIcon } from "@primer/octicons-react";
+
+import { FaEye, FaCode } from "react-icons/fa";
 
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import classNames from "classnames";
@@ -81,7 +82,7 @@ export default function ContentEditor({ content, setContent }: ContentEditorProp
           onClick={() => setPreviewing(false)}
           type="button"
         >
-          <CodeIcon size={14} className="icon"/>
+          <FaCode size={14} className="icon"/>
           Edit
         </button>
 
@@ -90,7 +91,7 @@ export default function ContentEditor({ content, setContent }: ContentEditorProp
           onClick={() => setPreviewing(true)}
           type="button"
         >
-          <EyeIcon size={14} className="icon" />
+          <FaEye size={14} className="icon" />
           Preview
         </button>
       </div>

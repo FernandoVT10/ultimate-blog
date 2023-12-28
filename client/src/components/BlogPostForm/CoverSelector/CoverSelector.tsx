@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState } from "react";
-import { PencilIcon } from "@primer/octicons-react";
+import { FaPencilAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 import Spinner from "@components/Spinner";
@@ -68,7 +68,7 @@ export default function CoverSelector({ coverURL, onChangeCover }: CoverSelector
             className={styles.label}
             htmlFor="cover-image-input"
           >
-            <PencilIcon size={14} className={styles.icon} />
+            <FaPencilAlt size={14} className={styles.icon} />
 
             <p className={styles.helpText}>
               Upload a new cover

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@hooks/api";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { XCircleFillIcon } from "@primer/octicons-react";
+import { FaTimesCircle } from "react-icons/fa";
 import { getMessageFromAxiosError } from "@utils/formatters";
 import { setAuthToken } from "@utils/authToken";
 
@@ -49,7 +49,7 @@ const AdminLoginForm = () => {
 
           {error && 
             <div className="input-error">
-              <XCircleFillIcon size={14} className="icon"/>
+              <FaTimesCircle size={14} className="icon"/>
               <p className="message">{ getMessageFromAxiosError(error) }</p>
             </div>
           }
