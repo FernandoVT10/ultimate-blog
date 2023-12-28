@@ -1,0 +1,26 @@
+@use "@styles/shared/mixins";
+
+.navbar {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  & .menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 0 20px;
+
+    & .menuItem {
+      & .link {
+        @include mixins.link;
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -1,13 +1,16 @@
 :root {
   --color-blue: #89b4fa;
-  --color-black: #121922;
+  --color-black: #11161e;
   --color-dark-blue: #0655b7;
 
   --color-primary: var(--color-blue);
   --color-primary-rgb: 137, 180, 250;
 
-  --color-primary-bg: var(--color-black);
-  --color-base-bg: #04090f;
+  // --color-primary-bg: var(--color-black);
+  // --color-base-bg: #04090f;
+
+  --color-primary-bg: #04090f;
+  --color-base-bg: var(--color-black);
   --color-blue-bg: var(--color-dark-blue);
 
   --color-primary-text: #cdd6f4;

@@ -1,85 +1,59 @@
 @use "@styles/shared/mixins";
 
-.githubDetails {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
-  z-index: 3;
-
-  & .avatar {
-    border-radius: 50%;
-    border: solid 2px var(--color-blue);
-
-    @include mixins.size(150px);
-  }
-
-  & .fullName {
-    font-size: 25px;
-    margin-top: 20px;
-  }
-
-  & .username {
-    margin-top: 10px;
-    color: var(--color-highlight-text);
-    font-weight: bold;
-  }
-}
 
 .home {
   margin: auto;
   @include mixins.responsive-wrapper;
 
-  & .section {
-    margin-top: 40px;
+  padding-bottom: 20px;
+
+  & .skills {
+    display: grid;
     margin-bottom: 40px;
-    width: 100%;
-    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 40px;
+    row-gap: 40px;
 
-    &.noFlex { display: block; }
-    &.reversedFlex { flex-direction: row-reverse; }
-
-    & .imageContainer {
-      width: 50%;
-      position: relative;
-
-      & .image {
-        object-fit: cover;
-      }
-    }
-
-    & .sectionContent {
-      width: 50%;
-      background: var(--color-base-bg);
+    & .card {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
       padding: 20px;
+      background: var(--color-base-bg);
 
-      & .text {
-        line-height: 2;
-        white-space: pre-wrap;
-
-        & .link {
-          @include mixins.link;
-          font-weight: bold;
-        }
+      & .icon {
+        font-size: 500px;
       }
 
-      & .icons {
-        margin: 20px 0;
+      & .cardTitle {
+        margin-top: 10px;
+        font-size: 20px;
+      }
 
-        & .icon {
-          margin: 0 10px;
-          object-fit: cover;
+      & .details {
+        margin-top: 10px;
+        line-height: 1.5;
+        text-align: center;
+
+        & span {
+          color: var(--color-highlight-text);
         }
       }
     }
 
-    @include mixins.respond-to("large") {
-      & .imageContainer {
-        display: none;
-      }
 
-      & .sectionContent {
+    @include mixins.respond-to("medium") {
+      grid-template-columns: repeat(1, 1fr);
+      justify-items: center;
+
+      & .card {
+        width: 80%;
+      }
+    }
+
+    @include mixins.respond-to("small") {
+      & .card {
         width: 100%;
       }
     }
