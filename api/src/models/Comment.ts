@@ -19,6 +19,7 @@ export const PARENT_MODELS = ["Comment", "BlogPost"];
   }
 })
 @post<Comment>("findOneAndDelete", async function(comment) {
+  // @ts-expect-error Quick fix for some bug on typegoose and mongoose types declaration
   await this.model.deleteMany({
     parentId: comment._id,
     parentModel: "Comment"

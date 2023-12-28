@@ -1,5 +1,7 @@
 import BlogPostModel, { BlogPost } from "../models/BlogPost";
 
+import { DocumentType } from "@typegoose/typegoose";
+
 import { HydratedDocument } from "mongoose";
 import { Tag } from "../models/Tag";
 
@@ -44,8 +46,9 @@ const updateById = async (
   });
 };
 
-const deleteOneById = async (blogPostId: string): Promise<HydratedDocument<BlogPost> | null> => {
-  return BlogPostModel.findByIdAndDelete(blogPostId);
+const deleteOneById = async (blogPostId: string): Promise<DocumentType<BlogPost> | null> => {
+  // Quick fix for some bug on typegoose and mongoose
+  return BlogPostModel.findByIdAndDelete(blogPostId) as unknown as DocumentType<BlogPost>;
 };
 
 export default {

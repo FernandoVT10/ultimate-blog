@@ -1,6 +1,7 @@
 import CommentModel, { Comment } from "../models/Comment";
 import BlogPostModel from "../models/BlogPost";
 
+import { DocumentType } from "@typegoose/typegoose";
 import { Model } from "mongoose";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,8 +51,9 @@ const getAllByIdAndModel = async (
     .lean();
 };
 
-const deleteOneById = async (commentId: string): Promise<Comment | null> => {
-  return CommentModel.findByIdAndDelete(commentId);
+const deleteOneById = async (commentId: string): Promise<DocumentType<Comment> | null> => {
+  // Quick fix for some bug on typegoose and mongoose
+  return CommentModel.findByIdAndDelete(commentId) as unknown as DocumentType<Comment>;
 };
 
 const countReplies = async (commentId: string): Promise<number> => {
