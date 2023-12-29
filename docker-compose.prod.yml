@@ -1,16 +1,22 @@
 services:
   api:
     image: ultimate-blog-api:prod
+    restart: always
     build:
       context: .
       dockerfile: ./api/Dockerfile
+      target: prod
 
   client:
     image: ultimate-blog-client:prod
+    restart: always
     build:
       context: .
       dockerfile: ./client/Dockerfile
       target: prod
+
+  mongo:
+    restart: always
 
   nginx:
     ports:
