@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useMutation } from "@hooks/api";
-import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { FaTimesCircle } from "react-icons/fa";
 import { getMessageFromAxiosError } from "@utils/formatters";
@@ -18,8 +17,6 @@ const AdminLoginForm = () => {
 
   const { loading, run: login, error } = useMutation<LoginResult>("post", "/admin/login");
 
-  const router = useRouter();
-
   const handleSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();
 
@@ -28,7 +25,9 @@ const AdminLoginForm = () => {
     if(res.success && res.data?.token) {
       setAuthToken(res.data.token);
       toast.success("Login successful");
-      router.push("/");
+      window.location.assign("/");
+    } else {
+      setPassword("");
     }
   };
 
