@@ -1,0 +1,93 @@
+@use "@styles/shared/mixins";
+
+.commentContainer {
+  & .comment {
+    margin-top: 20px;
+    background: var(--color-base-bg);
+    border-radius: 10px;
+    padding: 20px;
+
+    & .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 20px 20px 0 0;
+
+      & .authorName {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--color-highlight-text);
+      }
+
+      & .date {
+        margin-left: 10px;
+        color: var(--color-gray-text);
+      }
+
+      & .confirmationButtons {
+        & .button {
+          margin-right: 10px;
+          padding: 10px 20px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    & .content {
+      background: var(--color-primary-bg);
+      padding: 20px;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+
+    & .replyButton {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--color-gray-text);
+      transition: .3s;
+
+      &:hover {
+        color: var(--color-primary-text);
+      }
+    }
+  }
+
+  & .formContainer {
+    margin-top: 20px;
+    padding-left: 40px;
+  }
+
+  & .showRepliesButton {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-highlight-text);
+    margin-top: 10px;
+    margin-left: 10px;
+
+    & .icon {
+      margin-right: 5px;
+    }
+  }
+
+  & .loaderContainer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  & .replies {
+    padding-left: 40px;
+  }
+
+  @include mixins.respond-to("small") {
+    & .replies {
+      padding-left: 20px;
+    }
+  }
+}

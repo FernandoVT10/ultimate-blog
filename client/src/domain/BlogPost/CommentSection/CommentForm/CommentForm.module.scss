@@ -3,6 +3,10 @@
   padding: 20px;
   background: var(--color-base-bg);
   border-radius: 10px;
+
+  &.replyForm {
+    border: solid 2px var(--color-blue);
+  }
   
   & .authorNameContainer {
     & .label {
@@ -21,4 +25,4 @@
       margin-right: 20px;
     }
   }
-};
+}

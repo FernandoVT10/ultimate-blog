@@ -22,4 +22,5 @@ export type Comment = {
   level: number;
   createdAt: string;
   updatedAt: string;
+  repliesCount?: number;
 }

@@ -1,16 +1,12 @@
-import { useState } from "react";
 import { useAuthProvider } from "@providers/AuthProvider";
-import { CommentWithRepliesCount } from "./Comments/Comments";
 
 import Cover from "./Cover";
 import Title from "./Title";
 import Content from "./Content";
 import Tags from "./Tags";
 import DeleteButton from "./DeleteButton";
-import CommentForm from "./CommentForm";
 import BlogDate from "@components/BlogDate";
-
-import dynamic from "next/dynamic";
+import CommentSection from "./CommentSection";
 
 import type {
   BlogPost as BlogPostType,
@@ -19,25 +15,15 @@ import type {
 
 import styles from "./BlogPost.module.scss";
 
-// this solves weird "Text content does not match server-rendered HTML" error
-// that only happens on the server
-const Comments = dynamic(() => import("./Comments"), { ssr: false });
-
 interface BlogPostProps {
   blogPost: BlogPostType;
   comments: Comment[];
 }
 
-function BlogPost({ blogPost, comments: initialComments }: BlogPostProps) {
-  const [comments, setComments] = useState<Comment[]>(initialComments);
-
+function BlogPost({ blogPost, comments }: BlogPostProps) {
   const authStatus = useAuthProvider();
 
   const isAdmin = authStatus.isLogged;
-
-  const handleOnCommentCreation = (createdComment: Comment) => {
-    setComments([createdComment, ...comments]);
-  };
 
   return (
     <main className={styles.container}>
@@ -84,16 +70,7 @@ function BlogPost({ blogPost, comments: initialComments }: BlogPostProps) {
       <section className={styles.comments}>
         <h2 className={styles.subtitle}>{"Comments"}</h2>
 
-        <CommentForm
-          parentModel="BlogPost"
-          parentId={blogPost._id}
-          onCommentCreation={handleOnCommentCreation}
-        />
-
-        <Comments
-          comments={comments as CommentWithRepliesCount[]}
-          displayComments
-        />
+        <CommentSection blogPostId={blogPost._id} comments={comments}/>
       </section>
     </main>
   );

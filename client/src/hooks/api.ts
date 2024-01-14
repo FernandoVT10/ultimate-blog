@@ -12,7 +12,7 @@ export const useQuery = <T,>(
   url: string,
   parameters?: Variables,
   options: Options = {}
-): Omit<UseAsyncReturn<T>, "hasBeenCalled"> => {
+): UseAsyncReturn<T> => {
   const { lazy = false } = options;
 
   const {
@@ -28,9 +28,11 @@ export const useQuery = <T,>(
     if(!lazy) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return {
     ...state,
     run,
+    hasBeenCalled,
     // when app is loaded, the loading variable in the hook is false
     // but if the query is not lazy it means it must be true since the start
     loading: !lazy && !hasBeenCalled || loading

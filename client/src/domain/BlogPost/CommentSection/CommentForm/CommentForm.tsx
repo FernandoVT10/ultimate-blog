@@ -14,7 +14,7 @@ interface CommentForm {
   parentModel: Comment["parentModel"];
   parentId: Comment["parentId"];
   onCommentCreation: (createdComment: Comment) => void;
-  showCancelButton?: boolean;
+  isReplyForm?: boolean;
   cancelButtonOnClick?: () => void;
 }
 
@@ -22,7 +22,7 @@ const CommentForm = ({
   parentModel,
   parentId,
   onCommentCreation,
-  showCancelButton,
+  isReplyForm,
   cancelButtonOnClick
 }: CommentForm) => {
   const [authorName, setAuthorName] = useState("");
@@ -59,7 +59,9 @@ const CommentForm = ({
   };
 
   return (
-    <div className={styles.commentForm}>
+    <div
+      className={classNames(styles.commentForm, { [styles.replyForm]: isReplyForm} )}
+    >
       <form onSubmit={handleSubmit}>
         <div className={styles.authorNameContainer}>
           <label className={classNames(styles.label, "custom-label")}>
@@ -93,10 +95,10 @@ const CommentForm = ({
             loading={loading}
           />
 
-          {showCancelButton && (
+          {isReplyForm && (
             <Button
               type="button"
-              className="secondary"
+              className="caution"
               text="Cancel"
               onClick={cancelButtonOnClick}
               disabled={loading}
